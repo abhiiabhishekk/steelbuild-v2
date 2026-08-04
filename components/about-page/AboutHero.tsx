@@ -1,0 +1,362 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ArrowDown,
+  ArrowRight,
+  BadgeCheck,
+  Building2,
+  Check,
+  Factory,
+  MapPinned,
+  // Users,
+} from "lucide-react";
+
+const capabilities = [
+  "Integrated Engineering",
+  "Precision Manufacturing",
+  "Pan-India Project Delivery",
+  "Quality-Controlled Execution",
+];
+
+// const stats = [
+//   {
+//     value: "700+",
+//     label: "Completed Projects",
+//     icon: Building2,
+//   },
+//   {
+//     value: "500+",
+//     label: "Happy Clients",
+//     icon: Users,
+//   },
+//   {
+//     value: "50,000 MT",
+//     label: "Annual Capacity",
+//     icon: Factory,
+//   },
+//   {
+//     value: "4000+ MT",
+//     label: "Monthly Capacity",
+//     icon: BadgeCheck,
+//   },
+// ];
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.09,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.58,
+    },
+  },
+};
+
+export default function AboutHero() {
+  return (
+    <section className="relative isolate overflow-hidden bg-[#051b32] text-white">
+      {/* Brand Watermark */}
+
+      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] lg:block">
+        <Image
+          src="/images/about/about-hero-brand-watermark-v2.png"
+          alt=""
+          fill
+          priority
+          sizes="58vw"
+          className="object-cover object-center opacity-[0.78]"
+        />
+      </div>
+
+      {/* Core Background */}
+
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(4,23,43,0.99)_0%,rgba(5,27,50,0.97)_43%,rgba(5,28,52,0.68)_68%,rgba(5,28,52,0.18)_100%)]" />
+
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_20%,rgba(194,17,25,0.14),transparent_28%),radial-gradient(circle_at_80%_34%,rgba(27,63,104,0.10),transparent_36%)]" />
+
+      {/* Engineering Grid */}
+
+      <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:76px_76px]" />
+
+      {/* Top Accent */}
+
+      <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-red/80 to-transparent" />
+
+      {/* Decorative Line */}
+
+      <div className="pointer-events-none absolute right-[12%] top-[18%] hidden h-px w-40 bg-gradient-to-r from-primary-red/70 to-transparent xl:block" />
+
+      <div className="pointer-events-none absolute right-[20%] top-[18%] hidden h-2.5 w-2.5 rounded-full bg-primary-red shadow-[0_0_24px_rgba(194,17,25,0.9)] xl:block" />
+
+      <div className="relative z-10 mx-auto max-w-[1280px] px-6 pb-16 pt-12 lg:pb-20 lg:pt-16">
+        {/* Breadcrumb */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+          className="flex items-center gap-3 text-sm font-bold text-white/55"
+        >
+          <Link
+            href="/"
+            className="transition-colors duration-300 hover:text-primary-red"
+          >
+            Home
+          </Link>
+
+          <span className="text-white/25">/</span>
+
+          <span className="text-white">About Us</span>
+        </motion.div>
+
+        {/* Main Content */}
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid flex-1 items-center gap-12 py-8 xl:grid-cols-[1.12fr_0.88fr]"
+        >
+          {/* Left Content */}
+
+          <div className="max-w-[820px]">
+            <motion.div
+              variants={itemVariants}
+              className="inline-flex max-w-full items-center gap-3 rounded-full border border-white/15 bg-white/[0.07] px-4 py-2.5 backdrop-blur-md sm:px-5"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-red text-white">
+                <Factory size={17} />
+              </span>
+
+              <span className="text-[10px] font-black uppercase tracking-[0.24em] text-white sm:text-[11px] sm:tracking-[0.29em]">
+                About Steelbuild Infra Projects Limited
+              </span>
+            </motion.div>
+
+            <motion.p
+              variants={itemVariants}
+              className="mt-7 text-[11px] font-black uppercase tracking-[0.3em] text-primary-red"
+            >
+              Driven by Commitment and Quality
+            </motion.p>
+
+            <motion.h1
+              variants={itemVariants}
+              className="mt-4 max-w-[760px] text-[44px] font-black leading-[1.01] tracking-[-0.055em] text-white sm:text-[56px] lg:text-[64px]"
+            >
+              Engineering Excellence
+              <span className="block">for India&apos;s</span>
+
+              <span className="block">
+                Industrial{" "}
+                <span className="text-primary-red">Growth.</span>
+              </span>
+            </motion.h1>
+
+            <motion.p
+              variants={itemVariants}
+              className="mt-6 max-w-[690px] text-base font-medium leading-8 text-white/70 sm:text-lg"
+            >
+              Delivering integrated Pre-Engineered Buildings, industrial
+              manufacturing facilities and large-scale steel infrastructure
+              through engineering excellence, precision manufacturing and
+              dependable execution across India.
+            </motion.p>
+
+            {/* CTA */}
+
+            <motion.div
+              variants={itemVariants}
+              className="mt-8 flex flex-col gap-4 sm:flex-row"
+            >
+              <Link
+                href="#company-story"
+                className="group inline-flex min-h-[58px] items-center justify-center gap-3 rounded-2xl bg-primary-red px-8 py-4 font-black !text-white shadow-[0_20px_48px_rgba(194,17,25,0.32)] transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:!text-primary-blue hover:shadow-[0_24px_58px_rgba(255,255,255,0.14)]"
+              >
+                Explore Our Journey
+
+                <ArrowDown
+                  size={20}
+                  className="transition-transform duration-300 group-hover:translate-y-1"
+                />
+              </Link>
+
+              <Link
+                href="/projects"
+                className="group inline-flex min-h-[58px] items-center justify-center gap-3 rounded-2xl border border-white/20 bg-white/[0.07] px-8 py-4 font-black !text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/40 hover:bg-white hover:!text-primary-blue"
+              >
+                View Our Projects
+
+                <ArrowRight
+                  size={20}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Link>
+            </motion.div>
+
+            {/* Single Trust Strip */}
+
+            <motion.div
+              variants={itemVariants}
+              className="mt-8 flex max-w-[780px] flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.045] px-5 py-4 backdrop-blur-sm"
+            >
+              <div className="flex items-center gap-2.5">
+                <BadgeCheck size={18} className="text-primary-red" />
+
+                <span className="text-xs font-black text-white/80">
+                  ISO 9001:2015 Certified
+                </span>
+              </div>
+
+              <span className="hidden h-4 w-px bg-white/15 sm:block" />
+
+              <div className="flex items-center gap-2.5">
+                <Factory size={18} className="text-primary-red" />
+
+                <span className="text-xs font-black text-white/80">
+                  Integrated Engineering
+                </span>
+              </div>
+
+              <span className="hidden h-4 w-px bg-white/15 sm:block" />
+
+              <div className="flex items-center gap-2.5">
+                <MapPinned size={18} className="text-primary-red" />
+
+                <span className="text-xs font-black text-white/80">
+                  Pan-India Project Delivery
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Glass Panel */}
+
+          <motion.div
+            variants={itemVariants}
+            className="hidden self-center justify-end xl:flex xl:-translate-y-2"
+          >
+            <div className="relative w-full max-w-[390px] overflow-hidden rounded-[30px] border border-white/14 bg-[#0b3158]/42 p-8 shadow-[0_26px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_40%,rgba(194,17,25,0.07)_100%)]" />
+
+              <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full border border-primary-red/10" />
+
+              <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full border border-white/10" />
+
+              <div className="relative z-10">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-red">
+                  Trusted Engineering Partner
+                </p>
+
+                <h2 className="mt-5 text-[29px] font-black leading-[1.2] tracking-[-0.04em] text-white">
+                  Building Industrial
+                  <span className="block">Infrastructure</span>
+                  <span className="block">With Precision,</span>
+                  <span className="block text-primary-red">
+                    Scale & Reliability.
+                  </span>
+                </h2>
+
+                <div className="mt-6 h-[2px] w-20 bg-primary-red" />
+
+                <div className="mt-7 space-y-4">
+                  {capabilities.map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-primary-red/20 bg-primary-red/[0.09] text-primary-red">
+                        <Check size={16} strokeWidth={3} />
+                      </span>
+
+                      <span className="text-sm font-black text-white/82">
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-7 border-t border-white/10 pt-6">
+  <div className="grid grid-cols-2 gap-5">
+    <div>
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+        Established
+      </p>
+
+      <p className="mt-2 text-xl font-black text-white">
+        2020
+      </p>
+    </div>
+
+    <div>
+      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+        Core Focus
+      </p>
+
+      <p className="mt-2 text-xl font-black text-white">
+        PEB & Steel
+      </p>
+    </div>
+  </div>
+</div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Statistics Strip
+
+        <motion.div
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.58, delay: 0.38 }}
+          className="overflow-hidden rounded-[26px] border border-white/14 bg-[#0b3158]/68 shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl"
+        >
+          <div className="grid grid-cols-2 divide-x divide-y divide-white/10 md:grid-cols-4 md:divide-y-0">
+            {stats.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={item.label}
+                  className="group relative px-5 py-5 sm:px-6 lg:py-6"
+                >
+                  <div className="pointer-events-none absolute inset-0 bg-primary-red/0 transition-colors duration-300 group-hover:bg-primary-red/[0.045]" />
+
+                  <div className="relative flex items-center gap-4">
+                    <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-primary-red/25 bg-primary-red/[0.08] text-primary-red sm:flex">
+                      <Icon size={20} />
+                    </span>
+
+                    <div>
+                      <p className="text-2xl font-black leading-none tracking-[-0.04em] text-white lg:text-[28px]">
+                        {item.value}
+                      </p>
+
+                      <p className="mt-2.5 text-[10px] font-black uppercase tracking-[0.17em] text-white/50">
+                        {item.label}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div> */}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,10 @@
+export { default as ProductsHero } from "./ProductsHero";
+export { default as ProductsIntro } from "./ProductsIntro";
+export { default as ProductsGrid } from "./ProductsGrid";
+export { default as ProductCard } from "./ProductCard";
+export { default as ProductBenefits } from "./ProductBenefits";
+export { default as ProductApplications } from "./ProductApplications";
+export { default as ManufacturingAdvantage } from "./ManufacturingAdvantage";
+export { default as FeaturedProjects } from "./FeaturedProjects";
+export { default as ProductsFAQ } from "./ProductsFAQ";
+export { default as ProductsCTA } from "./ProductsCTA";
