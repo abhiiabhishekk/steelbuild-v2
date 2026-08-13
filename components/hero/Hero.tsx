@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Swiper as SwiperType } from "swiper";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
 
-import HeroSlider from "./HeroSlider";
+import HeroSlider, {
+  type HeroSlide,
+} from "./HeroSlider";
+
 import { HERO_SLIDES } from "@/data/hero-slides";
 
 const stats = [
@@ -79,17 +85,51 @@ const stats = [
   },
 ];
 
-export default function Hero() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [swiperInstance, setSwiperInstance] =
-    useState<SwiperType | null>(null);
+type HeroProps = {
+  slides?: HeroSlide[];
+};
 
-  const activeSlide = HERO_SLIDES[activeIndex];
+export default function Hero({
+  slides = HERO_SLIDES,
+}: HeroProps) {
+  const safeSlides =
+    slides.length > 0
+      ? slides
+      : HERO_SLIDES;
 
-  const handleDotClick = (index: number) => {
+  const [activeIndex, setActiveIndex] =
+    useState(0);
+
+  const [
+    swiperInstance,
+    setSwiperInstance,
+  ] = useState<SwiperType | null>(null);
+
+  useEffect(() => {
+    if (
+      activeIndex >= safeSlides.length
+    ) {
+      setActiveIndex(0);
+    }
+  }, [
+    activeIndex,
+    safeSlides.length,
+  ]);
+
+  const activeSlide =
+    safeSlides[activeIndex] ??
+    safeSlides[0];
+
+  const handleDotClick = (
+    index: number,
+  ) => {
     if (!swiperInstance) return;
 
-    swiperInstance.slideToLoop(index);
+    if (safeSlides.length > 1) {
+      swiperInstance.slideToLoop(index);
+    } else {
+      swiperInstance.slideTo(index);
+    }
   };
 
   return (
@@ -97,6 +137,7 @@ export default function Hero() {
       {/* Background slider */}
 
       <HeroSlider
+        slides={safeSlides}
         onSlideChange={setActiveIndex}
         onSwiperReady={setSwiperInstance}
       />
@@ -112,9 +153,18 @@ export default function Hero() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.id}
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -18 }}
+              initial={{
+                opacity: 0,
+                y: 28,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -18,
+              }}
               transition={{
                 duration: 0.65,
                 ease: "easeOut",
@@ -125,8 +175,8 @@ export default function Hero() {
               </p>
 
               <h1 className="max-w-[820px] text-[44px] font-black leading-[0.98] tracking-[-0.045em] sm:text-5xl md:text-6xl lg:text-[70px] xl:text-[78px]">
-  {activeSlide.title}
-</h1>
+                {activeSlide.title}
+              </h1>
 
               <p className="mt-8 max-w-[580px] text-lg leading-8 text-white/90 lg:text-xl">
                 {activeSlide.description}
@@ -134,24 +184,32 @@ export default function Hero() {
 
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-  href="/projects"
-  className="group relative inline-flex min-h-[58px] items-center justify-center overflow-hidden rounded-2xl bg-primary-red px-8 py-4 font-black !text-white shadow-[0_18px_45px_rgba(194,17,25,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(194,17,25,0.4)]"
->
-  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                  href={
+                    activeSlide.primaryButtonLink ||
+                    "/projects"
+                  }
+                  className="group relative inline-flex min-h-[58px] items-center justify-center overflow-hidden rounded-2xl bg-primary-red px-8 py-4 font-black !text-white shadow-[0_18px_45px_rgba(194,17,25,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(194,17,25,0.4)]"
+                >
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
-  <span className="relative z-10">
-    Explore Our Projects
-  </span>
-</Link>
+                  <span className="relative z-10">
+                    {activeSlide.primaryButtonText ||
+                      "Explore Our Projects"}
+                  </span>
+                </Link>
 
                 <Link
-  href="/contact"
-  className="group relative inline-flex min-h-[58px] items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-[#071a31]/35 px-8 py-4 font-black !text-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white hover:!bg-white hover:!text-primary-blue hover:shadow-[0_20px_48px_rgba(255,255,255,0.2)]"
->
-  <span className="relative z-10 transition-colors duration-300 group-hover:!text-primary-blue">
-    Talk to Our Experts
-  </span>
-</Link>
+                  href={
+                    activeSlide.secondaryButtonLink ||
+                    "/contact"
+                  }
+                  className="group relative inline-flex min-h-[58px] items-center justify-center overflow-hidden rounded-2xl border border-white/30 bg-[#071a31]/35 px-8 py-4 font-black !text-white shadow-[0_14px_36px_rgba(0,0,0,0.16)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white hover:!bg-white hover:!text-primary-blue hover:shadow-[0_20px_48px_rgba(255,255,255,0.2)]"
+                >
+                  <span className="relative z-10 transition-colors duration-300 group-hover:!text-primary-blue">
+                    {activeSlide.secondaryButtonText ||
+                      "Talk to Our Experts"}
+                  </span>
+                </Link>
               </div>
             </motion.div>
           </AnimatePresence>
@@ -185,75 +243,65 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Slide navigation dots */}
-
-      <div className="absolute bottom-24 right-12 z-40 hidden items-center gap-3 lg:flex">
-        {HERO_SLIDES.map((slide, index) => {
-          const isActive = activeIndex === index;
-
-          return (
-            <button
-              key={slide.id}
-              type="button"
-              onClick={() => handleDotClick(index)}
-              aria-label={`Go to slide ${index + 1}: ${slide.title}`}
-              aria-current={isActive ? "true" : undefined}
-              className={`relative flex h-8 items-center justify-center rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                isActive ? "w-10" : "w-7"
-              }`}
-            >
-              <span
-                className={`block h-2 rounded-full transition-all duration-500 ${
-                  isActive
-  ? "w-7 bg-primary-red shadow-[0_0_18px_rgba(194,17,25,0.8)]"
-  : "w-2 bg-white/45 hover:bg-white"
-                }`}
-              />
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Current slide number */}
+      {/* Current slide number + navigation */}
 
       <div className="absolute bottom-24 right-10 z-40 hidden items-center gap-5 rounded-full border border-white/15 bg-[#071a31]/40 px-5 py-2.5 shadow-xl backdrop-blur-xl lg:flex">
-  <div className="flex items-center gap-2">
-    <span className="text-sm font-black text-white">
-      {String(activeIndex + 1).padStart(2, "0")}
-    </span>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-black text-white">
+            {String(
+              activeIndex + 1,
+            ).padStart(2, "0")}
+          </span>
 
-    <span className="text-sm font-black text-white/35">/</span>
+          <span className="text-sm font-black text-white/35">
+            /
+          </span>
 
-    <span className="text-sm font-black text-white/55">
-      {String(HERO_SLIDES.length).padStart(2, "0")}
-    </span>
-  </div>
+          <span className="text-sm font-black text-white/55">
+            {String(
+              safeSlides.length,
+            ).padStart(2, "0")}
+          </span>
+        </div>
 
-  <div className="flex items-center gap-2">
-    {HERO_SLIDES.map((slide, index) => {
-      const isActive = activeIndex === index;
+        <div className="flex items-center gap-2">
+          {safeSlides.map(
+            (slide, index) => {
+              const isActive =
+                activeIndex === index;
 
-      return (
-        <button
-          key={slide.id}
-          type="button"
-          onClick={() => handleDotClick(index)}
-          aria-label={`Go to slide ${index + 1}: ${slide.title}`}
-          aria-current={isActive ? "true" : undefined}
-          className="flex h-7 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-        >
-          <span
-            className={`block h-2 rounded-full transition-all duration-500 ${
-              isActive
-                ? "w-8 bg-primary-red shadow-[0_0_16px_rgba(194,17,25,0.8)]"
-                : "w-2 bg-white/45 hover:bg-white"
-            }`}
-          />
-        </button>
-      );
-    })}
-  </div>
-</div>
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() =>
+                    handleDotClick(
+                      index,
+                    )
+                  }
+                  aria-label={`Go to slide ${
+                    index + 1
+                  }: ${slide.title}`}
+                  aria-current={
+                    isActive
+                      ? "true"
+                      : undefined
+                  }
+                  className="flex h-7 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  <span
+                    className={`block h-2 rounded-full transition-all duration-500 ${
+                      isActive
+                        ? "w-8 bg-primary-red shadow-[0_0_16px_rgba(194,17,25,0.8)]"
+                        : "w-2 bg-white/45 hover:bg-white"
+                    }`}
+                  />
+                </button>
+              );
+            },
+          )}
+        </div>
+      </div>
     </section>
   );
 }

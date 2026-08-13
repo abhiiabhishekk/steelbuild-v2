@@ -16,6 +16,7 @@ import { exhibitionType } from "./exhibition";
 import { awardType } from "./award";
 import { teamMemberType } from "./teamMember";
 import { leadershipMemberType } from "./leadershipMember";
+import { heroSlide } from "./heroSlide";
 
 export const schema: {
   types: SchemaTypeDefinition[];
@@ -35,5 +36,6 @@ export const schema: {
     awardType,
     teamMemberType,
     leadershipMemberType,
+    heroSlide,
   ],
 };

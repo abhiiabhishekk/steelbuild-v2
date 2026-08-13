@@ -394,50 +394,6 @@ export const navigationItems: NavigationItem[] = [
       },
     ],
   },
-
-  // {
-  //   label: "Investors",
-  //   href: "/investors",
-  //   menuType: "dropdown",
-  //   items: [
-  //     {
-  //       label: "Careers Overview",
-  //       href: "/careers",
-  //       description:
-  //         "Explore careers and opportunities at Steelbuild.",
-  //       status: "completed",
-  //     },
-  //     {
-  //       label: "Open Positions",
-  //       href: "/careers#open-positions",
-  //       description:
-  //         "View currently available opportunities.",
-  //       status: "completed",
-  //     },
-  //     {
-  //       label: "Life at Steelbuild",
-  //       href: "/careers#life-at-steelbuild",
-  //       description:
-  //         "Discover our people, culture and workplace.",
-  //       status: "completed",
-  //     },
-  //     {
-  //       label: "Why Join Us",
-  //       href: "/careers#why-join-us",
-  //       description:
-  //         "Learn why professionals choose Steelbuild.",
-  //       status: "completed",
-  //     },
-  //     {
-  //       label: "Apply Now",
-  //       href: "/careers#submit-resume",
-  //       description:
-  //         "Submit your resume for available opportunities.",
-  //       status: "completed",
-  //     },
-  //   ],
-  // },
-
   {
     label: "Contact",
     href: "/contact",

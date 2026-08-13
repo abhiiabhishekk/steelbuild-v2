@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import AppLayoutShell from "@/components/layout/AppLayoutShell";
 import CookieConsent from "@/components/common/CookieConsent";
 
+import { SanityLive } from "@/sanity/lib/live";
+
 import "./globals.css";
 
 const siteUrl =
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   title: {
     default:
       "Steelbuild Infra Projects Limited",
+
     template:
       "%s | Steelbuild Infra Projects Limited",
   },
@@ -55,8 +58,11 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
+
     locale: "en_IN",
+
     url: "/",
+
     siteName:
       "Steelbuild Infra Projects Limited",
 
@@ -72,6 +78,7 @@ export const metadata: Metadata = {
           "/images/seo/steelbuild-og-image.jpg",
 
         width: 1200,
+
         height: 630,
 
         alt:
@@ -105,9 +112,11 @@ export const metadata: Metadata = {
       "max-image-preview":
         "large",
 
-      "max-snippet": -1,
+      "max-snippet":
+        -1,
 
-      "max-video-preview": -1,
+      "max-video-preview":
+        -1,
     },
   },
 
@@ -128,6 +137,8 @@ export default function RootLayout({
         </AppLayoutShell>
 
         <CookieConsent />
+
+        <SanityLive />
       </body>
     </html>
   );

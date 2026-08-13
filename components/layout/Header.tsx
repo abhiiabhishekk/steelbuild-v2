@@ -547,7 +547,7 @@ export default function Header() {
       ref={headerRef}
       className="sticky top-0 z-[9999] bg-white shadow-sm"
     >
-      <div className="hidden h-9 bg-primary-blue text-white lg:block">
+      <div className="hidden h-9 bg-primary-blue text-white xl:block">
         <div className="mx-auto flex h-full max-w-[1180px] items-center justify-between px-6 text-xs font-bold">
           <a
             href="mailto:info@steelbuildinfra.com"
@@ -596,7 +596,7 @@ export default function Header() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-6 text-[15px] font-bold text-gray-800 lg:flex">
+          <nav className="hidden items-center gap-6 text-[15px] font-bold text-gray-800 xl:flex">
             {navigationItems.map((item) => {
               const active = isPathActive(
                 pathname,
@@ -715,7 +715,7 @@ export default function Header() {
 
           <Link
             href="/request-a-quote"
-            className="hidden rounded-xl bg-primary-red px-7 py-4 text-sm font-black !text-white shadow-xl transition hover:-translate-y-1 hover:bg-primary-blue lg:inline-flex"
+            className="hidden rounded-xl bg-primary-red px-7 py-4 text-sm font-black !text-white shadow-xl transition hover:-translate-y-1 hover:bg-primary-blue xl:inline-flex"
           >
             Request a Quote
           </Link>
@@ -727,7 +727,7 @@ export default function Header() {
                 (current) => !current,
               )
             }
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 text-primary-blue lg:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-gray-200 text-primary-blue xl:hidden"
             aria-label={
               mobileOpen
                 ? "Close navigation menu"
@@ -743,7 +743,7 @@ export default function Header() {
         </div>
 
         <div
-          className={`fixed inset-x-0 bottom-0 top-[86px] overflow-y-auto bg-white p-5 transition-all lg:hidden ${
+          className={`fixed inset-x-0 bottom-0 top-[86px] overflow-y-auto bg-white p-5 transition-all xl:hidden ${
             mobileOpen
               ? "visible translate-x-0 opacity-100"
               : "invisible translate-x-full opacity-0"
@@ -820,36 +820,43 @@ export default function Header() {
                         ),
                       )}
 
-                      {item.groups?.map(
-                        (group) => (
-                          <div
-                            key={group.label}
-                            className="rounded-xl border border-gray-200 p-3"
-                          >
-                            <p className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-primary-red">
-                              {group.label}
-                            </p>
+                      {item.groups?.map((group) => (
+  <div
+    key={group.label}
+    className="rounded-xl border border-gray-200 bg-white p-3"
+  >
+    <p className="mb-2 px-1 text-[10px] font-black uppercase tracking-[0.16em] text-primary-red">
+      {group.label}
+    </p>
 
-                            {group.items?.map(
-                              (child) => (
-                                <MenuLink
-                                  key={
-                                    child.href
-                                  }
-                                  item={child}
-                                  pathname={
-                                    pathname
-                                  }
-                                  currentHash={
-                                    currentHash
-                                  }
-                                  compact
-                                />
-                              ),
-                            )}
-                          </div>
-                        ),
-                      )}
+    <div className="space-y-1">
+      {/* Main system/category page */}
+      {group.href && (
+        <MenuLink
+          item={{
+            label: `Explore ${group.label}`,
+            href: group.href,
+            status: group.status,
+          }}
+          pathname={pathname}
+          currentHash={currentHash}
+          compact
+        />
+      )}
+
+      {/* Child pages */}
+      {group.items?.map((child) => (
+        <MenuLink
+          key={child.href}
+          item={child}
+          pathname={pathname}
+          currentHash={currentHash}
+          compact
+        />
+      ))}
+    </div>
+  </div>
+))}
                     </div>
                   )}
                 </div>
