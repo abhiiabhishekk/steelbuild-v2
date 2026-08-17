@@ -75,9 +75,9 @@ export default function MezzanineOverview() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-90px" }}
             transition={{ duration: 0.7 }}
-            className="relative pb-16 md:pb-12"
+            className="relative pb-20 sm:pb-16 md:pb-12"
           >
-            <div className="relative isolate overflow-hidden rounded-[40px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.22)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-primary-blue p-3 shadow-[0_28px_70px_rgba(27,63,104,0.20)] sm:rounded-[32px] sm:p-4 md:rounded-[40px] md:p-6 md:shadow-[0_38px_100px_rgba(27,63,104,0.22)]">
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#245b8c_48%,#113158_100%)]" />
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
@@ -85,38 +85,110 @@ export default function MezzanineOverview() {
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
               <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/mezzanine-systems/mezzanine-system.jpg"
-                    alt="Engineered steel mezzanine system inside an industrial building"
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 55vw"
-                  />
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
+  <Image
+    src="/images/products/mezzanine-systems/mezzanine-system.jpg"
+    alt="Engineered steel mezzanine system inside an industrial building"
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/75 via-primary-blue/10 to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/80 via-primary-blue/10 to-transparent" />
 
-                  <div className="absolute left-5 top-5 rounded-[18px] border border-white/15 bg-primary-blue/85 px-5 py-4 backdrop-blur-md">
-                    <p className="text-[9px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      Upper Level
-                    </p>
+  {/* Upper level label */}
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      Additional Usable Space
-                    </p>
-                  </div>
+  <div
+    className="
+      absolute
+      left-3 top-3
+w-[calc(100%-24px)]
+max-w-[250px]
+      rounded-[16px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-3
+      backdrop-blur-md
 
-                  <div className="absolute bottom-12 left-5 right-5 md:bottom-14">
-  <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-red sm:text-[10px]">
-    Engineered Mezzanine Structure
-  </p>
+      min-[390px]:left-4
+      min-[390px]:right-4
+      min-[390px]:top-4
 
-  <h3 className="mt-2 max-w-lg text-xl font-black leading-[1.12] text-white sm:text-2xl md:text-[28px]">
-    Vertical Space Converted Into
-    <span className="block">Functional Floor Area</span>
-  </h3>
+      sm:left-5
+      sm:right-auto
+      sm:top-5
+      sm:max-w-[260px]
+      sm:rounded-[18px]
+      sm:px-5
+      sm:py-4
+    "
+  >
+    <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red min-[360px]:text-[9px] sm:text-[9px] sm:tracking-[0.22em]">
+      Upper Level
+    </p>
+
+    <p className="mt-1 text-[13px] font-black leading-[1.25] text-white sm:text-sm">
+      Additional Usable Space
+    </p>
+  </div>
+
+  {/* Main image statement */}
+
+  <div
+  className="
+    absolute
+    bottom-3 left-4 right-4
+
+    sm:bottom-5
+    sm:left-5
+    sm:right-5
+
+    md:bottom-4
+    lg:bottom-5
+  "
+>
+    <p
+      className="
+        text-[8px]
+        font-black
+        uppercase
+        leading-[1.45]
+        tracking-[0.17em]
+        text-primary-red
+
+        min-[360px]:text-[9px]
+        sm:text-[10px]
+        sm:tracking-[0.20em]
+      "
+    >
+      Engineered Mezzanine Structure
+    </p>
+
+    <h3
+  className="
+    mt-2
+    max-w-full
+    text-[17px]
+    font-black
+    leading-[1.14]
+    tracking-[-0.02em]
+    text-white
+
+    min-[360px]:text-[18px]
+    min-[390px]:text-[19px]
+
+    sm:max-w-lg
+    sm:text-2xl
+    sm:leading-[1.12]
+
+    md:text-[28px]
+  "
+>
+  <span className="block">Vertical Space Converted</span>
+  <span className="block">Into Functional Floor Area</span>
+</h3>
+  </div>
 </div>
-                </div>
               </div>
             </div>
 
@@ -127,21 +199,21 @@ export default function MezzanineOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.18 }}
-              className="absolute -bottom-1 left-4 right-4 z-20 rounded-[30px] border border-gray-200 bg-white p-6 shadow-[0_24px_75px_rgba(27,63,104,0.14)] md:left-8 md:right-8 md:p-7"
+              className="relative z-20 mx-3 -mt-3 rounded-[24px] border border-gray-200 bg-white p-5 shadow-[0_24px_75px_rgba(27,63,104,0.14)] min-[390px]:mx-4 min-[390px]:p-6 sm:-mt-7 sm:rounded-[28px] md:mx-8 md:-mt-8 md:rounded-[30px] md:p-7"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)]">
-                  <Warehouse size={26} />
-                </div>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)] sm:h-14 sm:w-14">
+  <Warehouse size={23} className="sm:h-[26px] sm:w-[26px]" />
+</div>
 
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
                     Space Utilization
                   </p>
 
-                  <h3 className="mt-2 text-xl font-black leading-tight text-primary-blue md:text-2xl">
-                    Existing Space Retained Below the New Level
-                  </h3>
+                  <h3 className="mt-2 text-[18px] font-black leading-[1.18] text-primary-blue min-[390px]:text-[19px] sm:text-xl md:text-2xl">
+  Existing Space Retained Below the New Level
+</h3>
                 </div>
               </div>
             </motion.div>
@@ -192,14 +264,14 @@ export default function MezzanineOverview() {
                       duration: 0.45,
                       delay: index * 0.06,
                     }}
-                    className="group grid gap-4 border-b border-gray-200 py-6 first:border-t sm:grid-cols-[58px_1fr_auto] sm:items-start"
+                    className="group grid grid-cols-[52px_1fr_auto] items-start gap-3 border-b border-gray-200 py-5 first:border-t sm:grid-cols-[58px_1fr_auto] sm:gap-4 sm:py-6"
                   >
                     <div className="flex h-13 w-13 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
                       <Icon size={23} />
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-black leading-tight text-primary-blue">
+                      <h3 className="text-lg font-black leading-tight text-primary-blue sm:text-xl">
                         {item.title}
                       </h3>
 
@@ -208,7 +280,7 @@ export default function MezzanineOverview() {
                       </p>
                     </div>
 
-                    <span className="text-4xl font-black leading-none text-primary-blue/[0.05]">
+                    <span className="text-3xl font-black leading-none text-primary-blue/[0.05] sm:text-4xl">
                       {item.number}
                     </span>
                   </motion.article>
