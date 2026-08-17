@@ -76,7 +76,7 @@ export default function FactoryOverview() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="relative isolate overflow-hidden rounded-[38px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.22)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-primary-blue p-3 shadow-[0_28px_70px_rgba(27,63,104,0.20)] sm:rounded-[32px] sm:p-4 md:rounded-[38px] md:p-6 md:shadow-[0_38px_100px_rgba(27,63,104,0.22)]">
               {/* Blue gradient frame */}
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#23578d_48%,#113158_100%)]" />
@@ -85,30 +85,82 @@ export default function FactoryOverview() {
 
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/factory-buildings/factory-building.jpg"
-                    alt="Factory building designed around production, machinery and industrial operations"
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 55vw"
-                  />
+              <div className="relative z-10 overflow-hidden rounded-[22px] border border-white/10 bg-white/10 p-2 sm:rounded-[26px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
+  <Image
+    src="/images/products/factory-buildings/factory-building.jpg"
+    alt="Factory building designed around production, machinery and industrial operations"
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/60 via-primary-blue/5 to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/65 via-primary-blue/10 to-transparent" />
 
-                  {/* Single overlay label */}
+  <div
+    className="
+      absolute
+      left-3 right-3 top-3
+      rounded-[18px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-4
+      shadow-[0_16px_40px_rgba(27,63,104,0.2)]
+      backdrop-blur-md
 
-                  <div className="absolute left-5 top-5 max-w-[310px] rounded-[20px] border border-white/15 bg-primary-blue/85 px-5 py-4 shadow-[0_16px_40px_rgba(27,63,104,0.2)] backdrop-blur-md">
-                    <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      Manufacturing Infrastructure
-                    </p>
+      min-[390px]:left-4
+      min-[390px]:right-4
+      min-[390px]:top-4
+      min-[390px]:px-5
 
-                    <p className="mt-2 text-lg font-black leading-tight text-white">
-                      Designed Around Production Requirements
-                    </p>
-                  </div>
-                </div>
+      sm:left-5
+      sm:right-auto
+      sm:top-5
+      sm:max-w-[310px]
+      sm:rounded-[20px]
+      sm:px-5
+      sm:py-4
+    "
+  >
+    <p
+      className="
+        text-[8px]
+        font-black
+        uppercase
+        leading-[1.45]
+        tracking-[0.18em]
+        text-primary-red
+
+        min-[360px]:text-[9px]
+        min-[390px]:tracking-[0.20em]
+
+        sm:text-[10px]
+        sm:tracking-[0.22em]
+      "
+    >
+      Manufacturing Infrastructure
+    </p>
+
+    <p
+      className="
+        mt-2
+        text-[18px]
+        font-black
+        leading-[1.18]
+        tracking-[-0.02em]
+        text-white
+
+        min-[360px]:text-[19px]
+        min-[390px]:text-[20px]
+
+        sm:text-lg
+        sm:leading-tight
+      "
+    >
+      Designed Around Production Requirements
+    </p>
+  </div>
+</div>
               </div>
             </div>
 
@@ -119,21 +171,21 @@ export default function FactoryOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.18 }}
-              className="relative z-20 mx-4 -mt-8 rounded-[30px] border border-gray-200 bg-white p-7 shadow-[0_24px_75px_rgba(27,63,104,0.13)] md:mx-8 md:p-8"
+              className="relative z-20 mx-3 -mt-5 rounded-[24px] border border-gray-200 bg-white p-5 shadow-[0_24px_75px_rgba(27,63,104,0.13)] min-[390px]:mx-4 min-[390px]:p-6 sm:-mt-7 sm:rounded-[28px] md:mx-8 md:-mt-8 md:rounded-[30px] md:p-8"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)]">
-                  <Factory size={26} />
-                </div>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)] sm:h-14 sm:w-14">
+  <Factory size={23} className="sm:h-[26px] sm:w-[26px]" />
+</div>
 
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
                     Factory Capability
                   </p>
 
-                  <h3 className="mt-2 text-2xl font-black leading-tight text-primary-blue">
-                    Planned Around Manufacturing Operations
-                  </h3>
+                  <h3 className="mt-2 text-xl font-black leading-[1.2] text-primary-blue sm:text-2xl sm:leading-tight">
+  Planned Around Manufacturing Operations
+</h3>
                 </div>
               </div>
 
@@ -141,7 +193,7 @@ export default function FactoryOverview() {
                 {factoryCapabilities.map((item) => (
                   <div
                     key={item}
-                    className="flex min-h-[62px] items-start gap-3 rounded-2xl border border-gray-200 bg-[#f8fafc] px-4 py-4"
+                    className="flex min-h-[56px] items-start gap-3 rounded-2xl border border-gray-200 bg-[#f8fafc] px-4 py-3.5 sm:min-h-[62px] sm:py-4"
                   >
                     <BadgeCheck
                       size={17}
