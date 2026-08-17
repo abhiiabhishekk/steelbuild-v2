@@ -71,7 +71,7 @@ export default function WalkwaysCatwalksOverview() {
   return (
     <section
       id="walkways-catwalks-overview"
-      className="relative scroll-mt-28 overflow-hidden bg-[#f7f9fc] py-24 lg:py-32"
+      className="relative scroll-mt-28 overflow-hidden bg-[#f7f9fc] py-16 sm:py-20 lg:py-32"
     >
       {/* Background */}
 
@@ -92,44 +92,112 @@ export default function WalkwaysCatwalksOverview() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-90px" }}
             transition={{ duration: 0.7 }}
-            className="relative pb-20 md:pb-16"
+            className="relative pb-20 sm:pb-20 md:pb-16"
           >
-            <div className="relative isolate overflow-hidden rounded-[40px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.22)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[32px] bg-primary-blue p-3 shadow-[0_38px_100px_rgba(27,63,104,0.22)] sm:rounded-[36px] sm:p-4 md:rounded-[40px] md:p-6">
+              {/* Blue gradient */}
+
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#245b8c_48%,#113158_100%)]" />
+
+              {/* Grid */}
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
 
+              {/* Glow */}
+
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
+              {/* Image frame */}
+
+              <div className="relative z-10 overflow-hidden rounded-[24px] border border-white/10 bg-white/10 p-2 sm:rounded-[28px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
                   <Image
                     src="/images/products/mezzanine-systems/walkways-catwalks-overview.jpg"
                     alt="Industrial steel walkways and catwalks integrated inside a Pre-Engineered Building"
                     fill
                     priority
-                    sizes="(max-width: 1280px) 100vw, 55vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/80 via-primary-blue/10 to-transparent" />
+                  {/* Overlay */}
 
-                  <div className="absolute left-5 top-5 rounded-[18px] border border-white/15 bg-primary-blue/85 px-5 py-4 backdrop-blur-md">
-                    <p className="text-[9px] font-black uppercase tracking-[0.22em] text-primary-red">
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
+
+                  {/* Top label */}
+
+                  <div
+                    className="
+                      absolute
+                      left-3
+                      right-3
+                      top-3
+                      rounded-[16px]
+                      border
+                      border-white/15
+                      bg-primary-blue/90
+                      px-4
+                      py-3
+                      backdrop-blur-md
+
+                      sm:left-5
+                      sm:right-auto
+                      sm:top-5
+                      sm:max-w-[320px]
+                      sm:rounded-[18px]
+                      sm:px-5
+                      sm:py-4
+                    "
+                  >
+                    <p className="text-[8px] font-black uppercase tracking-[0.18em] text-primary-red sm:text-[9px] sm:tracking-[0.22em]">
                       Elevated Access Network
                     </p>
 
-                    <p className="mt-1 text-sm font-black text-white">
+                    <p className="mt-1 text-[12px] font-black leading-[1.25] text-white sm:text-sm">
                       Walkways, Catwalks & Platform Connections
                     </p>
                   </div>
 
-                  <div className="absolute bottom-7 left-5 right-5">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-red sm:text-[10px]">
+                  {/* Bottom image text */}
+
+                  <div
+  className="
+    absolute
+    bottom-4
+    left-4
+    right-4
+
+    min-[390px]:bottom-4
+
+    sm:bottom-5
+    sm:left-5
+    sm:right-5
+
+    md:bottom-6
+  "
+>
+                    <p className="text-[8px] font-black uppercase tracking-[0.16em] text-primary-red sm:text-[10px] sm:tracking-[0.2em]">
                       Integrated Walkway System
                     </p>
 
-                    <h3 className="mt-2 max-w-lg text-xl font-black leading-[1.12] text-white sm:text-2xl md:text-[28px]">
+                    <h3
+                      className="
+                        mt-1.5
+                        max-w-lg
+                        text-[17px]
+                        font-black
+                        leading-[1.12]
+                        tracking-[-0.02em]
+                        text-white
+
+                        min-[390px]:text-[18px]
+
+                        sm:mt-2
+                        sm:text-2xl
+
+                        md:text-[28px]
+                      "
+                    >
                       Elevated Routes Coordinated With
                       <span className="block">
                         the Complete Industrial Structure
@@ -147,19 +215,54 @@ export default function WalkwaysCatwalksOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.18 }}
-              className="absolute -bottom-4 left-4 right-4 z-20 rounded-[30px] border border-gray-200 bg-white p-6 shadow-[0_24px_75px_rgba(27,63,104,0.14)] md:left-8 md:right-8 md:p-7"
+              className="
+                absolute
+                -bottom-5
+                left-3
+                right-3
+                z-20
+
+                rounded-[24px]
+                border
+                border-gray-200
+                bg-white
+                p-4
+
+                shadow-[0_24px_75px_rgba(27,63,104,0.14)]
+
+                min-[390px]:left-4
+                min-[390px]:right-4
+                min-[390px]:p-5
+
+                sm:-bottom-4
+                sm:rounded-[28px]
+                sm:p-6
+
+                md:left-8
+                md:right-8
+                md:rounded-[30px]
+                md:p-7
+              "
             >
-              <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)]">
-                  <Route size={25} />
+              <div className="flex items-start gap-3.5 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)] sm:h-14 sm:w-14">
+                  <Route
+                    size={22}
+                    className="sm:hidden"
+                  />
+
+                  <Route
+                    size={25}
+                    className="hidden sm:block"
+                  />
                 </div>
 
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
+                <div className="min-w-0">
+                  <p className="text-[9px] font-black uppercase tracking-[0.18em] text-primary-red sm:text-[10px] sm:tracking-[0.22em]">
                     Access Planning
                   </p>
 
-                  <h3 className="mt-2 text-xl font-black leading-tight text-primary-blue md:text-2xl">
+                  <h3 className="mt-1.5 text-[17px] font-black leading-[1.2] tracking-[-0.015em] text-primary-blue sm:mt-2 sm:text-xl md:text-2xl">
                     Walkway Networks Connect Multiple Elevated Working Areas
                   </h3>
                 </div>
@@ -195,6 +298,8 @@ export default function WalkwaysCatwalksOverview() {
               access connections are coordinated according to approved project
               layouts and operational requirements.
             </p>
+
+            {/* Overview points */}
 
             <div className="mt-10 divide-y divide-gray-200 border-y border-gray-200">
               {overviewPoints.map((item, index) => {
@@ -234,6 +339,8 @@ export default function WalkwaysCatwalksOverview() {
               })}
             </div>
 
+            {/* Engineering note */}
+
             <div className="mt-8 flex items-start gap-4 border-l-4 border-primary-red bg-white px-6 py-5 shadow-[0_14px_40px_rgba(27,63,104,0.06)]">
               <ShieldCheck
                 size={23}
@@ -252,7 +359,7 @@ export default function WalkwaysCatwalksOverview() {
 
         {/* Bottom Features */}
 
-        <div className="relative z-10 mt-20 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="relative z-10 mt-16 grid gap-5 sm:mt-20 sm:gap-6 md:grid-cols-2 xl:grid-cols-4">
           {walkwayFeatures.map((item, index) => {
             const Icon = item.icon;
 
@@ -266,7 +373,7 @@ export default function WalkwaysCatwalksOverview() {
                   duration: 0.5,
                   delay: index * 0.06,
                 }}
-                className="group relative overflow-hidden rounded-[28px] border border-gray-200 bg-white p-7 shadow-[0_18px_55px_rgba(27,63,104,0.07)] transition-all duration-500 hover:-translate-y-1 hover:border-primary-red/25 hover:shadow-[0_28px_75px_rgba(27,63,104,0.13)]"
+                className="group relative overflow-hidden rounded-[26px] border border-gray-200 bg-white p-6 shadow-[0_18px_55px_rgba(27,63,104,0.07)] transition-all duration-500 hover:-translate-y-1 hover:border-primary-red/25 hover:shadow-[0_28px_75px_rgba(27,63,104,0.13)] sm:rounded-[28px] sm:p-7"
               >
                 <span className="pointer-events-none absolute right-5 top-4 text-[48px] font-black leading-none text-primary-blue/[0.045]">
                   {item.number}
