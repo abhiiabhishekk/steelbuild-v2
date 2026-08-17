@@ -184,60 +184,127 @@ export default function RoofPlatformsHero() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.75, delay: 0.1 }}
-            className="relative pb-24 md:pb-20"
+            className="relative pb-6 sm:pb-8 md:pb-10"
           >
-            <div className="relative isolate overflow-hidden rounded-[40px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.23)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-primary-blue p-3 shadow-[0_28px_70px_rgba(27,63,104,0.20)] sm:rounded-[32px] sm:p-4 md:rounded-[40px] md:p-6 md:shadow-[0_38px_100px_rgba(27,63,104,0.23)]">
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#245b8c_48%,#113158_100%)]" />
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
 
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/mezzanine-systems/roof-platforms.jpg"
-                    alt="Engineered structural roof platform with equipment support, maintenance access and guardrails"
-                    fill
-                    priority
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 55vw"
-                  />
+              <div className="relative z-10 overflow-hidden rounded-[22px] border border-white/10 bg-white/10 p-2 sm:rounded-[26px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
+  <Image
+    src="/images/products/mezzanine-systems/roof-platforms.jpg"
+    alt="Engineered structural roof platform with equipment support, maintenance access and guardrails"
+    fill
+    priority
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
 
-                  <div className="absolute left-5 top-5 rounded-[18px] border border-white/15 bg-primary-blue/85 px-5 py-4 backdrop-blur-md">
-                    <p className="text-[9px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      Elevated Working Platform
-                    </p>
+  {/* Top label */}
+  <div
+    className="
+      absolute
+      left-3 top-3
+      w-[calc(100%-24px)]
+      max-w-[250px]
+      rounded-[16px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-3
+      backdrop-blur-md
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      Equipment Support & Maintenance Access
-                    </p>
-                  </div>
+      min-[390px]:left-4
+      min-[390px]:top-4
 
-                  <div className="absolute bottom-7 left-5 right-5">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-red sm:text-[10px]">
-                      Engineered Roof Platform
-                    </p>
+      sm:left-5
+      sm:top-5
+      sm:max-w-[320px]
+      sm:rounded-[18px]
+      sm:px-5
+      sm:py-4
+    "
+  >
+    <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red min-[360px]:text-[9px] sm:tracking-[0.22em]">
+      Elevated Working Platform
+    </p>
 
-                    <h2 className="mt-2 max-w-lg text-xl font-black leading-[1.12] text-white sm:text-2xl md:text-[30px]">
-                      Structural Support Planned Around
-                      <span className="block">
-                        Equipment and Service Requirements
-                      </span>
-                    </h2>
-                  </div>
-                </div>
+    <p className="mt-1 text-[13px] font-black leading-[1.25] text-white sm:text-sm">
+      Equipment Support & Maintenance Access
+    </p>
+  </div>
+
+  {/* Bottom statement */}
+  <div
+    className="
+      absolute
+      bottom-3 left-4 right-4
+
+      sm:bottom-5
+      sm:left-5
+      sm:right-5
+
+      md:bottom-4
+      lg:bottom-5
+    "
+  >
+    <p
+      className="
+        text-[8px]
+        font-black
+        uppercase
+        leading-[1.45]
+        tracking-[0.17em]
+        text-primary-red
+
+        min-[360px]:text-[9px]
+
+        sm:text-[10px]
+        sm:tracking-[0.20em]
+      "
+    >
+      Engineered Roof Platform
+    </p>
+
+    <h2
+      className="
+        mt-2
+        max-w-full
+        text-[17px]
+        font-black
+        leading-[1.14]
+        tracking-[-0.02em]
+        text-white
+
+        min-[360px]:text-[18px]
+        min-[390px]:text-[19px]
+
+        sm:max-w-lg
+        sm:text-2xl
+        sm:leading-[1.12]
+
+        md:text-[30px]
+      "
+    >
+      <span className="block">Structural Support Planned Around</span>
+      <span className="block">Equipment and Service Requirements</span>
+    </h2>
+  </div>
+</div>
               </div>
 
               {/* Platform zones */}
 
-              <div className="relative z-10 mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="relative z-10 mt-4 grid gap-2.5 sm:mt-5 sm:grid-cols-2 sm:gap-3">
                 {platformZones.map((item) => (
                   <div
                     key={item.number}
-                    className="min-h-[104px] rounded-[20px] border border-white/10 bg-white/[0.08] px-5 py-4 backdrop-blur-sm"
+                    className="min-h-[92px] rounded-[18px] border border-white/10 bg-white/[0.08] px-4 py-4 backdrop-blur-sm sm:min-h-[104px] sm:rounded-[20px] sm:px-5"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <p className="text-sm font-black leading-5 text-white">
@@ -249,7 +316,7 @@ export default function RoofPlatformsHero() {
                       </span>
                     </div>
 
-                    <p className="mt-2 pr-3 text-[11px] font-medium leading-[1.45] text-white/60">
+                    <p className="mt-2 text-[11px] font-medium leading-[1.45] text-white/60 sm:pr-3">
                       {item.text}
                     </p>
                   </div>
@@ -263,22 +330,22 @@ export default function RoofPlatformsHero() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.28 }}
-              className="absolute -bottom-6 left-5 right-5 z-20 rounded-[28px] border border-gray-200 bg-white p-6 shadow-[0_24px_75px_rgba(27,63,104,0.15)] md:left-9 md:right-9"
+              className="relative z-20 mx-3 -mt-2 rounded-[24px] border border-gray-200 bg-white p-4 shadow-[0_24px_75px_rgba(27,63,104,0.15)] min-[390px]:mx-4 min-[390px]:p-5 sm:-mt-4 sm:rounded-[26px] sm:p-6 md:mx-9 md:-mt-5 md:rounded-[28px]"
             >
-              <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white">
-                  <Building2 size={25} />
-                </div>
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white sm:h-14 sm:w-14">
+  <Building2 size={22} className="sm:h-[25px] sm:w-[25px]" />
+</div>
 
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
                     Structural Coordination
                   </p>
 
-                  <p className="mt-2 text-base font-black leading-6 text-primary-blue">
-                    Platform supports must be coordinated with the approved roof
-                    structure and equipment arrangement.
-                  </p>
+                  <p className="mt-2 text-[15px] font-black leading-[1.22] tracking-[-0.012em] text-primary-blue min-[390px]:text-[16px] sm:text-base sm:leading-6">
+  Platform supports must be coordinated with the approved roof
+  structure and equipment arrangement.
+</p>
                 </div>
               </div>
             </motion.div>
