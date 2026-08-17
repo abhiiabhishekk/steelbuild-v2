@@ -91,50 +91,119 @@ export default function StructuralMezzanineOverview() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-90px" }}
             transition={{ duration: 0.7 }}
-            className="relative pb-20 md:pb-16"
+            className="relative pb-6 sm:pb-8 md:pb-10"
           >
-            <div className="relative isolate overflow-hidden rounded-[40px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.22)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-primary-blue p-3 shadow-[0_28px_70px_rgba(27,63,104,0.20)] sm:rounded-[32px] sm:p-4 md:rounded-[40px] md:p-6 md:shadow-[0_38px_100px_rgba(27,63,104,0.22)]">
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#245b8c_48%,#113158_100%)]" />
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
 
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/mezzanine-systems/structural-mezzanine-overview.jpg"
-                    alt="Structural mezzanine showing steel columns, primary beams, secondary beams and intermediate floor framing"
-                    fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 55vw"
-                  />
+              <div className="relative z-10 overflow-hidden rounded-[22px] border border-white/10 bg-white/10 p-2 sm:rounded-[26px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
+  <Image
+    src="/images/products/mezzanine-systems/structural-mezzanine-overview.jpg"
+    alt="Structural mezzanine showing steel columns, primary beams, secondary beams and intermediate floor framing"
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
 
-                  <div className="absolute left-5 top-5 rounded-[18px] border border-white/15 bg-primary-blue/85 px-5 py-4 backdrop-blur-md">
-                    <p className="text-[9px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      Intermediate Floor Structure
-                    </p>
+  {/* Top label */}
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      Coordinated Steel Framing
-                    </p>
-                  </div>
+  <div
+    className="
+      absolute
+      left-3 top-3
+      w-[calc(100%-24px)]
+      max-w-[250px]
+      rounded-[16px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-3
+      backdrop-blur-md
 
-                  <div className="absolute bottom-12 left-5 right-5 md:bottom-14">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-red sm:text-[10px]">
-                      Structural Mezzanine System
-                    </p>
+      min-[390px]:left-4
+      min-[390px]:top-4
 
-                    <h3 className="mt-2 max-w-lg text-xl font-black leading-[1.12] text-white sm:text-2xl md:text-[28px]">
-                      Additional Floor Area Developed
-                      <span className="block">
-                        Within the Available Building Height
-                      </span>
-                    </h3>
-                  </div>
-                </div>
+      sm:left-5
+      sm:top-5
+      sm:max-w-[300px]
+      sm:rounded-[18px]
+      sm:px-5
+      sm:py-4
+    "
+  >
+    <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red min-[360px]:text-[9px] sm:tracking-[0.22em]">
+      Intermediate Floor Structure
+    </p>
+
+    <p className="mt-1 text-[13px] font-black leading-[1.25] text-white sm:text-sm">
+      Coordinated Steel Framing
+    </p>
+  </div>
+
+  {/* Bottom statement */}
+
+  <div
+    className="
+      absolute
+      bottom-3 left-4 right-4
+
+      sm:bottom-5
+      sm:left-5
+      sm:right-5
+
+      md:bottom-4
+      lg:bottom-5
+    "
+  >
+    <p
+      className="
+        text-[8px]
+        font-black
+        uppercase
+        leading-[1.45]
+        tracking-[0.17em]
+        text-primary-red
+
+        min-[360px]:text-[9px]
+
+        sm:text-[10px]
+        sm:tracking-[0.20em]
+      "
+    >
+      Structural Mezzanine System
+    </p>
+
+    <h3
+      className="
+        mt-2
+        max-w-full
+        text-[17px]
+        font-black
+        leading-[1.14]
+        tracking-[-0.02em]
+        text-white
+
+        min-[360px]:text-[18px]
+        min-[390px]:text-[19px]
+
+        sm:max-w-lg
+        sm:text-2xl
+        sm:leading-[1.12]
+
+        md:text-[28px]
+      "
+    >
+      <span className="block">Additional Floor Area Developed</span>
+      <span className="block">Within the Available Building Height</span>
+    </h3>
+  </div>
+</div>
               </div>
             </div>
 
@@ -145,21 +214,21 @@ export default function StructuralMezzanineOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.18 }}
-              className="absolute -bottom-4 left-4 right-4 z-20 rounded-[30px] border border-gray-200 bg-white p-6 shadow-[0_24px_75px_rgba(27,63,104,0.14)] md:left-8 md:right-8 md:p-7"
+              className="relative z-20 mx-3 -mt-3 rounded-[24px] border border-gray-200 bg-white p-4 min-[390px]:p-5 sm:p-6 shadow-[0_24px_75px_rgba(27,63,104,0.14)] min-[390px]:mx-4 min-[390px]:p-6 sm:-mt-5 sm:rounded-[28px] md:mx-8 md:-mt-6 md:rounded-[30px] md:p-7"
             >
-              <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)]">
-                  <Layers3 size={26} />
-                </div>
+              <div className="flex items-start gap-3 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)] sm:h-14 sm:w-14">
+  <Layers3 size={23} className="sm:h-[26px] sm:w-[26px]" />
+</div>
 
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
                     Structural Space Utilization
                   </p>
 
-                  <h3 className="mt-2 text-xl font-black leading-tight text-primary-blue md:text-2xl">
-                    Existing Operational Space Can Remain Available Below
-                  </h3>
+                  <h3 className="mt-2 text-[16px] font-black leading-[1.2] tracking-[-0.015em] text-primary-blue min-[360px]:text-[17px] min-[390px]:text-[18px] sm:text-xl md:text-2xl">
+  Existing Operational Space Can Remain Available Below
+</h3>
                 </div>
               </div>
             </motion.div>
@@ -210,14 +279,14 @@ export default function StructuralMezzanineOverview() {
                       duration: 0.45,
                       delay: index * 0.06,
                     }}
-                    className="group grid gap-4 py-7 sm:grid-cols-[58px_1fr_auto] sm:items-start"
+                    className="group grid grid-cols-[50px_1fr_auto] items-start gap-3 py-5 sm:grid-cols-[58px_1fr_auto] sm:gap-4 sm:py-7"
                   >
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
                       <Icon size={23} />
                     </div>
 
                     <div>
-                      <h3 className="text-xl font-black leading-tight text-primary-blue">
+                      <h3 className="text-lg font-black leading-tight text-primary-blue sm:text-xl">
                         {item.title}
                       </h3>
 
@@ -226,7 +295,7 @@ export default function StructuralMezzanineOverview() {
                       </p>
                     </div>
 
-                    <span className="text-4xl font-black leading-none text-primary-blue/[0.05]">
+                    <span className="text-3xl font-black leading-none text-primary-blue/[0.05] sm:text-4xl">
                       {item.number}
                     </span>
                   </motion.article>
@@ -273,7 +342,7 @@ export default function StructuralMezzanineOverview() {
                   {item.number}
                 </span>
 
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white sm:h-14 sm:w-14">
                   <Icon size={25} />
                 </div>
 
