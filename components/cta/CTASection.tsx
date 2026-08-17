@@ -1,15 +1,15 @@
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 
 export default function CTASection() {
   return (
     <section className="relative overflow-hidden bg-primary-blue py-36 text-white">
-      <Image
+      {/* <Image
         src="/images/cta/cta-bg.jpg"
         alt="Steelbuild Infra Projects CTA background"
         fill
         className="object-cover opacity-30"
-      />
+      /> */}
 
       <div className="absolute inset-0 bg-gradient-to-r from-[#06182d]/98 via-[#06182d]/92 to-[#06182d]/70" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(194,17,25,0.22),transparent_38%)]" />
