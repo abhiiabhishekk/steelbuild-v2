@@ -79,57 +79,87 @@ export default function WarehouseOverview() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="relative isolate overflow-hidden rounded-[38px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.22)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-primary-blue p-3 shadow-[0_28px_70px_rgba(27,63,104,0.20)] sm:rounded-[32px] sm:p-4 md:rounded-[38px] md:p-6 md:shadow-[0_38px_100px_rgba(27,63,104,0.22)]">
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#23578d_48%,#113158_100%)]" />
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
 
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="relative aspect-[5/4] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/warehouse-buildings/warehouse-building-v2.JPG"
-                    alt="Warehouse building designed for storage, logistics and loading operations"
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 1280px) 100vw, 55vw"
-                  />
+              <div className="relative z-10 overflow-hidden rounded-[22px] border border-white/10 bg-white/10 p-2 sm:rounded-[26px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
+  <Image
+    src="/images/products/warehouse-buildings/warehouse-building-v2.JPG"
+    alt="Warehouse building designed for storage, logistics and loading operations"
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/65 via-primary-blue/5 to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/70 via-primary-blue/10 to-transparent" />
 
-                  {/* Operational zone labels */}
+  {/* Storage zone */}
 
-                  <div className="absolute left-5 top-5 rounded-2xl border border-white/15 bg-primary-blue/80 px-4 py-3 backdrop-blur-md">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
-                      Storage Zone
-                    </p>
+  <div
+    className="
+      absolute left-3 right-3 top-3
+      rounded-[16px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-3
+      backdrop-blur-md
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      High-Capacity Internal Space
-                    </p>
-                  </div>
+      sm:left-5
+      sm:right-auto
+      sm:top-5
+      sm:max-w-[270px]
+      sm:rounded-2xl
+    "
+  >
+    <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red sm:text-[10px] sm:tracking-[0.2em]">
+      Storage Zone
+    </p>
 
-                  <div className="absolute bottom-5 left-5 rounded-2xl border border-white/15 bg-primary-blue/80 px-4 py-3 backdrop-blur-md">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
-                      Loading Zone
-                    </p>
+    <p className="mt-1 text-[13px] font-black leading-[1.3] text-white sm:text-sm">
+      High-Capacity Internal Space
+    </p>
+  </div>
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      Vehicle & Dock Coordination
-                    </p>
-                  </div>
+  {/* Loading + Dispatch zones */}
 
-                  <div className="absolute bottom-5 right-5 rounded-2xl border border-white/15 bg-primary-blue/80 px-4 py-3 backdrop-blur-md">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
-                      Dispatch Zone
-                    </p>
+  <div
+    className="
+      absolute bottom-3 left-3 right-3
+      grid gap-2
 
-                    <p className="mt-1 text-sm font-black text-white">
-                      Organized Material Movement
-                    </p>
-                  </div>
-                </div>
+      sm:bottom-5
+      sm:left-5
+      sm:right-5
+      sm:grid-cols-2
+      sm:gap-4
+    "
+  >
+    <div className="rounded-[16px] border border-white/15 bg-primary-blue/90 px-4 py-3 backdrop-blur-md sm:rounded-2xl">
+      <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red sm:text-[10px] sm:tracking-[0.2em]">
+        Loading Zone
+      </p>
+
+      <p className="mt-1 text-[13px] font-black leading-[1.3] text-white sm:text-sm">
+        Vehicle & Dock Coordination
+      </p>
+    </div>
+
+    <div className="rounded-[16px] border border-white/15 bg-primary-blue/90 px-4 py-3 backdrop-blur-md sm:rounded-2xl">
+      <p className="text-[8px] font-black uppercase leading-[1.4] tracking-[0.18em] text-primary-red sm:text-[10px] sm:tracking-[0.2em]">
+        Dispatch Zone
+      </p>
+
+      <p className="mt-1 text-[13px] font-black leading-[1.3] text-white sm:text-sm">
+        Organized Material Movement
+      </p>
+    </div>
+  </div>
+</div>
               </div>
             </div>
 
@@ -140,21 +170,21 @@ export default function WarehouseOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: 0.18 }}
-              className="relative z-20 mx-4 -mt-8 rounded-[30px] border border-gray-200 bg-white p-7 shadow-[0_24px_75px_rgba(27,63,104,0.13)] md:mx-8 md:p-8"
+              className="relative z-20 mx-3 -mt-5 rounded-[24px] border border-gray-200 bg-white p-5 shadow-[0_24px_75px_rgba(27,63,104,0.13)] min-[390px]:mx-4 min-[390px]:p-6 sm:-mt-7 sm:rounded-[28px] md:mx-8 md:-mt-8 md:rounded-[30px] md:p-8"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)]">
-                  <PackageCheck size={26} />
-                </div>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_28px_rgba(194,17,25,0.22)] sm:h-14 sm:w-14">
+  <PackageCheck size={23} className="sm:h-[26px] sm:w-[26px]" />
+</div>
 
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
                     Warehouse Capability
                   </p>
 
-                  <h3 className="mt-2 text-2xl font-black leading-tight text-primary-blue">
-                    Planned Around Storage and Logistics
-                  </h3>
+                  <h3 className="mt-2 text-xl font-black leading-[1.2] text-primary-blue sm:text-2xl sm:leading-tight">
+  Planned Around Storage and Logistics
+</h3>
                 </div>
               </div>
 
