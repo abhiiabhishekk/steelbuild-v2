@@ -141,28 +141,86 @@ export default function HeavySteelOverview() {
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
               <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[24px]">
-                  <Image
-                    src="/images/products/heavy-steel-structures/heavy-steel-structure-v2.JPG"
-                    alt="Heavy steel structural system engineered for industrial applications"
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority={false}
-                  />
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[4/3] sm:rounded-[24px]">
+  <Image
+    src="/images/products/heavy-steel-structures/heavy-steel-structure-v2.JPG"
+    alt="Heavy steel structural system engineered for industrial applications"
+    fill
+    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
+    priority={false}
+  />
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/55 via-transparent to-transparent" />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/70 via-primary-blue/10 to-transparent" />
 
-                  <div className="absolute bottom-5 left-5 right-5 rounded-[22px] border border-white/15 bg-primary-blue/80 p-5 backdrop-blur-md">
-                    <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      Heavy Structural Engineering
-                    </p>
+  <div
+    className="
+      absolute
+      bottom-3 left-3 right-3
+      rounded-[18px]
+      border border-white/15
+      bg-primary-blue/90
+      px-4 py-4
+      backdrop-blur-md
 
-                    <h3 className="mt-2 text-2xl font-black leading-tight text-white">
-                      Built for Strength, Stability and Complex Loads
-                    </h3>
-                  </div>
-                </div>
+      min-[390px]:bottom-4
+      min-[390px]:left-4
+      min-[390px]:right-4
+      min-[390px]:px-5
+
+      sm:bottom-5
+      sm:left-5
+      sm:right-5
+      sm:rounded-[22px]
+      sm:px-5
+      sm:py-4
+
+      md:px-6
+      md:py-5
+    "
+  >
+    <p
+      className="
+        text-[8px]
+        font-black
+        uppercase
+        leading-[1.45]
+        tracking-[0.18em]
+        text-primary-red
+
+        min-[360px]:text-[9px]
+        min-[390px]:tracking-[0.20em]
+
+        sm:text-[10px]
+        sm:tracking-[0.22em]
+      "
+    >
+      Heavy Structural Engineering
+    </p>
+
+    <h3
+      className="
+        mt-2
+        max-w-full
+        text-[18px]
+        font-black
+        leading-[1.18]
+        tracking-[-0.02em]
+        text-white
+
+        min-[360px]:text-[19px]
+        min-[390px]:text-[20px]
+
+        sm:text-[22px]
+        sm:leading-tight
+
+        md:text-2xl
+      "
+    >
+      Built for Strength, Stability and Complex Loads
+    </h3>
+  </div>
+</div>
               </div>
             </div>
 
