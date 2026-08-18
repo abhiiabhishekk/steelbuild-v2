@@ -11,7 +11,6 @@ import {
   Footprints,
   Frame,
   ShieldCheck,
-  Wrench,
 } from "lucide-react";
 
 import Container from "@/components/layout/Container";
@@ -109,10 +108,10 @@ export default function HandrailsGuardrailsHero() {
           </span>
         </motion.div>
 
-        {/* Main hero */}
+        {/* Main Hero */}
 
         <div className="relative z-10 mt-12 grid gap-14 xl:grid-cols-[0.94fr_1.06fr] xl:items-center">
-          {/* Left content */}
+          {/* Left Content */}
 
           <motion.div
             initial={{ opacity: 0, y: 34 }}
@@ -177,50 +176,119 @@ export default function HandrailsGuardrailsHero() {
             </div>
           </motion.div>
 
-          {/* Right visual */}
+          {/* Right Visual */}
 
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.75, delay: 0.1 }}
-            className="relative pb-24 md:pb-20"
+            className="relative pb-36 sm:pb-32 md:pb-20"
           >
-            <div className="relative isolate overflow-hidden rounded-[40px] bg-primary-blue p-5 shadow-[0_38px_100px_rgba(27,63,104,0.23)] md:p-6">
+            <div className="relative isolate overflow-hidden rounded-[32px] bg-primary-blue p-3 shadow-[0_38px_100px_rgba(27,63,104,0.23)] sm:rounded-[36px] sm:p-4 md:rounded-[40px] md:p-6">
+              {/* Blue Gradient */}
+
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#153b68_0%,#245b8c_48%,#113158_100%)]" />
+
+              {/* Grid */}
 
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:58px_58px]" />
 
+              {/* Glow */}
+
               <div className="pointer-events-none absolute -bottom-24 -right-20 h-72 w-72 rounded-full bg-primary-red/20 blur-[95px]" />
 
-              <div className="relative z-10 overflow-hidden rounded-[30px] border border-white/10 bg-white/10 p-3">
-                <div className="group relative aspect-[5/4] overflow-hidden rounded-[24px]">
+              {/* Image Frame */}
+
+              <div className="relative z-10 overflow-hidden rounded-[24px] border border-white/10 bg-white/10 p-2 sm:rounded-[28px] sm:p-3 md:rounded-[30px]">
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-[20px] sm:aspect-[5/4] sm:rounded-[24px]">
                   <Image
                     src="/images/products/mezzanine-systems/handrails-guardrails.jpg"
                     alt="Industrial handrails and guardrails installed around a steel walkway and platform inside a PEB building"
                     fill
                     priority
-                    sizes="(max-width: 1280px) 100vw, 55vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 100vw, 55vw"
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
 
+                  {/* Overlay */}
+
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-primary-blue/85 via-primary-blue/10 to-transparent" />
 
-                  <div className="absolute left-5 top-5 rounded-[18px] border border-white/15 bg-primary-blue/85 px-5 py-4 backdrop-blur-md">
-                    <p className="text-[9px] font-black uppercase tracking-[0.22em] text-primary-red">
+                  {/* Top Label */}
+
+                  <div
+                    className="
+                      absolute
+                      left-3
+                      right-3
+                      top-3
+
+                      rounded-[16px]
+                      border
+                      border-white/15
+                      bg-primary-blue/90
+                      px-4
+                      py-3
+                      backdrop-blur-md
+
+                      sm:left-5
+                      sm:right-auto
+                      sm:top-5
+                      sm:max-w-[320px]
+                      sm:rounded-[18px]
+                      sm:px-5
+                      sm:py-4
+                    "
+                  >
+                    <p className="text-[8px] font-black uppercase tracking-[0.18em] text-primary-red sm:text-[9px] sm:tracking-[0.22em]">
                       Industrial Edge Protection
                     </p>
 
-                    <p className="mt-1 text-sm font-black text-white">
+                    <p className="mt-1 text-[12px] font-black leading-[1.25] text-white sm:text-sm">
                       Handrail, Guardrail & Toe-Board System
                     </p>
                   </div>
 
-                  <div className="absolute bottom-7 left-5 right-5">
-                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary-red sm:text-[10px]">
+                  {/* Bottom Image Text */}
+
+                  <div
+                    className="
+                      absolute
+                      bottom-5
+                      left-4
+                      right-4
+
+                      min-[390px]:bottom-6
+
+                      sm:bottom-6
+                      sm:left-5
+                      sm:right-5
+
+                      md:bottom-7
+                    "
+                  >
+                    <p className="text-[8px] font-black uppercase tracking-[0.16em] text-primary-red sm:text-[10px] sm:tracking-[0.2em]">
                       Structural Protection System
                     </p>
 
-                    <h2 className="mt-2 max-w-lg text-xl font-black leading-[1.12] text-white sm:text-2xl md:text-[30px]">
+                    <h2
+                      className="
+                        mt-1.5
+                        max-w-lg
+                        text-[17px]
+                        font-black
+                        leading-[1.12]
+                        tracking-[-0.02em]
+                        text-white
+
+                        min-[390px]:text-[18px]
+
+                        sm:mt-2
+                        sm:text-2xl
+
+                        md:text-[30px]
+                      "
+                    >
                       Perimeter Protection Coordinated With
                       <span className="block">
                         Elevated Industrial Access
@@ -230,7 +298,7 @@ export default function HandrailsGuardrailsHero() {
                 </div>
               </div>
 
-              {/* System elements */}
+              {/* System Elements */}
 
               <div className="relative z-10 mt-5 grid gap-3 sm:grid-cols-2">
                 {systemElements.map((item) => (
@@ -256,25 +324,58 @@ export default function HandrailsGuardrailsHero() {
               </div>
             </div>
 
-            {/* Floating note */}
+            {/* Floating Note */}
 
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.28 }}
-              className="absolute -bottom-6 left-5 right-5 z-20 rounded-[28px] border border-gray-200 bg-white p-6 shadow-[0_24px_75px_rgba(27,63,104,0.15)] md:left-9 md:right-9"
+              className="
+                absolute
+                -bottom-5
+                left-3
+                right-3
+                z-20
+
+                rounded-[24px]
+                border
+                border-gray-200
+                bg-white
+                p-4
+
+                shadow-[0_24px_75px_rgba(27,63,104,0.15)]
+
+                min-[390px]:left-4
+                min-[390px]:right-4
+                min-[390px]:p-5
+
+                sm:-bottom-6
+                sm:rounded-[28px]
+                sm:p-6
+
+                md:left-9
+                md:right-9
+              "
             >
-              <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white">
-                  <ShieldCheck size={25} />
+              <div className="flex items-start gap-3.5 sm:gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white sm:h-14 sm:w-14">
+                  <ShieldCheck
+                    size={22}
+                    className="sm:hidden"
+                  />
+
+                  <ShieldCheck
+                    size={25}
+                    className="hidden sm:block"
+                  />
                 </div>
 
-                <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
+                <div className="min-w-0">
+                  <p className="text-[9px] font-black uppercase tracking-[0.18em] text-primary-red sm:text-[10px] sm:tracking-[0.22em]">
                     Protection Coordination
                   </p>
 
-                  <p className="mt-2 text-base font-black leading-6 text-primary-blue">
+                  <p className="mt-1.5 text-[17px] font-black leading-[1.2] tracking-[-0.015em] text-primary-blue sm:mt-2 sm:text-base sm:leading-6">
                     Railing layouts must align with platforms, stairs,
                     walkways, gates and approved access openings.
                   </p>
@@ -284,7 +385,7 @@ export default function HandrailsGuardrailsHero() {
           </motion.div>
         </div>
 
-        {/* Bottom highlights */}
+        {/* Bottom Highlights */}
 
         <motion.div
           initial={{ opacity: 0, y: 26 }}
