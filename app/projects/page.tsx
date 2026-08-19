@@ -9,52 +9,92 @@ import { PROJECTS_QUERY } from "@/sanity/lib/projectQueries";
 
 import type { SanityProjectListItem } from "@/types/sanityProject";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
+const pageUrl = `${siteUrl}/projects`;
+
+/* =========================================================
+   PROJECTS PAGE SEO METADATA
+========================================================= */
+
 export const metadata: Metadata = {
-  title:
-    "Pre-Engineered Building Projects in India | Steelbuild Infra Projects",
-  description:
-    "Explore completed Pre-Engineered Building projects by Steelbuild Infra Projects Limited across warehousing, manufacturing, logistics, food processing, industrial and infrastructure sectors in India.",
-  keywords: [
-    "Pre-Engineered Building projects",
-    "PEB projects in India",
-    "industrial building projects",
-    "warehouse construction projects",
-    "factory building projects",
-    "steel building projects",
-    "PEB company projects",
-    "Steelbuild Infra Projects",
-  ],
-  alternates: {
-    canonical: "https://steelbuildinfra.com/projects",
+  title: {
+    absolute:
+      "Pre-Engineered Building Projects in India | Steelbuild Infra Projects",
   },
+
+  description:
+    "Explore Pre-Engineered Building projects delivered by Steelbuild Infra Projects Limited across warehousing, manufacturing, logistics, food processing, industrial and infrastructure sectors in India.",
+
+  alternates: {
+    canonical: "/projects",
+  },
+
   openGraph: {
-    title:
-      "Pre-Engineered Building Projects | Steelbuild Infra Projects Limited",
-    description:
-      "Explore Steelbuild's completed PEB projects across industrial, warehousing, logistics, manufacturing and infrastructure sectors.",
-    url: "https://steelbuildinfra.com/projects",
-    siteName: "Steelbuild Infra Projects Limited",
     type: "website",
+
+    locale: "en_IN",
+
+    url: pageUrl,
+
+    siteName:
+      "Steelbuild Infra Projects Limited",
+
+    title:
+      "Pre-Engineered Building Projects in India | Steelbuild Infra Projects",
+
+    description:
+      "Explore Steelbuild Infra Projects Limited's PEB projects across industrial, warehousing, logistics, manufacturing and infrastructure sectors in India.",
+
     images: [
       {
-        url: "/images/projects/project-001/cover.jpg",
+        url:
+          "/images/projects/project-001/cover.jpg",
+
         width: 1200,
+
         height: 630,
-        alt: "Completed PEB projects by Steelbuild Infra Projects Limited",
+
+        alt:
+          "Pre-Engineered Building projects delivered by Steelbuild Infra Projects Limited",
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
+
     title:
-      "Pre-Engineered Building Projects | Steelbuild Infra Projects Limited",
+      "Pre-Engineered Building Projects in India | Steelbuild Infra Projects",
+
     description:
-      "Explore completed industrial, warehousing, logistics and manufacturing PEB projects delivered across India.",
+      "Explore industrial, warehousing, logistics and manufacturing PEB projects delivered by Steelbuild Infra Projects Limited across India.",
+
     images: [
       "/images/projects/project-001/cover.jpg",
     ],
   },
+
+  robots: {
+    index: true,
+    follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
+
+/* =========================================================
+   PROJECT DATA
+========================================================= */
 
 const getProjects = async (): Promise<
   SanityProjectListItem[]
@@ -65,44 +105,147 @@ const getProjects = async (): Promise<
   }) as Promise<SanityProjectListItem[]>;
 };
 
+/* =========================================================
+   PROJECTS PAGE
+========================================================= */
+
 export default async function ProjectsPage() {
   const projects = await getProjects();
+
+  const breadcrumbSchema = {
+    "@type": "BreadcrumbList",
+
+    "@id": `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projects",
+        item: pageUrl,
+      },
+    ],
+  };
+
+  const projectListSchema = {
+    "@type": "ItemList",
+
+    "@id": `${pageUrl}/#project-list`,
+
+    name:
+      "Pre-Engineered Building Projects by Steelbuild Infra Projects Limited",
+
+    numberOfItems:
+      projects.length,
+
+    itemListElement:
+      projects.map((project, index) => ({
+        "@type": "ListItem",
+
+        position:
+          index + 1,
+
+        item: {
+          "@type": "CreativeWork",
+
+          "@id":
+            `${siteUrl}/projects/${project.slug}/#project`,
+
+          name:
+            project.name,
+
+          url:
+            `${siteUrl}/projects/${project.slug}`,
+
+          image:
+            project.coverImage?.asset?.url ||
+            undefined,
+
+          contentLocation:
+            project.location || undefined,
+        },
+      })),
+  };
+
+  const collectionPageSchema = {
+    "@type": "CollectionPage",
+
+    "@id": `${pageUrl}/#webpage`,
+
+    url: pageUrl,
+
+    name:
+      "Pre-Engineered Building Projects in India",
+
+    headline:
+      "Industrial and Pre-Engineered Building Projects Across India",
+
+    description:
+      "Explore Pre-Engineered Building projects delivered by Steelbuild Infra Projects Limited across warehousing, manufacturing, logistics, food processing, industrial and infrastructure sectors in India.",
+
+    isPartOf: {
+      "@id": `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id": `${pageUrl}/#project-list`,
+    },
+
+    mainEntity: {
+      "@id": `${pageUrl}/#project-list`,
+    },
+
+    provider: {
+      "@id": `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id": `${pageUrl}/#breadcrumb`,
+    },
+
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+
+      url:
+        `${siteUrl}/images/projects/project-001/cover.jpg`,
+    },
+
+    hasPart:
+      projects.map((project) => ({
+        "@id":
+          `${siteUrl}/projects/${project.slug}/#project`,
+      })),
+
+    inLanguage: "en-IN",
+  };
+
+  const structuredData = {
+    "@context": "https://schema.org",
+
+    "@graph": [
+      collectionPageSchema,
+      breadcrumbSchema,
+      projectListSchema,
+    ],
+  };
 
   return (
     <>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: "Pre-Engineered Building Projects",
-          description:
-            "Completed Pre-Engineered Building projects delivered by Steelbuild Infra Projects Limited across industrial sectors in India.",
-          url: "https://steelbuildinfra.com/projects",
-          isPartOf: {
-            "@type": "WebSite",
-            name: "Steelbuild Infra Projects Limited",
-            url: "https://steelbuildinfra.com",
-          },
-          provider: {
-            "@type": "Organization",
-            name: "Steelbuild Infra Projects Limited",
-            url: "https://steelbuildinfra.com",
-          },
-          hasPart: projects.map((project) => ({
-            "@type": "CreativeWork",
-            name: project.name,
-            url: `https://steelbuildinfra.com/projects/${project.slug}`,
-            image:
-              project.coverImage?.asset?.url ||
-              undefined,
-            contentLocation: project.location,
-          })),
-        }}
+        data={structuredData}
       />
 
       <ProjectsHero />
 
-      <ProjectsGrid projects={projects} />
+      <ProjectsGrid
+        projects={projects}
+      />
     </>
   );
 }

@@ -4,48 +4,51 @@ import { Suspense } from "react";
 import JobApplicationForm from "@/components/careers-page/JobApplicationForm";
 import JsonLd from "@/components/seo/JsonLd";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
+const pageUrl =
+  `${siteUrl}/careers/apply`;
+
+/* =========================================================
+   JOB APPLICATION PAGE SEO METADATA
+========================================================= */
+
 export const metadata: Metadata = {
-  title:
-    "Apply for Jobs at Steelbuild Infra Projects | Careers",
+  title: {
+    absolute:
+      "Apply for Jobs at Steelbuild Infra Projects | Careers",
+  },
 
   description:
-    "Apply for current job opportunities at Steelbuild Infra Projects Limited across PEB engineering, detailing, manufacturing, quality, project execution, sales and corporate functions.",
-
-  keywords: [
-    "Steelbuild careers",
-    "PEB jobs in India",
-    "PEB design engineer jobs",
-    "PEB detailer jobs",
-    "steel structure jobs",
-    "manufacturing jobs Sonipat",
-    "engineering jobs Delhi NCR",
-    "Steelbuild job application",
-  ],
+    "Apply for current job opportunities at Steelbuild Infra Projects Limited across PEB engineering, detailing, manufacturing, quality, project execution, sales, design and corporate functions in India.",
 
   alternates: {
-    canonical: "/careers/apply",
+    canonical:
+      "/careers/apply",
   },
 
   openGraph: {
-    title:
-      "Apply for Jobs at Steelbuild Infra Projects",
+    type: "website",
 
-    description:
-      "Submit your application and resume for current career opportunities at Steelbuild Infra Projects Limited.",
+    locale: "en_IN",
 
-    url:
-      "https://steelbuildinfra.com/careers/apply",
+    url: pageUrl,
 
     siteName:
       "Steelbuild Infra Projects Limited",
 
-    type: "website",
+    title:
+      "Apply for Jobs at Steelbuild Infra Projects | Careers",
 
-    locale: "en_IN",
+    description:
+      "Submit your application and resume for current career opportunities at Steelbuild Infra Projects Limited across engineering, manufacturing, quality, projects, sales and corporate functions.",
   },
 
   twitter: {
-    card: "summary_large_image",
+    card:
+      "summary_large_image",
 
     title:
       "Apply for Jobs at Steelbuild Infra Projects",
@@ -57,103 +60,26 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview":
+        "large",
+
+      "max-snippet":
+        -1,
+
+      "max-video-preview":
+        -1,
+    },
   },
 };
 
-const jobApplicationSchema = {
-  "@context": "https://schema.org",
-
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
-
-      "@id":
-        "https://steelbuildinfra.com/careers/apply#breadcrumb",
-
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://steelbuildinfra.com/",
-        },
-
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Careers",
-          item:
-            "https://steelbuildinfra.com/careers",
-        },
-
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Apply",
-          item:
-            "https://steelbuildinfra.com/careers/apply",
-        },
-      ],
-    },
-
-    {
-      "@type": "WebPage",
-
-      "@id":
-        "https://steelbuildinfra.com/careers/apply#webpage",
-
-      url:
-        "https://steelbuildinfra.com/careers/apply",
-
-      name:
-        "Apply for Jobs at Steelbuild Infra Projects",
-
-      description:
-        "Submit a job application and resume for current career opportunities at Steelbuild Infra Projects Limited.",
-
-      isPartOf: {
-        "@type": "WebSite",
-
-        "@id":
-          "https://steelbuildinfra.com/#website",
-
-        name:
-          "Steelbuild Infra Projects Limited",
-
-        url:
-          "https://steelbuildinfra.com/",
-      },
-
-      breadcrumb: {
-        "@id":
-          "https://steelbuildinfra.com/careers/apply#breadcrumb",
-      },
-
-      about: {
-        "@type": "Organization",
-
-        "@id":
-          "https://steelbuildinfra.com/#organization",
-
-        name:
-          "Steelbuild Infra Projects Limited",
-
-        url:
-          "https://steelbuildinfra.com/",
-      },
-
-      potentialAction: {
-        "@type": "ApplyAction",
-
-        name:
-          "Submit Job Application",
-
-        target:
-          "https://steelbuildinfra.com/careers/apply",
-      },
-    },
-  ],
-};
+/* =========================================================
+   APPLICATION FORM FALLBACK
+========================================================= */
 
 function ApplicationFormFallback() {
   return (
@@ -181,13 +107,159 @@ function ApplicationFormFallback() {
   );
 }
 
+/* =========================================================
+   JOB APPLICATION PAGE
+========================================================= */
+
 export default function JobApplicationPage() {
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
+
+  const webPageSchema = {
+    "@type":
+      "WebPage",
+
+    "@id":
+      `${pageUrl}/#webpage`,
+
+    url:
+      pageUrl,
+
+    name:
+      "Apply for Jobs at Steelbuild Infra Projects Limited",
+
+    headline:
+      "Submit Your Job Application to Steelbuild Infra Projects Limited",
+
+    description:
+      "Submit a job application and resume for career opportunities at Steelbuild Infra Projects Limited across PEB engineering, detailing, manufacturing, quality, project execution, sales, design and corporate functions.",
+
+    isPartOf: {
+      "@id":
+        `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    provider: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${pageUrl}/#breadcrumb`,
+    },
+
+    potentialAction: {
+      "@type":
+        "ApplyAction",
+
+      name:
+        "Submit Job Application",
+
+      target: {
+        "@type":
+          "EntryPoint",
+
+        urlTemplate:
+          pageUrl,
+      },
+    },
+
+    inLanguage:
+      "en-IN",
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
+  const breadcrumbSchema = {
+    "@type":
+      "BreadcrumbList",
+
+    "@id":
+      `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type":
+          "ListItem",
+
+        position: 1,
+
+        name:
+          "Home",
+
+        item:
+          siteUrl,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 2,
+
+        name:
+          "Careers",
+
+        item:
+          `${siteUrl}/careers`,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 3,
+
+        name:
+          "Apply",
+
+        item:
+          pageUrl,
+      },
+    ],
+  };
+
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context":
+      "https://schema.org",
+
+    "@graph": [
+      webPageSchema,
+      breadcrumbSchema,
+    ],
+  };
+
   return (
     <>
-      <JsonLd data={jobApplicationSchema} />
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
+
+      <JsonLd
+        data={structuredData}
+      />
+
+      {/* ===================================================
+          APPLICATION FORM
+      =================================================== */}
 
       <Suspense
-        fallback={<ApplicationFormFallback />}
+        fallback={
+          <ApplicationFormFallback />
+        }
       >
         <JobApplicationForm />
       </Suspense>

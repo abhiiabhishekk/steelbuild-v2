@@ -1,24 +1,94 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import LegalPageLayout from "@/components/legal-page/LegalPageLayout";
+import JsonLd from "@/components/seo/JsonLd";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
+const pageUrl =
+  `${siteUrl}/terms-and-conditions`;
+
+/* =========================================================
+   TERMS & CONDITIONS SEO METADATA
+========================================================= */
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Steelbuild Infra Projects Limited",
-  description:
-    "Read the terms governing access to and use of the Steelbuild Infra Projects Limited website.",
-  alternates: {
-    canonical: "/terms-and-conditions",
+  title: {
+    absolute:
+      "Terms & Conditions | Steelbuild Infra Projects Limited",
   },
+
+  description:
+    "Read the Terms and Conditions governing access to and use of the Steelbuild Infra Projects Limited website, including website content, enquiries, intellectual property, third-party services and legal responsibilities.",
+
+  alternates: {
+    canonical:
+      "/terms-and-conditions",
+  },
+
+  openGraph: {
+    type: "website",
+
+    locale: "en_IN",
+
+    url:
+      pageUrl,
+
+    siteName:
+      "Steelbuild Infra Projects Limited",
+
+    title:
+      "Terms & Conditions | Steelbuild Infra Projects Limited",
+
+    description:
+      "Read the terms governing access to and use of the Steelbuild Infra Projects Limited website, its content, documents, enquiries and digital services.",
+  },
+
+  twitter: {
+    card:
+      "summary",
+
+    title:
+      "Terms & Conditions | Steelbuild Infra Projects Limited",
+
+    description:
+      "Read the terms governing access to and use of the Steelbuild Infra Projects Limited website.",
+  },
+
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview":
+        "large",
+
+      "max-snippet":
+        -1,
+
+      "max-video-preview":
+        -1,
+    },
   },
 };
+
+/* =========================================================
+   TERMS & CONDITIONS CONTENT
+========================================================= */
 
 const sections = [
   {
     id: "acceptance",
-    title: "Acceptance of Terms",
+
+    title:
+      "Acceptance of Terms",
+
     content: (
       <>
         <p>
@@ -33,9 +103,13 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "website-purpose",
-    title: "Website Purpose",
+
+    title:
+      "Website Purpose",
+
     content: (
       <>
         <p>
@@ -53,37 +127,81 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "permitted-use",
-    title: "Permitted Use",
+
+    title:
+      "Permitted Use",
+
     content: (
       <>
-        <p>You may use the website for lawful purposes, including:</p>
+        <p>
+          You may use the website for lawful purposes, including:
+        </p>
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
-          <li>Learning about Steelbuild and its capabilities.</li>
-          <li>Reviewing products, projects and industrial solutions.</li>
-          <li>Submitting genuine project or business enquiries.</li>
-          <li>Applying for published career opportunities.</li>
-          <li>Viewing or downloading authorised corporate documents.</li>
+          <li>
+            Learning about Steelbuild and its capabilities.
+          </li>
+
+          <li>
+            Reviewing products, projects and industrial solutions.
+          </li>
+
+          <li>
+            Submitting genuine project or business enquiries.
+          </li>
+
+          <li>
+            Applying for published career opportunities.
+          </li>
+
+          <li>
+            Viewing or downloading authorised corporate documents.
+          </li>
         </ul>
       </>
     ),
   },
+
   {
     id: "prohibited-use",
-    title: "Prohibited Use",
+
+    title:
+      "Prohibited Use",
+
     content: (
       <>
-        <p>You must not:</p>
+        <p>
+          You must not:
+        </p>
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
-          <li>Use the website for unlawful, fraudulent or misleading purposes.</li>
-          <li>Attempt to gain unauthorised access to website systems.</li>
-          <li>Introduce malware, harmful code or automated attacks.</li>
-          <li>Scrape, copy or extract website content without authorisation.</li>
-          <li>Impersonate another person or submit false information.</li>
-          <li>Interfere with website operation, security or availability.</li>
+          <li>
+            Use the website for unlawful, fraudulent or misleading purposes.
+          </li>
+
+          <li>
+            Attempt to gain unauthorised access to website systems.
+          </li>
+
+          <li>
+            Introduce malware, harmful code or automated attacks.
+          </li>
+
+          <li>
+            Scrape, copy or extract website content without authorisation.
+          </li>
+
+          <li>
+            Impersonate another person or submit false information.
+          </li>
+
+          <li>
+            Interfere with website operation, security or availability.
+          </li>
+
           <li>
             Use Steelbuild branding, content or materials in a misleading
             manner.
@@ -92,9 +210,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "information-accuracy",
-    title: "Accuracy of Website Information",
+    id:
+      "information-accuracy",
+
+    title:
+      "Accuracy of Website Information",
+
     content: (
       <>
         <p>
@@ -111,9 +234,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "quotations-and-enquiries",
-    title: "Enquiries, Proposals and Quotations",
+    id:
+      "quotations-and-enquiries",
+
+    title:
+      "Enquiries, Proposals and Quotations",
+
     content: (
       <>
         <p>
@@ -130,9 +258,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "intellectual-property",
-    title: "Intellectual Property Rights",
+    id:
+      "intellectual-property",
+
+    title:
+      "Intellectual Property Rights",
+
     content: (
       <>
         <p>
@@ -150,9 +283,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "project-images",
-    title: "Project Images and Representations",
+    id:
+      "project-images",
+
+    title:
+      "Project Images and Representations",
+
     content: (
       <>
         <p>
@@ -170,9 +308,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "downloads",
-    title: "Downloads and Documents",
+    id:
+      "downloads",
+
+    title:
+      "Downloads and Documents",
+
     content: (
       <>
         <p>
@@ -188,9 +331,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "third-party-links",
-    title: "Third-Party Links and Services",
+    id:
+      "third-party-links",
+
+    title:
+      "Third-Party Links and Services",
+
     content: (
       <>
         <p>
@@ -206,9 +354,14 @@ const sections = [
       </>
     ),
   },
+
   {
-    id: "disclaimer",
-    title: "Disclaimer of Warranties",
+    id:
+      "disclaimer",
+
+    title:
+      "Disclaimer of Warranties",
+
     content: (
       <p>
         The website is provided on an “as available” basis. To the extent
@@ -218,38 +371,53 @@ const sections = [
       </p>
     ),
   },
+
   {
-    id: "limitation-of-liability",
-    title: "Limitation of Liability",
+    id:
+      "limitation-of-liability",
+
+    title:
+      "Limitation of Liability",
+
     content: (
       <p>
-        To the extent permitted by applicable law, Steelbuild will not be liable
-        for indirect, incidental or consequential losses arising solely from
-        website access, temporary unavailability, reliance on general website
-        information or third-party services.
+        To the extent permitted by applicable law, Steelbuild will not be
+        liable for indirect, incidental or consequential losses arising solely
+        from website access, temporary unavailability, reliance on general
+        website information or third-party services.
       </p>
     ),
   },
+
   {
-    id: "privacy",
-    title: "Privacy",
+    id:
+      "privacy",
+
+    title:
+      "Privacy",
+
     content: (
       <p>
         Information submitted through this website will be handled in
         accordance with the Steelbuild Privacy Policy available at{" "}
-        <a
+        <Link
           href="/privacy-policy"
           className="font-black text-primary-blue underline decoration-primary-red/40 underline-offset-4"
         >
           /privacy-policy
-        </a>
+        </Link>
         .
       </p>
     ),
   },
+
   {
-    id: "changes",
-    title: "Changes to These Terms",
+    id:
+      "changes",
+
+    title:
+      "Changes to These Terms",
+
     content: (
       <p>
         Steelbuild may update these Terms and Conditions when website features,
@@ -258,21 +426,32 @@ const sections = [
       </p>
     ),
   },
+
   {
-    id: "governing-law",
-    title: "Governing Law and Jurisdiction",
+    id:
+      "governing-law",
+
+    title:
+      "Governing Law and Jurisdiction",
+
     content: (
       <p>
-        These terms will be governed by the laws of India. Subject to applicable
-        law and any binding contractual dispute-resolution provision, courts
-        having jurisdiction in New Delhi, India will have jurisdiction over
-        disputes relating specifically to use of this website.
+        These terms will be governed by the laws of India. Subject to
+        applicable law and any binding contractual dispute-resolution
+        provision, courts having jurisdiction in New Delhi, India will have
+        jurisdiction over disputes relating specifically to use of this
+        website.
       </p>
     ),
   },
+
   {
-    id: "contact",
-    title: "Contact Information",
+    id:
+      "contact",
+
+    title:
+      "Contact Information",
+
     content: (
       <div className="rounded-2xl bg-[#f7f9fc] p-5">
         <p className="font-black text-primary-blue">
@@ -284,22 +463,160 @@ const sections = [
           Pitampura, New Delhi – 110034
         </p>
 
-        <p className="mt-2">Email: info@steelbuildinfra.com</p>
+        <p className="mt-2">
+          Email:{" "}
+          <a
+            href="mailto:info@steelbuildinfra.com"
+            className="font-black text-primary-blue"
+          >
+            info@steelbuildinfra.com
+          </a>
+        </p>
 
-        <p>Website: steelbuildinfra.com</p>
+        <p>
+          Website:{" "}
+          <Link
+            href="/"
+            className="font-black text-primary-blue"
+          >
+            steelbuildinfra.com
+          </Link>
+        </p>
       </div>
     ),
   },
 ];
 
+/* =========================================================
+   TERMS & CONDITIONS PAGE
+========================================================= */
+
 export default function TermsAndConditionsPage() {
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
+
+  const webPageSchema = {
+    "@type":
+      "WebPage",
+
+    "@id":
+      `${pageUrl}/#webpage`,
+
+    url:
+      pageUrl,
+
+    name:
+      "Terms & Conditions | Steelbuild Infra Projects Limited",
+
+    headline:
+      "Steelbuild Infra Projects Limited Website Terms & Conditions",
+
+    description:
+      "Terms and conditions governing access to and use of the Steelbuild Infra Projects Limited website, including its corporate information, project content, documents, enquiries and digital services.",
+
+    isPartOf: {
+      "@id":
+        `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    publisher: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${pageUrl}/#breadcrumb`,
+    },
+
+    dateModified:
+      "2026-08-01",
+
+    inLanguage:
+      "en-IN",
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
+  const breadcrumbSchema = {
+    "@type":
+      "BreadcrumbList",
+
+    "@id":
+      `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type":
+          "ListItem",
+
+        position: 1,
+
+        name:
+          "Home",
+
+        item:
+          siteUrl,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 2,
+
+        name:
+          "Terms & Conditions",
+
+        item:
+          pageUrl,
+      },
+    ],
+  };
+
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context":
+      "https://schema.org",
+
+    "@graph": [
+      webPageSchema,
+      breadcrumbSchema,
+    ],
+  };
+
   return (
-    <LegalPageLayout
-      eyebrow="Website Terms"
-      title="Terms & Conditions"
-      description="These terms explain the conditions governing access to and use of the Steelbuild Infra Projects Limited website."
-      lastUpdated="01 August 2026"
-      sections={sections}
-    />
+    <>
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
+
+      <JsonLd
+        data={structuredData}
+      />
+
+      {/* ===================================================
+          LEGAL PAGE CONTENT
+      =================================================== */}
+
+      <LegalPageLayout
+        eyebrow="Website Terms"
+        title="Terms & Conditions"
+        description="These terms explain the conditions governing access to and use of the Steelbuild Infra Projects Limited website."
+        lastUpdated="01 August 2026"
+        sections={sections}
+      />
+    </>
   );
 }

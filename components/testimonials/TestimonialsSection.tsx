@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import Container from "@/components/layout/Container";
 import TestimonialCard from "./TestimonialCard";
 
@@ -33,35 +34,71 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="relative overflow-hidden bg-primary-blue py-36 text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(194,17,25,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.13),transparent_32%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,transparent_38%,rgba(0,0,0,0.18)_100%)]" />
+    <section
+      aria-labelledby="testimonials-heading"
+      className="relative overflow-hidden bg-primary-blue py-28 text-white lg:py-36"
+    >
+      {/* Background effects */}
+
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(194,17,25,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.13),transparent_32%)]" />
+
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06)_0%,transparent_38%,rgba(0,0,0,0.18)_100%)]" />
 
       <Container>
+        {/* Heading */}
+
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-          className="relative z-10 mx-auto max-w-4xl text-center"
+          initial={{
+            opacity: 0,
+            y: 35,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            margin: "-100px",
+          }}
+          transition={{
+            duration: 0.7,
+          }}
+          className="relative z-10 mx-auto max-w-5xl text-center"
         >
           <p className="text-sm font-black uppercase tracking-[0.32em] text-primary-red">
             Client Confidence
           </p>
 
-          <h2 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-0.04em] lg:text-[60px]">
-            Trusted for Quality, Speed and Long-Term Partnerships.
+          <h2
+            id="testimonials-heading"
+            className="mt-6 text-4xl font-black leading-[1.04] tracking-[-0.04em] md:text-5xl lg:text-[60px]"
+          >
+            Trusted for Quality,
+            <span className="block">
+              Engineering & Reliable Execution.
+            </span>
           </h2>
 
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-white/74">
-            Trusted by industrial leaders across India for delivering quality
-            Pre-Engineered Building solutions on time.
+          <p className="mx-auto mt-7 max-w-3xl text-lg font-medium leading-8 text-white/75">
+            Feedback from customers and industry professionals reflects
+            Steelbuild Infra Projects Limited&apos;s focus on quality
+            Pre-Engineered Buildings, structural steel solutions, dependable
+            delivery and long-term professional relationships.
           </p>
         </motion.div>
 
-        <div className="relative z-10 mt-16 grid gap-8 lg:grid-cols-3">
+        {/* Testimonial cards */}
+
+        <div
+          className="relative z-10 mt-16 grid gap-8 lg:grid-cols-3"
+          aria-label="Client and industry testimonials"
+        >
           {testimonials.map((item, index) => (
-            <TestimonialCard key={item.name} index={index} {...item} />
+            <TestimonialCard
+              key={`${item.name}-${item.source}`}
+              index={index}
+              {...item}
+            />
           ))}
         </div>
       </Container>

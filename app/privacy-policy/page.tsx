@@ -2,19 +2,76 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import LegalPageLayout from "@/components/legal-page/LegalPageLayout";
+import JsonLd from "@/components/seo/JsonLd";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
+const pageUrl = `${siteUrl}/privacy-policy`;
+
+/* =========================================================
+   PRIVACY POLICY SEO METADATA
+========================================================= */
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Steelbuild Infra Projects Limited",
+  title: {
+    absolute:
+      "Privacy Policy | Steelbuild Infra Projects Limited",
+  },
+
   description:
-    "Read the Steelbuild Infra Projects Limited privacy policy and learn how information submitted through our website is collected, used, retained and protected.",
+    "Read the Steelbuild Infra Projects Limited Privacy Policy and learn how information submitted through our website is collected, used, retained, shared and protected.",
+
   alternates: {
     canonical: "/privacy-policy",
   },
+
+  openGraph: {
+    type: "website",
+
+    locale: "en_IN",
+
+    url: pageUrl,
+
+    siteName:
+      "Steelbuild Infra Projects Limited",
+
+    title:
+      "Privacy Policy | Steelbuild Infra Projects Limited",
+
+    description:
+      "Learn how Steelbuild Infra Projects Limited collects, uses, stores, shares and protects information submitted through its website and digital communication channels.",
+  },
+
+  twitter: {
+    card: "summary",
+
+    title:
+      "Privacy Policy | Steelbuild Infra Projects Limited",
+
+    description:
+      "Learn how Steelbuild Infra Projects Limited handles information submitted through its website and digital communication channels.",
+  },
+
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
+
+/* =========================================================
+   PRIVACY POLICY CONTENT
+========================================================= */
 
 const sections = [
   {
@@ -37,6 +94,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "information-we-collect",
     title: "Information We May Collect",
@@ -46,13 +104,21 @@ const sections = [
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
           <li>Name, company name and professional designation.</li>
+
           <li>Email address, telephone number and contact details.</li>
+
           <li>Project location, project type and enquiry requirements.</li>
-          <li>Information submitted through contact, quotation or career forms.</li>
+
+          <li>
+            Information submitted through contact, quotation or career forms.
+          </li>
+
           <li>Resume, employment history or professional information.</li>
+
           <li>
             Browser, device, IP address and general website usage information.
           </li>
+
           <li>
             Communications exchanged with Steelbuild through email, telephone
             or other channels.
@@ -66,6 +132,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "how-information-is-collected",
     title: "How Information Is Collected",
@@ -75,16 +142,27 @@ const sections = [
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
           <li>Submit a project enquiry or request a quotation.</li>
+
           <li>Contact Steelbuild through a website form.</li>
+
           <li>Apply for a job or submit professional information.</li>
+
           <li>Download or request company documents.</li>
-          <li>Subscribe to future updates, where such a feature is provided.</li>
-          <li>Interact with embedded videos or third-party website services.</li>
+
+          <li>
+            Subscribe to future updates, where such a feature is provided.
+          </li>
+
+          <li>
+            Interact with embedded videos or third-party website services.
+          </li>
+
           <li>Browse pages on the website.</li>
         </ul>
       </>
     ),
   },
+
   {
     id: "use-of-information",
     title: "How We Use Information",
@@ -94,17 +172,25 @@ const sections = [
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
           <li>Respond to enquiries and project requirements.</li>
+
           <li>Prepare quotations, proposals or technical discussions.</li>
+
           <li>Communicate with clients, consultants and project partners.</li>
+
           <li>Review job applications and recruitment enquiries.</li>
+
           <li>Improve website content, functionality and user experience.</li>
+
           <li>Maintain website security and prevent misuse.</li>
+
           <li>Meet legal, regulatory or contractual obligations.</li>
+
           <li>Maintain internal business and communication records.</li>
         </ul>
       </>
     ),
   },
+
   {
     id: "legal-basis-and-consent",
     title: "Consent and Lawful Processing",
@@ -125,6 +211,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "cookies-and-analytics",
     title: "Cookies and Website Analytics",
@@ -145,6 +232,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "third-party-services",
     title: "Third-Party Services and Embedded Content",
@@ -164,6 +252,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "sharing-of-information",
     title: "Sharing and Disclosure",
@@ -176,12 +265,18 @@ const sections = [
 
         <ul className="mt-4 list-disc space-y-2 pl-6">
           <li>Authorised Steelbuild employees and business teams.</li>
-          <li>Service providers supporting hosting, email or website systems.</li>
+
+          <li>
+            Service providers supporting hosting, email or website systems.
+          </li>
+
           <li>Professional advisers, auditors or consultants.</li>
+
           <li>
             Government, regulatory or law-enforcement authorities where
             required by law.
           </li>
+
           <li>
             Business partners involved in responding to a specific authorised
             enquiry or project requirement.
@@ -190,6 +285,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "data-retention",
     title: "Data Retention",
@@ -210,6 +306,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "data-security",
     title: "Information Security",
@@ -229,6 +326,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "your-rights",
     title: "Your Rights and Requests",
@@ -254,6 +352,7 @@ const sections = [
       </>
     ),
   },
+
   {
     id: "children",
     title: "Children’s Information",
@@ -266,6 +365,7 @@ const sections = [
       </p>
     ),
   },
+
   {
     id: "policy-updates",
     title: "Updates to This Policy",
@@ -277,6 +377,7 @@ const sections = [
       </p>
     ),
   },
+
   {
     id: "contact",
     title: "Contact Information",
@@ -322,14 +423,126 @@ const sections = [
   },
 ];
 
+/* =========================================================
+   PRIVACY POLICY PAGE
+========================================================= */
+
 export default function PrivacyPolicyPage() {
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
+
+  const webPageSchema = {
+    "@type": "WebPage",
+
+    "@id":
+      `${pageUrl}/#webpage`,
+
+    url:
+      pageUrl,
+
+    name:
+      "Privacy Policy | Steelbuild Infra Projects Limited",
+
+    headline:
+      "Steelbuild Infra Projects Limited Privacy Policy",
+
+    description:
+      "Learn how Steelbuild Infra Projects Limited collects, uses, stores, retains, shares and protects information submitted through its website and digital communication channels.",
+
+    isPartOf: {
+      "@id":
+        `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    publisher: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${pageUrl}/#breadcrumb`,
+    },
+
+    dateModified:
+      "2026-08-01",
+
+    inLanguage:
+      "en-IN",
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
+  const breadcrumbSchema = {
+    "@type": "BreadcrumbList",
+
+    "@id":
+      `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type":
+          "ListItem",
+
+        position: 1,
+
+        name:
+          "Home",
+
+        item:
+          siteUrl,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 2,
+
+        name:
+          "Privacy Policy",
+
+        item:
+          pageUrl,
+      },
+    ],
+  };
+
+  /* =======================================================
+     STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context":
+      "https://schema.org",
+
+    "@graph": [
+      webPageSchema,
+      breadcrumbSchema,
+    ],
+  };
+
   return (
-    <LegalPageLayout
-      eyebrow="Legal Information"
-      title="Privacy Policy"
-      description="Learn how Steelbuild Infra Projects Limited handles information submitted through this website and our digital communication channels."
-      lastUpdated="01 August 2026"
-      sections={sections}
-    />
+    <>
+      <JsonLd
+        data={structuredData}
+      />
+
+      <LegalPageLayout
+        eyebrow="Legal Information"
+        title="Privacy Policy"
+        description="Learn how Steelbuild Infra Projects Limited handles information submitted through this website and our digital communication channels."
+        lastUpdated="01 August 2026"
+        sections={sections}
+      />
+    </>
   );
 }

@@ -9,70 +9,11 @@ import WhyChooseIndustries from "@/components/industries-page/WhyChooseIndustrie
 import IndustryProcess from "@/components/industries-page/IndustryProcess";
 import IndustriesCTA from "@/components/industries-page/IndustriesCTA";
 
-export const metadata: Metadata = {
-  title:
-    "Industries We Serve | PEB Solutions for Warehouses, Factories & Industrial Buildings",
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
 
-  description:
-    "Explore customized Pre-Engineered Building solutions by Steelbuild Infra Projects for warehousing, manufacturing, logistics, automobile, food processing, pharmaceutical, FMCG, textile, cold storage and infrastructure sectors.",
-
-  keywords: [
-    "Industries served by Steelbuild",
-    "PEB solutions for industries",
-    "warehouse building manufacturer India",
-    "industrial factory buildings",
-    "logistics warehouse buildings",
-    "food processing building",
-    "pharmaceutical factory building",
-    "automobile plant building",
-    "FMCG factory building",
-    "cold storage building",
-    "industrial steel buildings India",
-    "Pre Engineered Building company India",
-    "Steelbuild Infra Projects",
-  ],
-
-  alternates: {
-    canonical: "/industries",
-  },
-
-  openGraph: {
-    title:
-      "Industries We Serve | Steelbuild Infra Projects",
-
-    description:
-      "Customized Pre-Engineered Building solutions for warehouses, manufacturing plants, logistics parks, food processing, pharmaceutical, automobile and other industrial sectors.",
-
-    url: "https://steelbuildinfra.com/industries",
-
-    siteName: "Steelbuild Infra Projects",
-
-    images: [
-      {
-        url: "/images/banners/industries-banner-v6.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Industries served by Steelbuild Infra Projects",
-      },
-    ],
-
-    locale: "en_IN",
-
-    type: "website",
-  },
-
-  twitter: {
-    card: "summary_large_image",
-
-    title:
-      "Industries We Serve | Steelbuild Infra Projects",
-
-    description:
-      "Explore customized PEB solutions for diverse industrial, commercial and infrastructure applications.",
-
-    images: ["/images/banners/industries-banner-v6.jpg"],
-  },
-};
+const pageUrl = `${siteUrl}/industries`;
 
 const industries = [
   "Warehousing",
@@ -87,136 +28,256 @@ const industries = [
   "Cold Storage",
   "Factories",
   "Infrastructure & Construction",
-];
+] as const;
 
-const industriesSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
-      "@id":
-        "https://steelbuildinfra.com/industries#breadcrumb",
+/* =========================================================
+   INDUSTRIES PAGE SEO METADATA
+========================================================= */
 
-      itemListElement: [
-        {
-          "@type": "ListItem",
-          position: 1,
-          name: "Home",
-          item: "https://steelbuildinfra.com/",
-        },
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Industries",
-          item: "https://steelbuildinfra.com/industries",
-        },
-      ],
-    },
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      "Industries We Serve | PEB Solutions for Warehouses, Factories & Industrial Buildings",
+  },
 
-    {
-      "@type": "CollectionPage",
-      "@id":
-        "https://steelbuildinfra.com/industries#webpage",
+  description:
+    "Explore customized Pre-Engineered Building solutions from Steelbuild Infra Projects Limited for warehousing, manufacturing, logistics, automobile, food processing, pharmaceutical, FMCG, textile, cold storage and infrastructure sectors across India.",
 
-      url: "https://steelbuildinfra.com/industries",
+  alternates: {
+    canonical: "/industries",
+  },
 
-      name:
-        "Industries We Serve | Steelbuild Infra Projects",
+  openGraph: {
+    type: "website",
 
-      description:
-        "Customized Pre-Engineered Building solutions for warehousing, manufacturing, logistics, automobile, food processing, pharmaceutical, FMCG, textile, cold storage and infrastructure applications.",
+    locale: "en_IN",
 
-      isPartOf: {
-        "@type": "WebSite",
-        "@id": "https://steelbuildinfra.com/#website",
-        name: "Steelbuild Infra Projects",
-        url: "https://steelbuildinfra.com/",
-      },
+    url: pageUrl,
 
-      breadcrumb: {
-        "@id":
-          "https://steelbuildinfra.com/industries#breadcrumb",
-      },
+    siteName:
+      "Steelbuild Infra Projects Limited",
 
-      primaryImageOfPage: {
-        "@type": "ImageObject",
+    title:
+      "Industries We Serve | Steelbuild Infra Projects",
+
+    description:
+      "Customized Pre-Engineered Building solutions for warehouses, manufacturing plants, logistics parks, food processing, pharmaceutical, automobile and other industrial sectors across India.",
+
+    images: [
+      {
         url:
-          "https://steelbuildinfra.com/images/banners/industries-banner-v6.jpg",
-      },
+          "/images/banners/industries-banner-v6.jpg",
 
-      about: {
-        "@id":
-          "https://steelbuildinfra.com/industries#industry-list",
+        width: 1200,
+
+        height: 630,
+
+        alt:
+          "Industries served by Steelbuild Infra Projects Limited",
       },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title:
+      "Industries We Serve | Steelbuild Infra Projects",
+
+    description:
+      "Explore customized PEB solutions for warehousing, manufacturing, logistics, automotive, food processing and other industrial sectors across India.",
+
+    images: [
+      "/images/banners/industries-banner-v6.jpg",
+    ],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
+  },
+};
 
-    {
-      "@type": "ItemList",
-      "@id":
-        "https://steelbuildinfra.com/industries#industry-list",
+/* =========================================================
+   INDUSTRIES PAGE
+========================================================= */
 
-      name: "Industries Served by Steelbuild Infra Projects",
+export default function IndustriesPage() {
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
 
-      numberOfItems: industries.length,
+  const breadcrumbSchema = {
+    "@type": "BreadcrumbList",
 
-      itemListElement: industries.map((industry, index) => ({
+    "@id": `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Industries",
+        item: pageUrl,
+      },
+    ],
+  };
+
+  /* =======================================================
+     INDUSTRY LIST SCHEMA
+  ======================================================= */
+
+  const industryListSchema = {
+    "@type": "ItemList",
+
+    "@id": `${pageUrl}/#industry-list`,
+
+    name:
+      "Industries Served by Steelbuild Infra Projects Limited",
+
+    numberOfItems:
+      industries.length,
+
+    itemListElement:
+      industries.map((industry, index) => ({
         "@type": "ListItem",
         position: index + 1,
         name: industry,
       })),
+  };
+
+  /* =======================================================
+     SERVICE SCHEMA
+  ======================================================= */
+
+  const serviceSchema = {
+    "@type": "Service",
+
+    "@id": `${pageUrl}/#peb-service`,
+
+    name:
+      "Industry-Specific Pre-Engineered Building Solutions",
+
+    serviceType:
+      "Design, engineering, manufacturing and execution of customized Pre-Engineered Buildings",
+
+    description:
+      "Steelbuild Infra Projects Limited provides industry-specific Pre-Engineered Building solutions engineered around operational workflow, structural loading, equipment requirements, storage, safety, environmental needs and future expansion.",
+
+    url: pageUrl,
+
+    provider: {
+      "@id": `${siteUrl}/#organization`,
     },
 
-    {
-      "@type": "Service",
-      "@id":
-        "https://steelbuildinfra.com/industries#peb-service",
+    areaServed: {
+      "@type": "Country",
+      name: "India",
+    },
 
-      name:
-        "Industry-Specific Pre-Engineered Building Solutions",
-
-      serviceType:
-        "Design, manufacturing and execution of customized Pre-Engineered Buildings",
-
-      description:
-        "Steelbuild Infra Projects provides industry-specific PEB solutions engineered around operational workflow, structural loading, equipment, storage, safety, environmental requirements and future expansion.",
-
-      provider: {
-        "@type": "Organization",
-        name: "Steelbuild Infra Projects Limited",
-        url: "https://steelbuildinfra.com/",
-        logo:
-          "https://steelbuildinfra.com/images/logo/logo.png",
-
-        telephone: [
-          "+91 81301 99427",
-          "+91 99170 65110",
-        ],
-
-        email: "info@steelbuildinfra.com",
-      },
-
-      areaServed: {
-        "@type": "Country",
-        name: "India",
-      },
-
-      audience: industries.map((industry) => ({
-        "@type": "Audience",
+    audience:
+      industries.map((industry) => ({
+        "@type": "BusinessAudience",
         audienceType: industry,
       })),
-    },
-  ],
-};
+  };
 
-export default function IndustriesPage() {
+  /* =======================================================
+     COLLECTION PAGE SCHEMA
+  ======================================================= */
+
+  const collectionPageSchema = {
+    "@type": "CollectionPage",
+
+    "@id": `${pageUrl}/#webpage`,
+
+    url: pageUrl,
+
+    name:
+      "Industries We Serve | Steelbuild Infra Projects Limited",
+
+    headline:
+      "Pre-Engineered Building Solutions Across Diverse Industries",
+
+    description:
+      "Steelbuild Infra Projects Limited delivers customized Pre-Engineered Building solutions for warehousing, manufacturing, logistics, automobile, food processing, pharmaceutical, FMCG, textile, cold storage and infrastructure applications across India.",
+
+    isPartOf: {
+      "@id": `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id": `${pageUrl}/#industry-list`,
+    },
+
+    mainEntity: {
+      "@id": `${pageUrl}/#peb-service`,
+    },
+
+    provider: {
+      "@id": `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id": `${pageUrl}/#breadcrumb`,
+    },
+
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url:
+        `${siteUrl}/images/banners/industries-banner-v6.jpg`,
+    },
+
+    inLanguage: "en-IN",
+  };
+
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context": "https://schema.org",
+
+    "@graph": [
+      collectionPageSchema,
+      breadcrumbSchema,
+      industryListSchema,
+      serviceSchema,
+    ],
+  };
+
   return (
     <>
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(industriesSchema),
+          __html: JSON.stringify(
+            structuredData,
+          ).replace(/</g, "\\u003c"),
         }}
       />
+
+      {/* ===================================================
+          PAGE CONTENT
+      =================================================== */}
 
       <InnerHero
         title="Industries We Serve"
@@ -243,7 +304,10 @@ export default function IndustriesPage() {
 
       <IndustriesOverview />
 
-      <div id="industries-grid" className="scroll-mt-32">
+      <div
+        id="industries-grid"
+        className="scroll-mt-32"
+      >
         <IndustriesGrid />
       </div>
 
@@ -252,11 +316,11 @@ export default function IndustriesPage() {
       <IndustryProcess />
 
       <FeaturedProjects
-  eyebrow="Featured Industrial Projects"
-  title="Industrial Projects Delivered With Engineering Excellence"
-  description="Explore selected Pre-Engineered Building projects delivered across manufacturing, warehousing, logistics and industrial sectors."
-  maxProjects={6}
-/>
+        eyebrow="Featured Industrial Projects"
+        title="Industrial Projects Delivered With Engineering Excellence"
+        description="Explore selected Pre-Engineered Building projects delivered across manufacturing, warehousing, logistics and industrial sectors."
+        maxProjects={6}
+      />
 
       <IndustriesCTA />
     </>

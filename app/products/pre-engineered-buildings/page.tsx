@@ -8,48 +8,302 @@ import PEBProcess from "@/components/pre-engineered-buildings-page/PEBProcess";
 import PEBCTA from "@/components/pre-engineered-buildings-page/PEBCTA";
 import PEBStructuralSystems from "@/components/pre-engineered-buildings-page/PEBStructuralSystems";
 
-export const metadata: Metadata = {
-  title:
-    "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
-  description:
-    "Explore high-performance Pre-Engineered Building solutions from Steelbuild Infra Projects Limited for factories, warehouses, logistics facilities and industrial infrastructure projects.",
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
 
-  keywords: [
-    "Pre-Engineered Buildings",
-    "PEB Manufacturer India",
-    "Pre Engineered Building Company",
-    "Industrial Steel Buildings",
-    "Warehouse Building Manufacturer",
-    "Factory Building Manufacturer",
-    "PEB Structure",
-    "Steel Building Solutions",
-  ],
+const pageUrl =
+  `${siteUrl}/products/pre-engineered-buildings`;
+
+/* =========================================================
+   PRE-ENGINEERED BUILDINGS PAGE SEO METADATA
+========================================================= */
+
+export const metadata: Metadata = {
+  title: {
+    absolute:
+      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+  },
+
+  description:
+    "Steelbuild Infra Projects Limited delivers engineered Pre-Engineered Buildings for warehouses, factories, industrial sheds, logistics facilities, manufacturing plants and large-scale industrial infrastructure projects across India.",
 
   alternates: {
-    canonical: "/products/pre-engineered-buildings",
+    canonical:
+      "/products/pre-engineered-buildings",
   },
 
   openGraph: {
-    title:
-      "Pre-Engineered Buildings | Steelbuild Infra Projects Limited",
-    description:
-      "Engineered Pre-Engineered Building solutions for industrial, warehousing, manufacturing and infrastructure applications.",
-
-    url: "https://steelbuildinfra.com/products/pre-engineered-buildings",
-    siteName: "Steelbuild Infra Projects Limited",
     type: "website",
+
+    locale: "en_IN",
+
+    url: pageUrl,
+
+    siteName:
+      "Steelbuild Infra Projects Limited",
+
+    title:
+      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+
+    description:
+      "Explore engineered Pre-Engineered Building solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
+
+    images: [
+      {
+        url:
+          "/images/products/pre-engineered-building.jpg",
+
+        width: 1200,
+
+        height: 630,
+
+        alt:
+          "Steelbuild Infra Projects Pre-Engineered Building Solutions in India",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title:
+      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+
+    description:
+      "Engineered PEB solutions for warehouses, factories, industrial buildings and infrastructure projects across India.",
+
+    images: [
+      "/images/products/pre-engineered-building.jpg",
+    ],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview":
+        "large",
+
+      "max-snippet":
+        -1,
+
+      "max-video-preview":
+        -1,
+    },
   },
 };
 
+/* =========================================================
+   PRE-ENGINEERED BUILDINGS PAGE
+========================================================= */
+
 export default function PreEngineeredBuildingsPage() {
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
+
+  const webPageSchema = {
+    "@type": "WebPage",
+
+    "@id":
+      `${pageUrl}/#webpage`,
+
+    url:
+      pageUrl,
+
+    name:
+      "Pre-Engineered Buildings Manufacturer in India",
+
+    headline:
+      "Pre-Engineered Building Solutions for Industrial Infrastructure",
+
+    description:
+      "Steelbuild Infra Projects Limited provides engineered Pre-Engineered Building solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
+
+    isPartOf: {
+      "@id":
+        `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id":
+        `${pageUrl}/#service`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${pageUrl}/#breadcrumb`,
+    },
+
+    primaryImageOfPage: {
+      "@type":
+        "ImageObject",
+
+      url:
+        `${siteUrl}/images/products/pre-engineered-building.jpg`,
+    },
+
+    inLanguage:
+      "en-IN",
+  };
+
+  /* =======================================================
+     SERVICE SCHEMA
+  ======================================================= */
+
+  const serviceSchema = {
+    "@type": "Service",
+
+    "@id":
+      `${pageUrl}/#service`,
+
+    name:
+      "Pre-Engineered Building Solutions",
+
+    alternateName: [
+      "PEB Solutions",
+      "Pre-Engineered Steel Buildings",
+      "PEB Buildings",
+    ],
+
+    serviceType:
+      "Pre-Engineered Building Engineering, Manufacturing and Project Execution",
+
+    url:
+      pageUrl,
+
+    provider: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    areaServed: {
+      "@type":
+        "Country",
+
+      name:
+        "India",
+    },
+
+    description:
+      "Engineering, manufacturing and project execution solutions for Pre-Engineered Buildings used in warehouses, factories, industrial sheds, logistics facilities and industrial infrastructure projects.",
+
+    audience: {
+      "@type":
+        "BusinessAudience",
+
+      audienceType:
+        "Industrial, Manufacturing, Warehousing, Logistics and Infrastructure Businesses",
+    },
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
+  const breadcrumbSchema = {
+    "@type":
+      "BreadcrumbList",
+
+    "@id":
+      `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type":
+          "ListItem",
+
+        position: 1,
+
+        name:
+          "Home",
+
+        item:
+          siteUrl,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 2,
+
+        name:
+          "Products",
+
+        item:
+          `${siteUrl}/products`,
+      },
+
+      {
+        "@type":
+          "ListItem",
+
+        position: 3,
+
+        name:
+          "Pre-Engineered Buildings",
+
+        item:
+          pageUrl,
+      },
+    ],
+  };
+
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context":
+      "https://schema.org",
+
+    "@graph": [
+      webPageSchema,
+      serviceSchema,
+      breadcrumbSchema,
+    ],
+  };
+
   return (
     <>
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            structuredData,
+          ).replace(
+            /</g,
+            "\\u003c",
+          ),
+        }}
+      />
+
+      {/* ===================================================
+          PAGE CONTENT
+      =================================================== */}
+
       <PEBHero />
+
       <PEBOverview />
+
       <PEBFeatures />
+
       <PEBStructuralSystems />
+
       <PEBApplications />
+
       <PEBProcess />
+
       <PEBCTA />
     </>
   );

@@ -8,7 +8,10 @@ import {
   useTransform,
 } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+} from "react";
 
 type Stat = {
   icon: LucideIcon;
@@ -29,12 +32,12 @@ export default function StatCard({
   stat,
   index,
 }: StatCardProps) {
-  const ref = useRef<HTMLElement | null>(
-    null,
-  );
+  const ref =
+    useRef<HTMLElement | null>(null);
 
   const isInView = useInView(ref, {
     once: true,
+    margin: "-80px",
   });
 
   const count = useMotionValue(0);
@@ -42,9 +45,9 @@ export default function StatCard({
   const rounded = useTransform(
     count,
     (latest) =>
-      Math.round(
-        latest,
-      ).toLocaleString("en-IN"),
+      Math.round(latest).toLocaleString(
+        "en-IN",
+      ),
   );
 
   useEffect(() => {
@@ -59,7 +62,7 @@ export default function StatCard({
       count,
       stat.value,
       {
-        duration: 1.8,
+        duration: 1.6,
         ease: "easeOut",
       },
     );
@@ -81,7 +84,7 @@ export default function StatCard({
       ref={ref}
       initial={{
         opacity: 0,
-        y: 35,
+        y: 28,
       }}
       whileInView={{
         opacity: 1,
@@ -92,21 +95,25 @@ export default function StatCard({
         margin: "-80px",
       }}
       transition={{
-        duration: 0.55,
-        delay: index * 0.08,
+        duration: 0.5,
+        delay: index * 0.07,
       }}
-      className="group flex h-full min-h-[360px] flex-col rounded-[30px] border border-gray-200 bg-white p-8 shadow-[0_20px_60px_rgba(27,63,104,0.08)] transition-all duration-500 hover:-translate-y-2 hover:border-primary-red/20 hover:shadow-[0_28px_70px_rgba(27,63,104,0.12)]"
+      className="group flex h-full min-h-[330px] flex-col rounded-[28px] border border-gray-200 bg-white p-7 shadow-[0_16px_50px_rgba(27,63,104,0.08)] transition-all duration-500 hover:-translate-y-2 hover:border-primary-red/20 hover:shadow-[0_28px_70px_rgba(27,63,104,0.12)]"
     >
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_18px_45px_rgba(194,17,25,0.30)]">
-        <Icon size={30} />
+      {/* Icon */}
+
+      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_14px_35px_rgba(194,17,25,0.25)] transition-all duration-300 group-hover:scale-105">
+        <Icon size={26} />
       </div>
 
+      {/* Value */}
+
       <div
-        className={`mt-8 font-black tracking-[-0.05em] text-primary-blue ${
+        className={`mt-7 font-black tracking-[-0.05em] text-primary-blue ${
           stat.customValue &&
           stat.customValue.length > 10
-            ? "text-4xl leading-tight lg:text-5xl"
-            : "text-5xl lg:text-6xl"
+            ? "text-[34px] leading-tight lg:text-[42px]"
+            : "text-[46px] leading-none lg:text-[54px]"
         }`}
       >
         {stat.customValue ? (
@@ -124,11 +131,15 @@ export default function StatCard({
         )}
       </div>
 
-      <h3 className="mt-5 text-xl font-black text-primary-blue">
+      {/* Label */}
+
+      <h3 className="mt-5 text-xl font-black leading-tight text-primary-blue">
         {stat.label}
       </h3>
 
-      <p className="mt-3 text-sm leading-7 text-gray-600">
+      {/* Description */}
+
+      <p className="mt-3 text-sm font-medium leading-7 text-gray-600">
         {stat.description}
       </p>
     </motion.article>

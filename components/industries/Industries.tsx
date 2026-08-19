@@ -11,7 +11,7 @@ const industries = [
     image: "/images/industries/warehouse.jpg",
     category: "Storage & Distribution",
     description:
-      "Efficient long-span warehouse buildings designed for storage, movement and future expansion.",
+      "Pre-Engineered warehouse buildings designed for large-span storage, logistics movement, operational efficiency and future expansion.",
     href: "/industries",
   },
   {
@@ -19,7 +19,7 @@ const industries = [
     image: "/images/industries/manufacturing.jpg",
     category: "Industrial Production",
     description:
-      "High-performance manufacturing facilities engineered for production efficiency and operational scale.",
+      "High-performance PEB manufacturing facilities and factory buildings engineered for production efficiency, durability and operational scale.",
     href: "/industries",
   },
   {
@@ -27,7 +27,7 @@ const industries = [
     image: "/images/industries/automobile.jpg",
     category: "Automotive Sector",
     description:
-      "Purpose-built steel facilities supporting automotive production, assembly and component manufacturing.",
+      "Purpose-built structural steel and Pre-Engineered Building solutions supporting automotive production, assembly and component manufacturing.",
     href: "/industries",
   },
   {
@@ -35,7 +35,7 @@ const industries = [
     image: "/images/industries/food.jpg",
     category: "Food & FMCG",
     description:
-      "Clean, durable and efficiently planned buildings for food processing and FMCG operations.",
+      "Clean, durable and efficiently planned industrial buildings for food processing, FMCG manufacturing, storage and distribution operations.",
     href: "/industries",
   },
   {
@@ -43,7 +43,7 @@ const industries = [
     image: "/images/industries/pharma.jpg",
     category: "Pharma & Healthcare",
     description:
-      "Controlled industrial building solutions supporting pharmaceutical production and storage requirements.",
+      "Engineered industrial building solutions for pharmaceutical manufacturing, controlled production areas, warehousing and storage requirements.",
     href: "/industries",
   },
   {
@@ -51,14 +51,17 @@ const industries = [
     image: "/images/industries/logistics.jpg",
     category: "Logistics & Distribution",
     description:
-      "Large-scale logistics facilities engineered for rapid handling, connectivity and dependable operations.",
+      "Large-scale logistics warehouses and distribution facilities engineered for rapid material handling, connectivity and dependable operations.",
     href: "/industries",
   },
 ];
 
 export default function Industries() {
   return (
-    <section className="relative overflow-hidden bg-white py-24 lg:py-32">
+    <section
+      aria-labelledby="industries-heading"
+      className="relative overflow-hidden bg-white py-24 lg:py-32"
+    >
       {/* Background grid */}
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(27,63,104,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(27,63,104,0.018)_1px,transparent_1px)] bg-[size:76px_76px]" />
@@ -83,15 +86,22 @@ export default function Industries() {
             Industries We Serve
           </p>
 
-          <h2 className="mt-5 text-4xl font-black leading-[1.04] tracking-[-0.04em] text-primary-blue md:text-5xl lg:text-[56px]">
-            Building India&apos;s Industrial Future
-            <span className="block">Across Every Sector.</span>
+          <h2
+            id="industries-heading"
+            className="mt-5 text-4xl font-black leading-[1.04] tracking-[-0.04em] text-primary-blue md:text-5xl lg:text-[56px]"
+          >
+            Pre-Engineered Building Solutions
+            <span className="block">
+              for India&apos;s Leading Industries.
+            </span>
           </h2>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg font-medium leading-8 text-gray-600">
-            Every industry demands unique engineering. Our Pre-Engineered
-            Building solutions are tailored for speed, efficiency, durability
-            and dependable long-term performance.
+            Steelbuild Infra Projects Limited delivers Pre-Engineered
+            Buildings, structural steel systems, warehouse buildings, factory
+            buildings and industrial infrastructure solutions for
+            manufacturing, automotive, food processing, pharmaceutical,
+            logistics and distribution sectors across India.
           </p>
         </motion.div>
 
@@ -110,6 +120,25 @@ export default function Industries() {
             />
           ))}
         </div>
+
+        {/* SEO-supporting visible copy */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 mx-auto mt-16 max-w-5xl rounded-[28px] border border-gray-200 bg-[#f8fafc] px-7 py-7 shadow-[0_18px_55px_rgba(27,63,104,0.06)] md:px-9 md:py-8"
+        >
+          <p className="text-sm font-bold leading-7 text-primary-blue">
+            From large-span warehouse PEB buildings and factory sheds to
+            manufacturing units, logistics facilities, automotive plants, food
+            processing buildings and pharmaceutical infrastructure, our
+            industrial steel building solutions are engineered around project
+            requirements, structural performance, speed of construction,
+            durability and long-term operational efficiency.
+          </p>
+        </motion.div>
       </Container>
     </section>
   );

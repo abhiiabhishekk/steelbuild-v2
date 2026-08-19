@@ -7,252 +7,366 @@ import QuoteProcess from "@/components/request-quote/QuoteProcess";
 import FAQ from "@/components/request-quote/FAQ";
 import ContactCTA from "@/components/request-quote/ContactCTA";
 import JsonLd from "@/components/seo/JsonLd";
+import { requestQuoteFaqs } from "@/data/request-quote-faq";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
+const pageUrl =
+  `${siteUrl}/request-a-quote`;
+
+/* =========================================================
+   REQUEST A QUOTE PAGE SEO METADATA
+========================================================= */
 
 export const metadata: Metadata = {
-  title:
-    "Request a Quote for Pre-Engineered Building Projects | Steelbuild Infra Projects",
+  title: {
+    absolute:
+      "Request a Quote for PEB Projects | Steelbuild Infra Projects",
+  },
 
   description:
-    "Request a customized quotation for your Pre-Engineered Building project. Share your industrial building requirements with Steelbuild Infra Projects Limited for engineering consultation, technical evaluation and commercial proposal.",
-
-  keywords: [
-    "Request PEB quotation",
-    "Pre Engineered Building quotation",
-    "PEB project quote India",
-    "industrial shed quotation",
-    "warehouse building quotation",
-    "factory building quotation",
-    "steel building quotation",
-    "PEB manufacturer quotation",
-    "industrial building cost estimate",
-    "warehouse construction quote",
-    "standing seam roofing quotation",
-    "roofing and cladding quotation",
-    "Steelbuild Infra Projects quote",
-  ],
+    "Request a customized quotation for your Pre-Engineered Building project from Steelbuild Infra Projects Limited. Share your warehouse, factory, industrial building or steel structure requirements for technical evaluation and commercial proposal.",
 
   alternates: {
-    canonical: "/request-a-quote",
+    canonical:
+      "/request-a-quote",
   },
 
   openGraph: {
-    title:
-      "Request a Quote for Your PEB Project | Steelbuild Infra Projects",
-
-    description:
-      "Share your industrial building requirements and receive engineering guidance and a customized PEB quotation from Steelbuild Infra Projects Limited.",
-
-    url: "https://steelbuildinfra.com/request-a-quote",
-
-    siteName: "Steelbuild Infra Projects Limited",
-
-    images: [
-      {
-        url: "/images/og/request-a-quote-og.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Request a Pre-Engineered Building quotation from Steelbuild Infra Projects",
-      },
-    ],
+    type: "website",
 
     locale: "en_IN",
 
-    type: "website",
-  },
+    url: pageUrl,
 
-  twitter: {
-    card: "summary_large_image",
+    siteName:
+      "Steelbuild Infra Projects Limited",
 
     title:
       "Request a Quote for Your PEB Project | Steelbuild Infra Projects",
 
     description:
-      "Submit your industrial building requirement for technical evaluation and a customized Pre-Engineered Building quotation.",
+      "Share your industrial building requirements with Steelbuild Infra Projects Limited for engineering consultation, technical evaluation and a customized PEB quotation.",
 
-    images: ["/images/og/request-a-quote-og.jpg"],
+    images: [
+      {
+        url:
+          "/images/og/request-a-quote-og.jpg",
+
+        width: 1200,
+
+        height: 630,
+
+        alt:
+          "Request a Pre-Engineered Building quotation from Steelbuild Infra Projects Limited",
+      },
+    ],
+  },
+
+  twitter: {
+    card:
+      "summary_large_image",
+
+    title:
+      "Request a Quote for Your PEB Project | Steelbuild Infra Projects",
+
+    description:
+      "Submit your warehouse, factory or industrial building requirements for technical evaluation and a customized Pre-Engineered Building quotation.",
+
+    images: [
+      "/images/og/request-a-quote-og.jpg",
+    ],
   },
 
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+
+      "max-image-preview":
+        "large",
+
+      "max-snippet":
+        -1,
+
+      "max-video-preview":
+        -1,
+    },
   },
 };
 
-const requestQuoteSchema = {
-  "@context": "https://schema.org",
+/* =========================================================
+   REQUEST A QUOTE PAGE
+========================================================= */
 
-  "@graph": [
-    {
-      "@type": "BreadcrumbList",
+export default function RequestQuotePage() {
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
 
+  const webPageSchema = {
+    "@type":
+      "WebPage",
+
+    "@id":
+      `${pageUrl}/#webpage`,
+
+    url:
+      pageUrl,
+
+    name:
+      "Request a Quote for Pre-Engineered Building Projects",
+
+    headline:
+      "Request a Customized Quote for Your PEB Project",
+
+    description:
+      "Submit your Pre-Engineered Building project requirements to Steelbuild Infra Projects Limited for engineering consultation, technical evaluation and a customized commercial proposal.",
+
+    isPartOf: {
       "@id":
-        "https://steelbuildinfra.com/request-a-quote#breadcrumb",
-
-      itemListElement: [
-        {
-          "@type": "ListItem",
-
-          position: 1,
-
-          name: "Home",
-
-          item: "https://steelbuildinfra.com/",
-        },
-
-        {
-          "@type": "ListItem",
-
-          position: 2,
-
-          name: "Request a Quote",
-
-          item:
-            "https://steelbuildinfra.com/request-a-quote",
-        },
-      ],
+        `${siteUrl}/#website`,
     },
 
-    {
-      "@type": "ContactPage",
-
+    about: {
       "@id":
-        "https://steelbuildinfra.com/request-a-quote#webpage",
+        `${pageUrl}/#service`,
+    },
+
+    mainEntity: {
+      "@id":
+        `${pageUrl}/#service`,
+    },
+
+    provider: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${pageUrl}/#breadcrumb`,
+    },
+
+    primaryImageOfPage: {
+      "@type":
+        "ImageObject",
 
       url:
-        "https://steelbuildinfra.com/request-a-quote",
+        `${siteUrl}/images/og/request-a-quote-og.jpg`,
+    },
+
+    potentialAction: {
+      "@type":
+        "CommunicateAction",
 
       name:
-        "Request a Quote for Pre-Engineered Building Projects",
+        "Submit PEB Project Requirement",
 
-      description:
-        "Submit your Pre-Engineered Building project requirements to Steelbuild Infra Projects Limited for engineering consultation, technical evaluation and a customized commercial quotation.",
+      target: {
+        "@type":
+          "EntryPoint",
 
-      isPartOf: {
-        "@type": "WebSite",
-
-        "@id": "https://steelbuildinfra.com/#website",
-
-        name: "Steelbuild Infra Projects Limited",
-
-        url: "https://steelbuildinfra.com/",
-      },
-
-      breadcrumb: {
-        "@id":
-          "https://steelbuildinfra.com/request-a-quote#breadcrumb",
-      },
-
-      about: {
-        "@id":
-          "https://steelbuildinfra.com/request-a-quote#service",
-      },
-
-      potentialAction: {
-        "@type": "CommunicateAction",
-
-        name: "Submit Project Requirement",
-
-        target:
-          "https://steelbuildinfra.com/request-a-quote#quote-form",
+        urlTemplate:
+          `${pageUrl}#quote-form`,
       },
     },
 
-    {
-      "@type": "Service",
+    inLanguage:
+      "en-IN",
+  };
 
+  /* =======================================================
+     PEB QUOTATION SERVICE SCHEMA
+  ======================================================= */
+
+  const serviceSchema = {
+    "@type":
+      "Service",
+
+    "@id":
+      `${pageUrl}/#service`,
+
+    name:
+      "Pre-Engineered Building Project Quotation",
+
+    alternateName: [
+      "PEB Project Quote",
+      "Pre-Engineered Building Quotation",
+      "Industrial Building Quotation",
+      "Warehouse Building Quotation",
+      "Factory Building Quotation",
+      "Steel Building Quotation",
+    ],
+
+    serviceType:
+      "Engineering consultation, technical evaluation and commercial quotation for Pre-Engineered Building projects",
+
+    description:
+      "Steelbuild Infra Projects Limited evaluates project dimensions, building usage, project location, structural loading, roofing and cladding requirements, execution scope and available drawings before preparing a customized technical and commercial proposal.",
+
+    url:
+      pageUrl,
+
+    provider: {
       "@id":
-        "https://steelbuildinfra.com/request-a-quote#service",
+        `${siteUrl}/#organization`,
+    },
+
+    areaServed: {
+      "@type":
+        "Country",
 
       name:
-        "Pre-Engineered Building Project Quotation",
+        "India",
+    },
 
-      serviceType:
-        "Engineering consultation and quotation for Pre-Engineered Building projects",
+    audience: {
+      "@type":
+        "BusinessAudience",
 
-      description:
-        "Steelbuild Infra Projects Limited reviews project dimensions, building usage, location, loading requirements, roofing systems, execution scope and available drawings before preparing a customized technical and commercial proposal.",
+      audienceType:
+        "Industrial developers, manufacturers, warehouse owners, logistics companies, infrastructure businesses and commercial project owners",
+    },
 
-      provider: {
-        "@type": "Organization",
+    availableChannel: [
+      {
+        "@type":
+          "ServiceChannel",
 
-        "@id":
-          "https://steelbuildinfra.com/#organization",
+        serviceUrl:
+          pageUrl,
+
+        servicePhone: {
+          "@type":
+            "ContactPoint",
+
+          telephone:
+            "+91 81301 99427",
+
+          contactType:
+            "sales",
+
+          areaServed:
+            "IN",
+
+          availableLanguage: [
+            "English",
+            "Hindi",
+          ],
+        },
+      },
+
+      {
+        "@type":
+          "ServiceChannel",
+
+        serviceUrl:
+          "mailto:info@steelbuildinfra.com",
+      },
+    ],
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
+  const breadcrumbSchema = {
+    "@type":
+      "BreadcrumbList",
+
+    "@id":
+      `${pageUrl}/#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type":
+          "ListItem",
+
+        position: 1,
 
         name:
-          "Steelbuild Infra Projects Limited",
+          "Home",
 
-        url: "https://steelbuildinfra.com/",
-
-        telephone: "+91 81301 99427",
-
-        email: "info@steelbuildinfra.com",
-
-        logo: {
-          "@type": "ImageObject",
-
-          url:
-            "https://steelbuildinfra.com/images/logo/logo.png",
-        },
-
-        address: {
-          "@type": "PostalAddress",
-
-          addressLocality: "New Delhi",
-
-          addressRegion: "Delhi",
-
-          addressCountry: "IN",
-        },
+        item:
+          siteUrl,
       },
 
-      areaServed: {
-        "@type": "Country",
+      {
+        "@type":
+          "ListItem",
 
-        name: "India",
+        position: 2,
+
+        name:
+          "Request a Quote",
+
+        item:
+          pageUrl,
       },
+    ],
+  };
 
-      audience: {
-        "@type": "BusinessAudience",
+  const faqSchema = {
+  "@type": "FAQPage",
 
-        audienceType:
-          "Industrial developers, warehouse owners, manufacturers, logistics companies and commercial project owners",
-      },
+  "@id":
+    `${pageUrl}/#faq`,
 
-      availableChannel: [
-        {
-          "@type": "ServiceChannel",
+  mainEntity:
+    requestQuoteFaqs.map(
+      (faq) => ({
+        "@type":
+          "Question",
 
-          serviceUrl:
-            "https://steelbuildinfra.com/request-a-quote",
+        name:
+          faq.question,
 
-          servicePhone: {
-            "@type": "ContactPoint",
+        acceptedAnswer: {
+          "@type":
+            "Answer",
 
-            telephone: "+91 81301 99427",
-
-            contactType: "sales",
-
-            areaServed: "IN",
-
-            availableLanguage: ["English", "Hindi"],
-          },
+          text:
+            faq.answer,
         },
+      }),
+    ),
+};
 
-        {
-          "@type": "ServiceChannel",
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
 
-          serviceUrl:
-            "mailto:info@steelbuildinfra.com",
-        },
-      ],
-    },
+  const structuredData = {
+  "@context":
+    "https://schema.org",
+
+  "@graph": [
+    webPageSchema,
+    serviceSchema,
+    breadcrumbSchema,
+    faqSchema,
   ],
 };
 
-export default function RequestQuotePage() {
   return (
     <>
-      <JsonLd data={requestQuoteSchema} />
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
+
+      <JsonLd
+        data={structuredData}
+      />
+
+      {/* ===================================================
+          PAGE CONTENT
+      =================================================== */}
 
       <QuoteHero />
 

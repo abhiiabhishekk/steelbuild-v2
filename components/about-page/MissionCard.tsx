@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+
 import { foundation } from "@/data/foundation";
 
 export default function MissionCard() {
@@ -8,30 +9,54 @@ export default function MissionCard() {
   const Icon = mission.icon;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 35 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: 0.12 }}
-      className="group relative overflow-hidden rounded-[32px] border border-gray-200 bg-white p-9 shadow-[0_20px_60px_rgba(27,63,104,0.08)] transition-all duration-500 hover:-translate-y-2 hover:border-primary-red/20 hover:shadow-[0_35px_90px_rgba(194,17,25,0.14)]"
+    <motion.article
+      initial={{
+        opacity: 0,
+        y: 30,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        margin: "-80px",
+      }}
+      transition={{
+        duration: 0.6,
+        delay: 0.1,
+      }}
+      className="group relative overflow-hidden rounded-[30px] border border-gray-200 bg-white p-8 shadow-[0_18px_55px_rgba(27,63,104,0.08)] transition-all duration-500 hover:-translate-y-2 hover:border-primary-red/20 hover:shadow-[0_30px_80px_rgba(194,17,25,0.14)]"
     >
-      <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-primary-red/10 blur-3xl transition duration-500 group-hover:bg-primary-blue/10" />
+      {/* Decorative Glow */}
 
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-red text-white shadow-lg shadow-primary-red/20 transition duration-500 group-hover:bg-primary-blue">
-        <Icon size={28} />
+      <div className="pointer-events-none absolute -right-14 -top-14 h-40 w-40 rounded-full bg-primary-red/[0.08] blur-3xl transition-colors duration-500 group-hover:bg-primary-blue/10" />
+
+      <div className="relative z-10">
+        {/* Icon */}
+
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-red text-white shadow-[0_12px_30px_rgba(194,17,25,0.2)] transition-all duration-500 group-hover:bg-primary-blue group-hover:shadow-[0_14px_34px_rgba(27,63,104,0.22)]">
+          <Icon size={25} />
+        </div>
+
+        {/* Badge */}
+
+        <p className="mt-7 text-[11px] font-black uppercase tracking-[0.28em] text-primary-red">
+          {mission.badge}
+        </p>
+
+        {/* Title */}
+
+        <h3 className="mt-4 text-[28px] font-black leading-[1.15] tracking-[-0.035em] text-primary-blue">
+          {mission.title}
+        </h3>
+
+        {/* Description */}
+
+        <p className="mt-4 text-[15px] font-medium leading-7 text-gray-600">
+          {mission.description}
+        </p>
       </div>
-
-      <p className="mt-8 text-sm font-black uppercase tracking-[0.28em] text-primary-red">
-        {mission.badge}
-      </p>
-
-      <h3 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-primary-blue">
-        {mission.title}
-      </h3>
-
-      <p className="mt-5 text-base leading-8 text-gray-600">
-        {mission.description}
-      </p>
-    </motion.div>
+    </motion.article>
   );
 }

@@ -25,6 +25,10 @@ import type {
   SanityBlogListItem,
 } from "@/types/sanityBlog";
 
+/* =========================================================
+   TYPES
+========================================================= */
+
 type Props = {
   params: Promise<{
     slug: string;
@@ -40,9 +44,19 @@ type BlogNavigationData = {
   next: SanityBlogListItem | null;
 };
 
-const SITE_URL = "https://steelbuildinfra.com";
+/* =========================================================
+   SITE CONFIG
+========================================================= */
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
 
 export const dynamicParams = true;
+
+/* =========================================================
+   ABSOLUTE IMAGE URL HELPER
+========================================================= */
 
 const getAbsoluteImageUrl = (
   imageUrl?: string,
@@ -58,20 +72,30 @@ const getAbsoluteImageUrl = (
     return imageUrl;
   }
 
-  return `${SITE_URL}${imageUrl}`;
+  return `${siteUrl}${imageUrl}`;
 };
+
+/* =========================================================
+   BLOG FETCHER
+========================================================= */
 
 const getBlogBySlug = async (
   slug: string,
 ): Promise<SanityBlogDetail | null> => {
   return sanityFetch({
     query: BLOG_BY_SLUG_QUERY,
+
     params: {
       slug,
     },
+
     revalidate: 0,
   }) as Promise<SanityBlogDetail | null>;
 };
+
+/* =========================================================
+   STATIC BLOG PARAMS
+========================================================= */
 
 export async function generateStaticParams() {
   const blogSlugs = (await sanityFetch({
@@ -84,17 +108,24 @@ export async function generateStaticParams() {
   }));
 }
 
+/* =========================================================
+   DYNAMIC BLOG SEO METADATA
+========================================================= */
+
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const blog = await getBlogBySlug(slug);
+  const blog =
+    await getBlogBySlug(slug);
 
   if (!blog) {
     return {
-      title:
-        "Article Not Found | Steelbuild Infra Projects",
+      title: {
+        absolute:
+          "Article Not Found | Steelbuild Infra Projects",
+      },
 
       robots: {
         index: false,
@@ -103,135 +134,216 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalPath = `/blog/${blog.slug}`;
-  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+  const canonicalPath =
+    `/blog/${blog.slug}`;
 
-  const title = blog.seoTitle || blog.title;
+  const canonicalUrl =
+    `${siteUrl}${canonicalPath}`;
+
+  const title =
+    blog.seoTitle ||
+    `${blog.title} | Steelbuild Infra Projects`;
 
   const description =
     blog.seoDescription ||
     blog.excerpt ||
-    "Read the latest insights from Steelbuild Infra Projects Limited.";
+    "Read insights on Pre-Engineered Buildings, industrial construction, structural steel and engineering from Steelbuild Infra Projects Limited.";
 
   const authorName =
     blog.author?.name ||
     "Steelbuild Editorial Team";
 
-  const imageUrl = getAbsoluteImageUrl(
-    blog.thumbnail?.asset?.url,
-  );
+  const imageUrl =
+    getAbsoluteImageUrl(
+      blog.thumbnail?.asset?.url,
+    );
+
+  const imageWidth =
+    blog.thumbnail?.asset?.metadata
+      ?.dimensions?.width ??
+    1200;
+
+  const imageHeight =
+    blog.thumbnail?.asset?.metadata
+      ?.dimensions?.height ??
+    630;
+
+  const imageAlt =
+    blog.thumbnail?.alt?.trim() ||
+    blog.title;
 
   return {
-    title,
+    title: {
+      absolute: title,
+    },
+
     description,
 
-    keywords:
-      blog.seoKeywords?.length
-        ? blog.seoKeywords
-        : blog.tags,
-
     alternates: {
-      canonical: canonicalPath,
+      canonical:
+        canonicalPath,
     },
 
     openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName:
-        "Steelbuild Infra Projects Limited",
       type: "article",
+
       locale: "en_IN",
 
+      url:
+        canonicalUrl,
+
+      siteName:
+        "Steelbuild Infra Projects Limited",
+
+      title,
+
+      description,
+
       publishedTime:
-        blog.publishedAt || undefined,
+        blog.publishedAt ||
+        undefined,
 
       modifiedTime:
         blog.updatedAt ||
         blog.publishedAt ||
         undefined,
 
-      authors: [authorName],
+      authors: [
+        authorName,
+      ],
 
-      tags: blog.tags ?? [],
+      tags:
+        blog.tags ??
+        [],
 
-      images: imageUrl
-        ? [
-            {
-              url: imageUrl,
-              width:
-                blog.thumbnail?.asset?.metadata
-                  ?.dimensions?.width ?? 1110,
-              height:
-                blog.thumbnail?.asset?.metadata
-                  ?.dimensions?.height ?? 594,
-              alt:
-                blog.thumbnail?.alt?.trim() ||
-                blog.title,
-            },
-          ]
-        : undefined,
+      images:
+        imageUrl
+          ? [
+              {
+                url:
+                  imageUrl,
+
+                width:
+                  imageWidth,
+
+                height:
+                  imageHeight,
+
+                alt:
+                  imageAlt,
+              },
+            ]
+          : undefined,
     },
 
     twitter: {
-      card: "summary_large_image",
+      card:
+        "summary_large_image",
+
       title,
+
       description,
-      images: imageUrl ? [imageUrl] : undefined,
+
+      images:
+        imageUrl
+          ? [imageUrl]
+          : undefined,
     },
 
     robots: {
       index: true,
       follow: true,
+
+      googleBot: {
+        index: true,
+        follow: true,
+
+        "max-image-preview":
+          "large",
+
+        "max-snippet":
+          -1,
+
+        "max-video-preview":
+          -1,
+      },
     },
   };
 }
+
+/* =========================================================
+   BLOG DETAIL PAGE
+========================================================= */
 
 export default async function BlogDetailPage({
   params,
 }: Props) {
   const { slug } = await params;
 
-  const blog = await getBlogBySlug(slug);
+  const blog =
+    await getBlogBySlug(slug);
 
   if (!blog) {
     notFound();
   }
 
-  const navigationPromise = blog.publishedAt
-    ? sanityFetch({
-        query: BLOG_NAVIGATION_QUERY,
-        params: {
-          publishedAt: blog.publishedAt,
-        },
-        revalidate: 0,
-      })
-    : Promise.resolve({
-        previous: null,
-        next: null,
-      });
+  /* =======================================================
+     PARALLEL SANITY REQUESTS
+  ======================================================= */
 
-  const relatedPromise = blog.categoryId
-    ? sanityFetch({
-        query: RELATED_BLOGS_QUERY,
-        params: {
-          slug: blog.slug,
-          categoryId: blog.categoryId,
-        },
-        revalidate: 0,
-      })
-    : Promise.resolve([]);
+  const navigationPromise =
+    blog.publishedAt
+      ? sanityFetch({
+          query:
+            BLOG_NAVIGATION_QUERY,
 
-  const fallbackPromise = blog.categoryId
-    ? sanityFetch({
-        query: FALLBACK_RELATED_BLOGS_QUERY,
-        params: {
-          slug: blog.slug,
-          categoryId: blog.categoryId,
-        },
-        revalidate: 0,
-      })
-    : Promise.resolve([]);
+          params: {
+            publishedAt:
+              blog.publishedAt,
+          },
+
+          revalidate: 0,
+        })
+      : Promise.resolve({
+          previous: null,
+          next: null,
+        });
+
+  const relatedPromise =
+    blog.categoryId
+      ? sanityFetch({
+          query:
+            RELATED_BLOGS_QUERY,
+
+          params: {
+            slug:
+              blog.slug,
+
+            categoryId:
+              blog.categoryId,
+          },
+
+          revalidate: 0,
+        })
+      : Promise.resolve([]);
+
+  const fallbackPromise =
+    blog.categoryId
+      ? sanityFetch({
+          query:
+            FALLBACK_RELATED_BLOGS_QUERY,
+
+          params: {
+            slug:
+              blog.slug,
+
+            categoryId:
+              blog.categoryId,
+          },
+
+          revalidate: 0,
+        })
+      : Promise.resolve([]);
 
   const [
     navigationResult,
@@ -252,6 +364,10 @@ export default async function BlogDetailPage({
   const fallbackRelated =
     fallbackResult as SanityBlogListItem[];
 
+  /* =======================================================
+     RELATED ARTICLES
+  ======================================================= */
+
   const relatedArticles = [
     ...categoryRelated,
 
@@ -259,41 +375,86 @@ export default async function BlogDetailPage({
       (fallbackBlog) =>
         !categoryRelated.some(
           (relatedBlog) =>
-            relatedBlog._id === fallbackBlog._id,
+            relatedBlog._id ===
+            fallbackBlog._id,
         ),
     ),
   ].slice(0, 3);
 
-  const articleUrl =
-    `${SITE_URL}/blog/${blog.slug}`;
+  /* =======================================================
+     ARTICLE DATA
+  ======================================================= */
 
-  const imageUrl = getAbsoluteImageUrl(
-    blog.thumbnail?.asset?.url,
-  );
+  const articleUrl =
+    `${siteUrl}/blog/${blog.slug}`;
+
+  const imageUrl =
+    getAbsoluteImageUrl(
+      blog.thumbnail?.asset?.url,
+    );
 
   const authorName =
     blog.author?.name ||
     "Steelbuild Editorial Team";
 
+  const description =
+    blog.seoDescription ||
+    blog.excerpt ||
+    blog.title;
+
+  /* =======================================================
+     AUTHOR SCHEMA
+  ======================================================= */
+
+  const authorSchema =
+    blog.author?.name
+      ? {
+          "@type":
+            "Person",
+
+          name:
+            blog.author.name,
+        }
+      : {
+          "@type":
+            "Organization",
+
+          name:
+            "Steelbuild Editorial Team",
+
+          url:
+            siteUrl,
+        };
+
+  /* =======================================================
+     BLOG POSTING SCHEMA
+  ======================================================= */
+
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type":
+      "BlogPosting",
 
-    headline: blog.title,
+    "@id":
+      `${articleUrl}/#article`,
 
-    description:
-      blog.seoDescription ||
-      blog.excerpt ||
+    url:
+      articleUrl,
+
+    headline:
       blog.title,
 
-    ...(imageUrl
-      ? {
-          image: [imageUrl],
-        }
-      : {}),
+    description,
+
+    image:
+      imageUrl
+        ? [
+            imageUrl,
+          ]
+        : undefined,
 
     datePublished:
-      blog.publishedAt || undefined,
+      blog.publishedAt ||
+      undefined,
 
     dateModified:
       blog.updatedAt ||
@@ -301,83 +462,204 @@ export default async function BlogDetailPage({
       undefined,
 
     mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": articleUrl,
+      "@id":
+        `${articleUrl}/#webpage`,
     },
 
-    author: {
-      "@type": "Organization",
-      name: authorName,
-      url: SITE_URL,
-    },
+    author:
+      authorSchema,
 
     publisher: {
-      "@type": "Organization",
-      name:
-        "Steelbuild Infra Projects Limited",
-      url: SITE_URL,
-
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/images/logo/logo.png`,
-      },
+      "@id":
+        `${siteUrl}/#organization`,
     },
 
     articleSection:
-      blog.category || undefined,
+      blog.category ||
+      undefined,
 
     keywords:
-      blog.tags?.join(", ") || undefined,
+      blog.tags?.length
+        ? blog.tags.join(", ")
+        : undefined,
 
-    url: articleUrl,
+    inLanguage:
+      "en-IN",
   };
 
+  /* =======================================================
+     WEB PAGE SCHEMA
+  ======================================================= */
+
+  const webPageSchema = {
+    "@type":
+      "WebPage",
+
+    "@id":
+      `${articleUrl}/#webpage`,
+
+    url:
+      articleUrl,
+
+    name:
+      blog.title,
+
+    headline:
+      blog.title,
+
+    description,
+
+    isPartOf: {
+      "@id":
+        `${siteUrl}/#website`,
+    },
+
+    about: {
+      "@id":
+        `${articleUrl}/#article`,
+    },
+
+    mainEntity: {
+      "@id":
+        `${articleUrl}/#article`,
+    },
+
+    publisher: {
+      "@id":
+        `${siteUrl}/#organization`,
+    },
+
+    breadcrumb: {
+      "@id":
+        `${articleUrl}/#breadcrumb`,
+    },
+
+    primaryImageOfPage:
+      imageUrl
+        ? {
+            "@type":
+              "ImageObject",
+
+            url:
+              imageUrl,
+          }
+        : undefined,
+
+    inLanguage:
+      "en-IN",
+  };
+
+  /* =======================================================
+     BREADCRUMB SCHEMA
+  ======================================================= */
+
   const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    "@type":
+      "BreadcrumbList",
+
+    "@id":
+      `${articleUrl}/#breadcrumb`,
 
     itemListElement: [
       {
-        "@type": "ListItem",
+        "@type":
+          "ListItem",
+
         position: 1,
-        name: "Home",
-        item: `${SITE_URL}/`,
+
+        name:
+          "Home",
+
+        item:
+          siteUrl,
       },
+
       {
-        "@type": "ListItem",
+        "@type":
+          "ListItem",
+
         position: 2,
-        name: "Blog",
-        item: `${SITE_URL}/blog`,
+
+        name:
+          "Blog",
+
+        item:
+          `${siteUrl}/blog`,
       },
+
       {
-        "@type": "ListItem",
+        "@type":
+          "ListItem",
+
         position: 3,
-        name: blog.title,
-        item: articleUrl,
+
+        name:
+          blog.title,
+
+        item:
+          articleUrl,
       },
+    ],
+  };
+
+  /* =======================================================
+     COMBINED STRUCTURED DATA
+  ======================================================= */
+
+  const structuredData = {
+    "@context":
+      "https://schema.org",
+
+    "@graph": [
+      webPageSchema,
+      articleSchema,
+      breadcrumbSchema,
     ],
   };
 
   return (
     <>
+      {/* ===================================================
+          READING PROGRESS
+      =================================================== */}
+
       <BlogReadingProgress />
 
-      <JsonLd data={articleSchema} />
-      <JsonLd data={breadcrumbSchema} />
+      {/* ===================================================
+          SEO / GEO STRUCTURED DATA
+      =================================================== */}
 
-      <BlogDetailHero blog={blog} />
+      <JsonLd
+        data={structuredData}
+      />
 
-      <BlogArticleContent blog={blog} />
+      {/* ===================================================
+          BLOG CONTENT
+      =================================================== */}
+
+      <BlogDetailHero
+        blog={blog}
+      />
+
+      <BlogArticleContent
+        blog={blog}
+      />
 
       <BlogNavigation
-        previous={navigation.previous}
-        next={navigation.next}
+        previous={
+          navigation.previous
+        }
+        next={
+          navigation.next
+        }
       />
 
       <BlogAuthorProfile />
 
       <RelatedArticles
-        articles={relatedArticles}
+        articles={
+          relatedArticles
+        }
       />
 
       <BlogNewsletter />

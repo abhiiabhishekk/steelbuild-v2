@@ -8,8 +8,6 @@ import {
   Layers3,
   PanelsTopLeft,
   Wrench,
-  Truck,
-  Store,
   Hammer,
 } from "lucide-react";
 
@@ -26,7 +24,7 @@ export const products: Product[] = [
     category: "PEB",
     featured: true,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/pre-engineered-buildings",
+    learnMoreLink: "/products/pre-engineered-buildings",
 
     description:
       "Custom engineered Pre-Engineered Building solutions designed for industrial, commercial and infrastructure projects with superior strength, faster construction and long service life.",
@@ -67,7 +65,7 @@ learnMoreLink: "/products/pre-engineered-buildings",
     category: "Warehouse",
     featured: true,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/warehouse-buildings",
 
     description:
       "Modern warehouse buildings engineered for logistics, e-commerce, distribution centers and industrial storage facilities.",
@@ -108,7 +106,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Industrial",
     featured: true,
     buttonText: "Explore Solution",
-    learnMoreLink: "/products/industrial-buildings",
+    learnMoreLink: "/products/industrial-sheds",
 
     description:
       "Heavy-duty industrial buildings designed for manufacturing plants, engineering facilities and production units.",
@@ -149,7 +147,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Industrial",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/factory-buildings",
 
     description:
       "Efficient factory buildings engineered for modern manufacturing operations with optimized layouts.",
@@ -170,8 +168,12 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Factory Building Manufacturer",
-      description: "Factory building solutions using advanced PEB technology.",
-      keywords: ["factory building", "factory shed"],
+      description:
+        "Factory building solutions using advanced PEB technology.",
+      keywords: [
+        "factory building",
+        "factory shed",
+      ],
     },
   },
 
@@ -185,7 +187,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Industrial",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/cold-storage-buildings",
 
     description:
       "Temperature-controlled steel structures for food, pharmaceuticals and cold chain logistics.",
@@ -206,8 +208,12 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Cold Storage Building Manufacturer",
-      description: "PEB cold storage buildings for temperature-sensitive industries.",
-      keywords: ["cold storage building", "cold warehouse"],
+      description:
+        "PEB cold storage buildings for temperature-sensitive industries.",
+      keywords: [
+        "cold storage building",
+        "cold warehouse",
+      ],
     },
   },
 
@@ -222,7 +228,7 @@ learnMoreLink: "/products/warehouse-buildings",
     featured: false,
     active: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products",
 
     description:
       "Long-span steel aircraft hangars engineered for aviation infrastructure projects.",
@@ -242,8 +248,12 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Aircraft Hangar Manufacturer",
-      description: "PEB aircraft hangars with long-span engineering.",
-      keywords: ["aircraft hangar", "aviation building"],
+      description:
+        "PEB aircraft hangars with long-span engineering.",
+      keywords: [
+        "aircraft hangar",
+        "aviation building",
+      ],
     },
   },
 
@@ -257,7 +267,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Commercial",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/multi-storey-buildings",
 
     description:
       "Steel multi-storey commercial and industrial buildings for modern infrastructure.",
@@ -277,8 +287,11 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Multi Storey Steel Building",
-      description: "Modern multi-storey steel buildings.",
-      keywords: ["multi storey steel building"],
+      description:
+        "Modern multi-storey steel buildings.",
+      keywords: [
+        "multi storey steel building",
+      ],
     },
   },
 
@@ -292,7 +305,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Industrial",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/mezzanine-systems",
 
     description:
       "Steel mezzanine floor systems for maximizing usable industrial space.",
@@ -312,8 +325,11 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Steel Mezzanine Floor",
-      description: "Heavy-duty mezzanine floor systems.",
-      keywords: ["mezzanine floor"],
+      description:
+        "Heavy-duty mezzanine floor systems.",
+      keywords: [
+        "mezzanine floor",
+      ],
     },
   },
 
@@ -327,7 +343,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "PEB",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/cladding-systems",
 
     description:
       "Premium roofing and wall cladding systems for superior protection and aesthetics.",
@@ -347,8 +363,12 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Roof Wall Cladding Manufacturer",
-      description: "Steel roofing and wall cladding solutions.",
-      keywords: ["roof cladding", "wall cladding"],
+      description:
+        "Steel roofing and wall cladding solutions.",
+      keywords: [
+        "roof cladding",
+        "wall cladding",
+      ],
     },
   },
 
@@ -362,7 +382,7 @@ learnMoreLink: "/products/warehouse-buildings",
     category: "Infrastructure",
     featured: false,
     buttonText: "Explore Solution",
-learnMoreLink: "/products/warehouse-buildings",
+    learnMoreLink: "/products/heavy-steel-structures",
 
     description:
       "Precision fabricated structural steel for industrial and infrastructure projects.",
@@ -382,8 +402,11 @@ learnMoreLink: "/products/warehouse-buildings",
 
     seo: {
       title: "Structural Steel Fabrication Company",
-      description: "Structural steel fabrication solutions.",
-      keywords: ["structural steel fabrication"],
+      description:
+        "Structural steel fabrication solutions.",
+      keywords: [
+        "structural steel fabrication",
+      ],
     },
   },
 ];

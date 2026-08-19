@@ -7,42 +7,17 @@ import {
   ArrowDown,
   ArrowRight,
   BadgeCheck,
-  Building2,
   Check,
   Factory,
   MapPinned,
-  // Users,
 } from "lucide-react";
 
 const capabilities = [
-  "Integrated Engineering",
-  "Precision Manufacturing",
-  "Pan-India Project Delivery",
-  "Quality-Controlled Execution",
+  "Integrated PEB Engineering",
+  "Precision Steel Manufacturing",
+  "Pan-India Project Execution",
+  "Quality-Controlled Delivery",
 ];
-
-// const stats = [
-//   {
-//     value: "700+",
-//     label: "Completed Projects",
-//     icon: Building2,
-//   },
-//   {
-//     value: "500+",
-//     label: "Happy Clients",
-//     icon: Users,
-//   },
-//   {
-//     value: "50,000 MT",
-//     label: "Annual Capacity",
-//     icon: Factory,
-//   },
-//   {
-//     value: "4000+ MT",
-//     label: "Monthly Capacity",
-//     icon: BadgeCheck,
-//   },
-// ];
 
 const containerVariants = {
   hidden: {},
@@ -70,8 +45,13 @@ const itemVariants = {
 
 export default function AboutHero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#051b32] text-white">
-      {/* Brand Watermark */}
+    <section
+      aria-labelledby="about-steelbuild-heading"
+      className="relative isolate overflow-hidden bg-[#051b32] text-white"
+    >
+      {/* =====================================================
+          BRAND WATERMARK
+      ====================================================== */}
 
       <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] lg:block">
         <Image
@@ -84,33 +64,56 @@ export default function AboutHero() {
         />
       </div>
 
-      {/* Core Background */}
+      {/* =====================================================
+          CORE BACKGROUND
+      ====================================================== */}
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(4,23,43,0.99)_0%,rgba(5,27,50,0.97)_43%,rgba(5,28,52,0.68)_68%,rgba(5,28,52,0.18)_100%)]" />
 
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_8%_20%,rgba(194,17,25,0.14),transparent_28%),radial-gradient(circle_at_80%_34%,rgba(27,63,104,0.10),transparent_36%)]" />
 
-      {/* Engineering Grid */}
+      {/* =====================================================
+          ENGINEERING GRID
+      ====================================================== */}
 
       <div className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:76px_76px]" />
 
-      {/* Top Accent */}
+      {/* =====================================================
+          TOP ACCENT
+      ====================================================== */}
 
       <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-primary-red/80 to-transparent" />
 
-      {/* Decorative Line */}
+      {/* =====================================================
+          DECORATIVE LINE
+      ====================================================== */}
 
       <div className="pointer-events-none absolute right-[12%] top-[18%] hidden h-px w-40 bg-gradient-to-r from-primary-red/70 to-transparent xl:block" />
 
       <div className="pointer-events-none absolute right-[20%] top-[18%] hidden h-2.5 w-2.5 rounded-full bg-primary-red shadow-[0_0_24px_rgba(194,17,25,0.9)] xl:block" />
 
-      <div className="relative z-10 mx-auto max-w-[1280px] px-6 pb-16 pt-12 lg:pb-20 lg:pt-16">
-        {/* Breadcrumb */}
+      {/* =====================================================
+          MAIN CONTAINER
+      ====================================================== */}
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
+      <div className="relative z-10 mx-auto max-w-[1280px] px-6 pb-12 pt-10 lg:pb-14 lg:pt-12">
+        {/* =====================================================
+            BREADCRUMB
+        ====================================================== */}
+
+        <motion.nav
+          initial={{
+            opacity: 0,
+            y: 12,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.45,
+          }}
+          aria-label="Breadcrumb"
           className="flex items-center gap-3 text-sm font-bold text-white/55"
         >
           <Link
@@ -120,22 +123,38 @@ export default function AboutHero() {
             Home
           </Link>
 
-          <span className="text-white/25">/</span>
+          <span
+            aria-hidden="true"
+            className="text-white/25"
+          >
+            /
+          </span>
 
-          <span className="text-white">About Us</span>
-        </motion.div>
+          <span
+            aria-current="page"
+            className="text-white"
+          >
+            About Steelbuild
+          </span>
+        </motion.nav>
 
-        {/* Main Content */}
+        {/* =====================================================
+            MAIN HERO GRID
+        ====================================================== */}
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid flex-1 items-center gap-12 py-8 xl:grid-cols-[1.12fr_0.88fr]"
+          className="grid items-center gap-10 py-6 xl:grid-cols-[1.12fr_0.88fr]"
         >
-          {/* Left Content */}
+          {/* ===================================================
+              LEFT CONTENT
+          ==================================================== */}
 
           <div className="max-w-[820px]">
+            {/* About badge */}
+
             <motion.div
               variants={itemVariants}
               className="inline-flex max-w-full items-center gap-3 rounded-full border border-white/15 bg-white/[0.07] px-4 py-2.5 backdrop-blur-md sm:px-5"
@@ -149,6 +168,8 @@ export default function AboutHero() {
               </span>
             </motion.div>
 
+            {/* Tagline */}
+
             <motion.p
               variants={itemVariants}
               className="mt-7 text-[11px] font-black uppercase tracking-[0.3em] text-primary-red"
@@ -156,34 +177,51 @@ export default function AboutHero() {
               Driven by Commitment and Quality
             </motion.p>
 
+            {/* =================================================
+                PRIMARY SEO H1
+            ================================================== */}
+
             <motion.h1
+              id="about-steelbuild-heading"
               variants={itemVariants}
-              className="mt-4 max-w-[760px] text-[44px] font-black leading-[1.01] tracking-[-0.055em] text-white sm:text-[56px] lg:text-[64px]"
+              className="mt-4 max-w-[790px] text-[42px] font-black leading-[1.01] tracking-[-0.055em] text-white sm:text-[52px] lg:text-[60px]"
             >
-              Engineering Excellence
-              <span className="block">for India&apos;s</span>
+              Pre-Engineered Building
+              <span className="block">
+                Engineering Excellence
+              </span>
 
               <span className="block">
-                Industrial{" "}
-                <span className="text-primary-red">Growth.</span>
+                for India&apos;s{" "}
+                <span className="text-primary-red">
+                  Industrial Growth.
+                </span>
               </span>
             </motion.h1>
 
+            {/* =================================================
+                SEO / GEO DESCRIPTION
+            ================================================== */}
+
             <motion.p
               variants={itemVariants}
-              className="mt-6 max-w-[690px] text-base font-medium leading-8 text-white/70 sm:text-lg"
+              className="mt-6 max-w-[720px] text-base font-medium leading-8 text-white/72 sm:text-lg"
             >
-              Delivering integrated Pre-Engineered Buildings, industrial
-              manufacturing facilities and large-scale steel infrastructure
-              through engineering excellence, precision manufacturing and
-              dependable execution across India.
+              Steelbuild Infra Projects Limited is a Pre-Engineered Building
+              and structural steel solutions company delivering engineered
+              warehouses, factory buildings, industrial sheds, heavy steel
+              structures and large-scale industrial infrastructure through
+              integrated engineering, precision manufacturing and dependable
+              project execution across India.
             </motion.p>
 
-            {/* CTA */}
+            {/* =================================================
+                CTA
+            ================================================== */}
 
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex flex-col gap-4 sm:flex-row"
+              className="mt-7 flex flex-col gap-4 sm:flex-row"
             >
               <Link
                 href="#company-story"
@@ -210,14 +248,19 @@ export default function AboutHero() {
               </Link>
             </motion.div>
 
-            {/* Single Trust Strip */}
+            {/* =================================================
+                TRUST STRIP
+            ================================================== */}
 
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex max-w-[780px] flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.045] px-5 py-4 backdrop-blur-sm"
+              className="mt-7 flex max-w-[780px] flex-wrap items-center gap-x-5 gap-y-3 rounded-2xl border border-white/10 bg-white/[0.045] px-5 py-4 backdrop-blur-sm"
             >
               <div className="flex items-center gap-2.5">
-                <BadgeCheck size={18} className="text-primary-red" />
+                <BadgeCheck
+                  size={18}
+                  className="text-primary-red"
+                />
 
                 <span className="text-xs font-black text-white/80">
                   ISO 9001:2015 Certified
@@ -227,32 +270,45 @@ export default function AboutHero() {
               <span className="hidden h-4 w-px bg-white/15 sm:block" />
 
               <div className="flex items-center gap-2.5">
-                <Factory size={18} className="text-primary-red" />
+                <Factory
+                  size={18}
+                  className="text-primary-red"
+                />
 
                 <span className="text-xs font-black text-white/80">
-                  Integrated Engineering
+                  PEB & Steel Manufacturing
                 </span>
               </div>
 
               <span className="hidden h-4 w-px bg-white/15 sm:block" />
 
               <div className="flex items-center gap-2.5">
-                <MapPinned size={18} className="text-primary-red" />
+                <MapPinned
+                  size={18}
+                  className="text-primary-red"
+                />
 
                 <span className="text-xs font-black text-white/80">
-                  Pan-India Project Delivery
+                  Pan-India Project Execution
                 </span>
               </div>
             </motion.div>
           </div>
 
-          {/* Right Glass Panel */}
+          {/* ===================================================
+              RIGHT GLASS PANEL
+          ==================================================== */}
 
           <motion.div
             variants={itemVariants}
             className="hidden self-center justify-end xl:flex xl:-translate-y-2"
           >
-            <div className="relative w-full max-w-[390px] overflow-hidden rounded-[30px] border border-white/14 bg-[#0b3158]/42 p-8 shadow-[0_26px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+            <aside
+              aria-label="Steelbuild engineering capabilities"
+              className="relative w-full max-w-[390px] overflow-hidden rounded-[30px] border border-white/14 bg-[#0b3158]/42 p-8 shadow-[0_26px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl"
+            >
+              {/* Panel gradients */}
+
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08)_0%,transparent_40%,rgba(194,17,25,0.07)_100%)]" />
 
               <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full border border-primary-red/10" />
@@ -260,14 +316,24 @@ export default function AboutHero() {
               <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full border border-white/10" />
 
               <div className="relative z-10">
+                {/* Eyebrow */}
+
                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-red">
-                  Trusted Engineering Partner
+                  Industrial Engineering Partner
                 </p>
+
+                {/* Heading */}
 
                 <h2 className="mt-5 text-[29px] font-black leading-[1.2] tracking-[-0.04em] text-white">
                   Building Industrial
-                  <span className="block">Infrastructure</span>
-                  <span className="block">With Precision,</span>
+                  <span className="block">
+                    Infrastructure
+                  </span>
+
+                  <span className="block">
+                    With Precision,
+                  </span>
+
                   <span className="block text-primary-red">
                     Scale & Reliability.
                   </span>
@@ -275,11 +341,21 @@ export default function AboutHero() {
 
                 <div className="mt-6 h-[2px] w-20 bg-primary-red" />
 
+                {/* =================================================
+                    CAPABILITIES
+                ================================================== */}
+
                 <div className="mt-7 space-y-4">
                   {capabilities.map((item) => (
-                    <div key={item} className="flex items-center gap-3">
+                    <div
+                      key={item}
+                      className="flex items-center gap-3"
+                    >
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-primary-red/20 bg-primary-red/[0.09] text-primary-red">
-                        <Check size={16} strokeWidth={3} />
+                        <Check
+                          size={16}
+                          strokeWidth={3}
+                        />
                       </span>
 
                       <span className="text-sm font-black text-white/82">
@@ -289,73 +365,37 @@ export default function AboutHero() {
                   ))}
                 </div>
 
+                {/* =================================================
+                    COMPANY FACTS
+                ================================================== */}
+
                 <div className="mt-7 border-t border-white/10 pt-6">
-  <div className="grid grid-cols-2 gap-5">
-    <div>
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-        Established
-      </p>
-
-      <p className="mt-2 text-xl font-black text-white">
-        2020
-      </p>
-    </div>
-
-    <div>
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
-        Core Focus
-      </p>
-
-      <p className="mt-2 text-xl font-black text-white">
-        PEB & Steel
-      </p>
-    </div>
-  </div>
-</div>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Statistics Strip
-
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.58, delay: 0.38 }}
-          className="overflow-hidden rounded-[26px] border border-white/14 bg-[#0b3158]/68 shadow-[0_24px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl"
-        >
-          <div className="grid grid-cols-2 divide-x divide-y divide-white/10 md:grid-cols-4 md:divide-y-0">
-            {stats.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <div
-                  key={item.label}
-                  className="group relative px-5 py-5 sm:px-6 lg:py-6"
-                >
-                  <div className="pointer-events-none absolute inset-0 bg-primary-red/0 transition-colors duration-300 group-hover:bg-primary-red/[0.045]" />
-
-                  <div className="relative flex items-center gap-4">
-                    <span className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-primary-red/25 bg-primary-red/[0.08] text-primary-red sm:flex">
-                      <Icon size={20} />
-                    </span>
-
+                  <div className="grid grid-cols-2 gap-5">
                     <div>
-                      <p className="text-2xl font-black leading-none tracking-[-0.04em] text-white lg:text-[28px]">
-                        {item.value}
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+                        Established
                       </p>
 
-                      <p className="mt-2.5 text-[10px] font-black uppercase tracking-[0.17em] text-white/50">
-                        {item.label}
+                      <p className="mt-2 text-xl font-black text-white">
+                        2020
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+                        Core Focus
+                      </p>
+
+                      <p className="mt-2 text-xl font-black text-white">
+                        PEB & Steel
                       </p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </motion.div> */}
+              </div>
+            </aside>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
