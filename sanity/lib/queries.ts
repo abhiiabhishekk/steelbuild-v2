@@ -19,8 +19,14 @@ const BLOG_THUMBNAIL_FIELDS = `
 
 const BLOG_LIST_FIELDS = `
   "_id": _id,
-  "id": coalesce(blogId, _id),
+
+  "id": coalesce(
+    blogId,
+    _id
+  ),
+
   "slug": slug.current,
+
   title,
 
   "excerpt": coalesce(
@@ -29,22 +35,32 @@ const BLOG_LIST_FIELDS = `
     ""
   ),
 
-  "category": category->title,
-  "author": author->name,
+  "category":
+    category->title,
+
+  "author":
+    author->name,
 
   publishedAt,
 
   "readingTime": select(
     defined(readingTime) =>
-      string(readingTime) + " min read",
+      string(readingTime) +
+      " min read",
+
     "1 min read"
   ),
 
   featured,
 
-  "tags": coalesce(tags, []),
+  "tags":
+    coalesce(
+      tags,
+      []
+    ),
 
   "thumbnail": coalesce(
+    featuredImage,
     thumbnail,
     mainImage
   ) {
@@ -52,81 +68,402 @@ const BLOG_LIST_FIELDS = `
   }
 `;
 
-export const BLOGS_QUERY = defineQuery(`
-  *[
-    _type == "blog" &&
-    defined(slug.current)
-  ]
-  | order(publishedAt desc) {
-    ${BLOG_LIST_FIELDS},
+/* =========================================================
+   BLOG LIST
+========================================================= */
 
-    "seoTitle": coalesce(
-      seo.title,
-      seoTitle,
-      title
-    ),
+export const BLOGS_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      defined(slug.current)
+    ]
+    | order(
+        publishedAt desc
+      ) {
+      ${BLOG_LIST_FIELDS},
 
-    "seoDescription": coalesce(
-      seo.description,
-      seoDescription,
-      excerpt,
-      shortDescription,
-      ""
-    ),
+      "seoTitle":
+        coalesce(
+          seo.title,
+          seoTitle,
+          title
+        ),
 
-    "seoKeywords": coalesce(
-      seo.keywords,
-      seoKeywords,
-      []
-    )
-  }
-`);
+      "seoDescription":
+        coalesce(
+          seo.description,
+          seoDescription,
+          excerpt,
+          shortDescription,
+          ""
+        ),
 
-export const FEATURED_BLOGS_QUERY = defineQuery(`
-  *[
-    _type == "blog" &&
-    defined(slug.current) &&
-    featured == true
-  ]
-  | order(publishedAt desc)[0...6] {
-    ${BLOG_LIST_FIELDS}
-  }
-`);
+      "seoKeywords":
+        coalesce(
+          seo.keywords,
+          seoKeywords,
+          []
+        )
+    }
+  `);
 
-export const BLOG_SLUGS_QUERY = defineQuery(`
-  *[
-    _type == "blog" &&
-    defined(slug.current)
-  ] {
-    "slug": slug.current
-  }
-`);
+/* =========================================================
+   FEATURED BLOGS
+========================================================= */
 
-export const BLOG_BY_SLUG_QUERY = defineQuery(`
-  *[
-    _type == "blog" &&
-    slug.current == $slug
-  ][0] {
-    "_id": _id,
-    "id": coalesce(blogId, _id),
-    "slug": slug.current,
+export const FEATURED_BLOGS_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      defined(slug.current) &&
+      featured == true
+    ]
+    | order(
+        publishedAt desc
+      )[0...6] {
+      ${BLOG_LIST_FIELDS}
+    }
+  `);
 
-    title,
+/* =========================================================
+   BLOG SLUGS
+========================================================= */
 
-    "excerpt": coalesce(
-      excerpt,
-      shortDescription,
-      ""
-    ),
+export const BLOG_SLUGS_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      defined(slug.current)
+    ] {
+      "slug": slug.current
+    }
+  `);
 
-    "category": category->title,
-    "categoryId": category->_id,
-    "categorySlug": category->slug.current,
+/* =========================================================
+   BLOG DETAIL
+========================================================= */
 
-    "author": author-> {
+export const BLOG_BY_SLUG_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      slug.current == $slug
+    ][0] {
+      "_id": _id,
+
+      "id": coalesce(
+        blogId,
+        _id
+      ),
+
+      "slug":
+        slug.current,
+
+      title,
+
+      "excerpt":
+        coalesce(
+          excerpt,
+          shortDescription,
+          ""
+        ),
+
+      "category":
+        category->title,
+
+      "categoryId":
+        category->_id,
+
+      "categorySlug":
+        category->slug.current,
+
+      "author":
+        author-> {
+          _id,
+          name,
+
+          "slug":
+            slug.current,
+
+          designation,
+          bio,
+
+          image {
+            asset-> {
+              _id,
+              url,
+
+              metadata {
+                dimensions,
+                lqip
+              }
+            },
+
+            alt,
+            caption,
+            crop,
+            hotspot
+          }
+        },
+
+      publishedAt,
+
+      "updatedAt":
+        _updatedAt,
+
+      "readingTime":
+        select(
+          defined(readingTime) =>
+            string(
+              readingTime
+            ) +
+            " min read",
+
+          "1 min read"
+        ),
+
+      featured,
+
+      "tags":
+        coalesce(
+          tags,
+          []
+        ),
+
+      "thumbnail":
+        coalesce(
+          featuredImage,
+          thumbnail,
+          mainImage
+        ) {
+          ${BLOG_THUMBNAIL_FIELDS}
+        },
+
+      content[] {
+        ...,
+
+        _type ==
+          "articleImage" => {
+          ...,
+
+          asset-> {
+            _id,
+            url,
+
+            metadata {
+              dimensions,
+              lqip
+            }
+          }
+        },
+
+        _type ==
+          "articleTable" => {
+          _key,
+          _type,
+          title,
+          caption,
+
+          columns[] {
+            _key,
+            _type,
+            heading
+          },
+
+          rows[] {
+            _key,
+            _type,
+            cells
+          }
+        },
+
+        _type ==
+          "articleCallout" => {
+          ...,
+
+          content[] {
+            ...
+          }
+        },
+
+        _type ==
+          "articleCta" => {
+          ...
+        },
+
+        _type ==
+          "faq" => {
+          ...,
+
+          items[] {
+            ...,
+
+            answer[] {
+              ...
+            }
+          }
+        }
+      },
+
+      faqs[] {
+        _key,
+        question,
+
+        answer[] {
+          ...
+        }
+      },
+
+      "seoTitle":
+        coalesce(
+          seo.title,
+          seoTitle,
+          title
+        ),
+
+      "seoDescription":
+        coalesce(
+          seo.description,
+          seoDescription,
+          excerpt,
+          shortDescription,
+          ""
+        ),
+
+      "seoKeywords":
+        coalesce(
+          seo.keywords,
+          seoKeywords,
+          []
+        )
+    }
+  `);
+
+/* =========================================================
+   BLOG NAVIGATION
+========================================================= */
+
+export const BLOG_NAVIGATION_QUERY =
+  defineQuery(`
+    {
+      "previous": *[
+        _type == "blog" &&
+        defined(slug.current) &&
+        publishedAt <
+          $publishedAt
+      ]
+      | order(
+          publishedAt desc
+        )[0] {
+        ${BLOG_LIST_FIELDS}
+      },
+
+      "next": *[
+        _type == "blog" &&
+        defined(slug.current) &&
+        publishedAt >
+          $publishedAt
+      ]
+      | order(
+          publishedAt asc
+        )[0] {
+        ${BLOG_LIST_FIELDS}
+      }
+    }
+  `);
+
+/* =========================================================
+   RELATED BLOGS
+========================================================= */
+
+export const RELATED_BLOGS_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      defined(slug.current) &&
+      slug.current != $slug &&
+      category._ref ==
+        $categoryId
+    ]
+    | order(
+        publishedAt desc
+      )[0...3] {
+      ${BLOG_LIST_FIELDS}
+    }
+  `);
+
+/* =========================================================
+   FALLBACK RELATED BLOGS
+========================================================= */
+
+export const FALLBACK_RELATED_BLOGS_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      defined(slug.current) &&
+      slug.current != $slug &&
+      category._ref !=
+        $categoryId
+    ]
+    | order(
+        publishedAt desc
+      )[0...3] {
+      ${BLOG_LIST_FIELDS}
+    }
+  `);
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+export const CATEGORIES_QUERY =
+  defineQuery(`
+    *[
+      _type == "category"
+    ]
+    | order(
+        title asc
+      ) {
+      _id,
+      title,
+
+      "slug":
+        slug.current,
+
+      description,
+      active,
+
+      "blogCount":
+        count(
+          *[
+            _type == "blog" &&
+            references(
+              ^._id
+            )
+          ]
+        )
+    }
+  `);
+
+/* =========================================================
+   AUTHORS
+========================================================= */
+
+export const AUTHORS_QUERY =
+  defineQuery(`
+    *[
+      _type == "author"
+    ]
+    | order(
+        name asc
+      ) {
       _id,
       name,
-      "slug": slug.current,
+
+      "slug":
+        slug.current,
+
       designation,
       bio,
 
@@ -146,218 +483,72 @@ export const BLOG_BY_SLUG_QUERY = defineQuery(`
         crop,
         hotspot
       }
-    },
-
-    publishedAt,
-
-    "updatedAt": _updatedAt,
-
-    "readingTime": select(
-      defined(readingTime) =>
-        string(readingTime) + " min read",
-      "1 min read"
-    ),
-
-    featured,
-
-    "tags": coalesce(tags, []),
-
-    "thumbnail": coalesce(
-      thumbnail,
-      mainImage
-    ) {
-      ${BLOG_THUMBNAIL_FIELDS}
-    },
-
-    content[] {
-      ...,
-
-      _type == "articleImage" => {
-        ...,
-
-        asset-> {
-          _id,
-          url,
-
-          metadata {
-            dimensions,
-            lqip
-          }
-        }
-      },
-
-      _type == "articleTable" => {
-        _key,
-        _type,
-        title,
-        caption,
-
-        columns[] {
-          _key,
-          _type,
-          heading
-        },
-
-        rows[] {
-          _key,
-          _type,
-          cells
-        }
-      },
-
-      _type == "articleCallout" => {
-        ...,
-
-        content[] {
-          ...
-        }
-      },
-
-      _type == "articleCta" => {
-        ...
-      },
-
-      _type == "faq" => {
-        ...,
-
-        items[] {
-          ...,
-
-          answer[] {
-            ...
-          }
-        }
-      }
-    },
-
-    faqs[] {
-      _key,
-      question,
-
-      answer[] {
-        ...
-      }
-    },
-
-    "seoTitle": coalesce(
-      seo.title,
-      seoTitle,
-      title
-    ),
-
-    "seoDescription": coalesce(
-      seo.description,
-      seoDescription,
-      excerpt,
-      shortDescription,
-      ""
-    ),
-
-    "seoKeywords": coalesce(
-      seo.keywords,
-      seoKeywords,
-      []
-    )
-  }
-`);
-
-export const BLOG_NAVIGATION_QUERY = defineQuery(`
-  {
-    "previous": *[
-      _type == "blog" &&
-      defined(slug.current) &&
-      publishedAt < $publishedAt
-    ]
-    | order(publishedAt desc)[0] {
-      ${BLOG_LIST_FIELDS}
-    },
-
-    "next": *[
-      _type == "blog" &&
-      defined(slug.current) &&
-      publishedAt > $publishedAt
-    ]
-    | order(publishedAt asc)[0] {
-      ${BLOG_LIST_FIELDS}
-    }
-  }
-`);
-
-export const RELATED_BLOGS_QUERY = defineQuery(`
-  *[
-    _type == "blog" &&
-    defined(slug.current) &&
-    slug.current != $slug &&
-    category._ref == $categoryId
-  ]
-  | order(publishedAt desc)[0...3] {
-    ${BLOG_LIST_FIELDS}
-  }
-`);
-
-export const FALLBACK_RELATED_BLOGS_QUERY =
-  defineQuery(`
-    *[
-      _type == "blog" &&
-      defined(slug.current) &&
-      slug.current != $slug &&
-      category._ref != $categoryId
-    ]
-    | order(publishedAt desc)[0...3] {
-      ${BLOG_LIST_FIELDS}
     }
   `);
 
-export const CATEGORIES_QUERY = defineQuery(`
-  *[
-    _type == "category"
-  ]
-  | order(title asc) {
-    _id,
-    title,
+/* =========================================================
+   BLOG NEWSLETTER NOTIFICATION
+========================================================= */
 
-    "slug": slug.current,
+export const BLOG_NEWSLETTER_NOTIFICATION_QUERY =
+  defineQuery(`
+    *[
+      _type == "blog" &&
+      _id == $blogId &&
+      defined(slug.current)
+    ][0] {
+      _id,
 
-    description,
-    active,
+      title,
 
-    "blogCount": count(
-      *[
-        _type == "blog" &&
-        references(^._id)
-      ]
-    )
-  }
-`);
+      "slug":
+        slug.current,
 
-export const AUTHORS_QUERY = defineQuery(`
-  *[
-    _type == "author"
-  ]
-  | order(name asc) {
-    _id,
-    name,
+      "excerpt":
+        coalesce(
+          excerpt,
+          shortDescription,
+          ""
+        ),
 
-    "slug": slug.current,
+      publishedAt,
 
-    designation,
-    bio,
+      "category":
+        category->title,
 
-    image {
-      asset-> {
-        _id,
-        url,
+      "author":
+        author->name,
 
-        metadata {
-          dimensions,
-          lqip
-        }
-      },
+      "featuredImage":
+        coalesce(
+          featuredImage,
+          thumbnail,
+          mainImage
+        ) {
+          asset-> {
+            _id,
+            url
+          },
 
-      alt,
-      caption,
-      crop,
-      hotspot
+          alt
+        },
+
+      newsletterTitle,
+
+      newsletterSummary,
+
+      "sendNewsletterNotification":
+        coalesce(
+          sendNewsletterNotification,
+          false
+        ),
+
+      "newsletterNotificationSent":
+        coalesce(
+          newsletterNotificationSent,
+          false
+        ),
+
+      newsletterNotificationSentAt
     }
-  }
-`);
+  `);
