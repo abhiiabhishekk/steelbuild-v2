@@ -267,3 +267,57 @@ export const PROJECT_CATEGORIES_QUERY =
       ].category
     )
   `);
+
+  export const PROJECT_NEWSLETTER_QUERY =
+  defineQuery(`
+    *[
+      _type == "project" &&
+      _id == $projectId &&
+      defined(slug.current) &&
+      coalesce(active, true) == true
+    ][0] {
+      _id,
+
+      projectId,
+
+      name,
+
+      "slug": slug.current,
+
+      clientName,
+
+      category,
+
+      "status": coalesce(
+        status,
+        "Completed"
+      ),
+
+      location,
+      area,
+      tonnage,
+
+      shortDescription,
+
+      newsletterTitle,
+      newsletterSummary,
+
+      "sendNewsletterNotification":
+        coalesce(
+          sendNewsletterNotification,
+          false
+        ),
+
+      "newsletterNotificationSent":
+        coalesce(
+          newsletterNotificationSent,
+          false
+        ),
+
+      newsletterNotificationSentAt,
+
+      coverImage {
+        ${PROJECT_IMAGE_FIELDS}
+      }
+    }
+  `);

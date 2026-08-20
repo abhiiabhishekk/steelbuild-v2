@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import AppLayoutShell from "@/components/layout/AppLayoutShell";
 import CookieConsent from "@/components/common/CookieConsent";
 import { SanityLive } from "@/sanity/lib/live";
+import NewsletterPopup from "@/components/newsletter/NewsletterPopup";
 
 import "./globals.css";
 
@@ -100,6 +101,7 @@ export default function RootLayout({
     <html lang="en-IN">
       <body>
         <AppLayoutShell>{children}</AppLayoutShell>
+        <NewsletterPopup />
         <CookieConsent />
         <SanityLive />
       </body>

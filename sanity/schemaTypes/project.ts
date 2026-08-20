@@ -382,6 +382,62 @@ export const projectType = defineType({
     }),
 
     defineField({
+  name: "sendNewsletterNotification",
+  title: "Send Newsletter Notification",
+  type: "boolean",
+  group: "settings",
+  initialValue: false,
+  description:
+    "Enable this only when this project should be announced to Steelbuild Insights subscribers.",
+}),
+
+defineField({
+  name: "newsletterTitle",
+  title: "Newsletter Title",
+  type: "string",
+  group: "settings",
+  description:
+    "Optional custom email heading. If empty, the project name will be used.",
+  validation: (rule) =>
+    rule.max(120).warning(
+      "Keep the newsletter title below 120 characters.",
+    ),
+}),
+
+defineField({
+  name: "newsletterSummary",
+  title: "Newsletter Summary",
+  type: "text",
+  rows: 4,
+  group: "settings",
+  description:
+    "Optional short summary for the project notification email. If empty, the project short description will be used.",
+  validation: (rule) =>
+    rule.max(500).warning(
+      "Keep the newsletter summary below 500 characters.",
+    ),
+}),
+
+defineField({
+  name: "newsletterNotificationSent",
+  title: "Newsletter Notification Sent",
+  type: "boolean",
+  group: "settings",
+  initialValue: false,
+  readOnly: true,
+  description:
+    "Automatically marked after the project announcement email has been sent.",
+}),
+
+defineField({
+  name: "newsletterNotificationSentAt",
+  title: "Newsletter Notification Sent At",
+  type: "datetime",
+  group: "settings",
+  readOnly: true,
+}),
+
+    defineField({
       name: "seoTitle",
       title: "SEO Title",
       type: "string",
