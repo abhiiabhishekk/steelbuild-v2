@@ -863,6 +863,24 @@ export default function Header() {
               );
             })}
           </nav>
+          <div className="mt-6 border-t border-gray-200 pt-5">
+  <Link
+    href="/request-a-quote"
+    onClick={() => setMobileOpen(false)}
+    className="group flex min-h-[58px] w-full items-center justify-center gap-3 rounded-2xl bg-primary-red px-6 py-4 text-base font-black !text-white shadow-[0_16px_35px_rgba(194,17,25,0.22)] transition-all duration-300 hover:bg-primary-blue"
+  >
+    Request a Quote
+
+    <ArrowUpRight
+      size={19}
+      className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+    />
+  </Link>
+
+  <p className="mt-3 text-center text-xs font-medium leading-5 text-gray-500">
+    Discuss your upcoming PEB or industrial project with our team.
+  </p>
+</div>
         </div>
       </div>
     </header>
