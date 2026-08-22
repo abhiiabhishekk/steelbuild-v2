@@ -1,5 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
+/* =========================================================
+   SITE CONFIGURATION
+========================================================= */
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "https://steelbuildinfra.com";
+
 /**
  * =========================================================
  * OLD WORDPRESS TAG MIGRATION
@@ -172,29 +180,6 @@ function resolveTagDestination(
   const tag = normalizeTagSlug(rawSlug);
 
   /* =======================================================
-     0. LEGACY STEELBUILD-SPECIFIC WORDPRESS TAGS
-     -------------------------------------------------------
-     Old source slugs may contain "pvt-ltd" because they
-     belonged to the previous WordPress website.
-     We preserve them ONLY for matching old Google URLs.
-     Destinations use current URLs / current branding.
-  ======================================================= */
-
-  if (
-    tag ===
-    "peb-vertical-services-steelbuild-infra-projects-pvt-ltd-is-providing-in-delhi-ncr"
-  ) {
-    return "/products/pre-engineered-buildings";
-  }
-
-  if (
-    tag ===
-    "steelbuild-infra-projects-pvt-ltd-leading-the-peb-revolution"
-  ) {
-    return DESTINATIONS.evolutionPeb;
-  }
-
-  /* =======================================================
      1. TOP / BEST PEB COMPANIES
   ======================================================= */
 
@@ -267,7 +252,8 @@ function resolveTagDestination(
     tag.includes("evolution-of-pre-engineered") ||
     tag.includes("brief-history-of-pre-engineered") ||
     tag.includes("historical-perspective") ||
-    tag.includes("genesis-and-growth")
+    tag.includes("genesis-and-growth") ||
+    tag.includes("leading-the-peb-revolution")
   ) {
     return DESTINATIONS.evolutionPeb;
   }
@@ -428,7 +414,7 @@ function resolveTagDestination(
   }
 
   /* =======================================================
-     18. PURLIN / STRUCTURAL STEEL COMPARISON
+     18. PURLIN / STRUCTURAL STEEL
   ======================================================= */
 
   if (tag.includes("purlin-or-structural-steel")) {
@@ -487,9 +473,7 @@ function resolveTagDestination(
      23. PREFAB FACTORY VS TRADITIONAL
   ======================================================= */
 
-  if (
-    tag.includes("prefab-factory-vs-traditional")
-  ) {
+  if (tag.includes("prefab-factory-vs-traditional")) {
     return DESTINATIONS.prefabFactory;
   }
 
@@ -614,6 +598,7 @@ function resolveTagDestination(
     tag.includes("peb-contractors") ||
     tag.includes("peb-suppliers") ||
     tag.includes("peb-turnkey") ||
+    tag.includes("peb-vertical-services") ||
     tag.includes("steel-building-companies") ||
     tag.includes("steel-building-contractors") ||
     tag.includes("steel-building-solutions") ||
@@ -691,28 +676,43 @@ export async function GET(
   }
 
   /**
-   * Uses the current request origin.
+   * IMPORTANT:
    *
-   * LOCAL:
-   * http://localhost:3000/tag/...
-   * →
-   * http://localhost:3000/blog/...
+   * Local development:
    *
-   * PRODUCTION:
-   * https://steelbuildinfra.com/tag/...
+   * http://localhost:3000/tag/example/
    * →
-   * https://steelbuildinfra.com/blog/...
+   * http://localhost:3000/blog/example
+   *
+   * Production:
+   *
+   * https://steelbuildinfra.com/tag/example/
+   * →
+   * https://steelbuildinfra.com/blog/example
+   *
+   * Hostinger's internal Node server may expose
+   * request.nextUrl.origin as:
+   *
+   * http://0.0.0.0:3000
+   *
+   * Therefore production redirects explicitly use
+   * the public website URL.
    */
+
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? SITE_URL
+      : request.nextUrl.origin;
 
   const destinationUrl =
     new URL(
       destination,
-      request.nextUrl.origin,
+      baseUrl,
     );
 
   /**
-   * Remove unnecessary query parameters from
-   * old WordPress archive URLs.
+   * Do not preserve unnecessary query parameters
+   * from old WordPress tag/archive URLs.
    */
 
   destinationUrl.search = "";
@@ -720,8 +720,8 @@ export async function GET(
   /**
    * 308 = permanent redirect.
    *
-   * Appropriate for migration because
-   * the old WordPress URL has permanently moved.
+   * Appropriate for old WordPress URLs that have
+   * permanently moved to their current equivalent.
    */
 
   return NextResponse.redirect(
