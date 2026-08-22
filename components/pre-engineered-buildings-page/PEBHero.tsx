@@ -96,18 +96,18 @@ export default function PEBHero() {
             </span>
 
             <h1 className="mt-7 max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.055em] text-primary-blue md:text-6xl lg:text-[72px]">
-              Engineered for Strength.
-              <span className="block">
-                Built for Faster Growth.
-              </span>
-            </h1>
+  Engineered for Strength.
+  <span className="block">
+    Built for Faster Growth.
+  </span>
+</h1>
 
             <p className="mt-7 max-w-2xl text-lg font-medium leading-9 text-gray-600">
-              Steelbuild Infra Projects Limited delivers high-performance
-              Pre-Engineered Buildings designed for industrial efficiency,
-              structural reliability, faster construction and long-term
-              operational value.
-            </p>
+  Steelbuild Infra Projects Limited is a Pre-Engineered Building
+  company in India delivering engineered PEB solutions for
+  warehouses, factories, industrial sheds, logistics facilities
+  and large-scale steel infrastructure projects.
+</p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
               <Link

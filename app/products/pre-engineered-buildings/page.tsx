@@ -22,11 +22,11 @@ const pageUrl =
 export const metadata: Metadata = {
   title: {
     absolute:
-      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+      "PEB Company & Pre-Engineered Building Manufacturer in India | Steelbuild",
   },
 
   description:
-    "Steelbuild Infra Projects Limited delivers engineered Pre-Engineered Buildings for warehouses, factories, industrial sheds, logistics facilities, manufacturing plants and large-scale industrial infrastructure projects across India.",
+    "Steelbuild Infra Projects Limited is a Pre-Engineered Building company in India delivering PEB engineering, manufacturing and construction solutions for warehouses, factories, industrial sheds, logistics facilities and large-scale steel infrastructure projects.",
 
   alternates: {
     canonical:
@@ -36,42 +36,47 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
 
-    locale: "en_IN",
+    locale:
+      "en_IN",
 
-    url: pageUrl,
+    url:
+      pageUrl,
 
     siteName:
       "Steelbuild Infra Projects Limited",
 
     title:
-      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+      "PEB Company & Pre-Engineered Building Manufacturer in India | Steelbuild",
 
     description:
-      "Explore engineered Pre-Engineered Building solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
+      "Explore Steelbuild's engineered Pre-Engineered Building solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
 
     images: [
       {
         url:
           "/images/products/pre-engineered-building.jpg",
 
-        width: 1200,
+        width:
+          1200,
 
-        height: 630,
+        height:
+          630,
 
         alt:
-          "Steelbuild Infra Projects Pre-Engineered Building Solutions in India",
+          "Steelbuild Infra Projects Pre-Engineered Building and PEB Solutions in India",
       },
     ],
   },
 
   twitter: {
-    card: "summary_large_image",
+    card:
+      "summary_large_image",
 
     title:
-      "Pre-Engineered Buildings Manufacturer in India | Steelbuild Infra Projects",
+      "PEB Company & Pre-Engineered Building Manufacturer in India | Steelbuild",
 
     description:
-      "Engineered PEB solutions for warehouses, factories, industrial buildings and infrastructure projects across India.",
+      "PEB engineering, manufacturing and construction solutions for warehouses, factories, industrial buildings and infrastructure projects across India.",
 
     images: [
       "/images/products/pre-engineered-building.jpg",
@@ -79,12 +84,18 @@ export const metadata: Metadata = {
   },
 
   robots: {
-    index: true,
-    follow: true,
+    index:
+      true,
+
+    follow:
+      true,
 
     googleBot: {
-      index: true,
-      follow: true,
+      index:
+        true,
+
+      follow:
+        true,
 
       "max-image-preview":
         "large",
@@ -108,7 +119,8 @@ export default function PreEngineeredBuildingsPage() {
   ======================================================= */
 
   const webPageSchema = {
-    "@type": "WebPage",
+    "@type":
+      "WebPage",
 
     "@id":
       `${pageUrl}/#webpage`,
@@ -117,13 +129,13 @@ export default function PreEngineeredBuildingsPage() {
       pageUrl,
 
     name:
-      "Pre-Engineered Buildings Manufacturer in India",
+      "PEB Company and Pre-Engineered Building Manufacturer in India",
 
     headline:
       "Pre-Engineered Building Solutions for Industrial Infrastructure",
 
     description:
-      "Steelbuild Infra Projects Limited provides engineered Pre-Engineered Building solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
+      "Steelbuild Infra Projects Limited provides Pre-Engineered Building engineering, manufacturing and construction solutions for warehouses, factories, industrial sheds, logistics facilities and manufacturing infrastructure across India.",
 
     isPartOf: {
       "@id":
@@ -157,7 +169,8 @@ export default function PreEngineeredBuildingsPage() {
   ======================================================= */
 
   const serviceSchema = {
-    "@type": "Service",
+    "@type":
+      "Service",
 
     "@id":
       `${pageUrl}/#service`,
@@ -169,10 +182,13 @@ export default function PreEngineeredBuildingsPage() {
       "PEB Solutions",
       "Pre-Engineered Steel Buildings",
       "PEB Buildings",
+      "PEB Engineering Solutions",
+      "PEB Manufacturing Solutions",
+      "Industrial Steel Building Solutions",
     ],
 
     serviceType:
-      "Pre-Engineered Building Engineering, Manufacturing and Project Execution",
+      "Pre-Engineered Building Engineering, Manufacturing, Fabrication and Project Execution",
 
     url:
       pageUrl,
@@ -191,15 +207,35 @@ export default function PreEngineeredBuildingsPage() {
     },
 
     description:
-      "Engineering, manufacturing and project execution solutions for Pre-Engineered Buildings used in warehouses, factories, industrial sheds, logistics facilities and industrial infrastructure projects.",
+      "Engineering, manufacturing, fabrication and project execution solutions for Pre-Engineered Buildings used in warehouses, factories, industrial sheds, logistics facilities, manufacturing plants and large-scale steel infrastructure projects.",
 
     audience: {
       "@type":
         "BusinessAudience",
 
       audienceType:
-        "Industrial, Manufacturing, Warehousing, Logistics and Infrastructure Businesses",
+        "Industrial, Manufacturing, Warehousing, Logistics, Commercial and Infrastructure Businesses",
     },
+
+    knowsAbout: [
+      "Pre-Engineered Buildings",
+      "PEB Buildings",
+      "Pre-Engineered Steel Buildings",
+      "PEB Engineering",
+      "PEB Manufacturing",
+      "PEB Fabrication",
+      "PEB Construction",
+      "PEB Building Solutions",
+      "Steel Buildings",
+      "Industrial Steel Buildings",
+      "Steel Structures",
+      "Industrial Sheds",
+      "Warehouse Buildings",
+      "Factory Buildings",
+      "Logistics Facilities",
+      "Industrial Infrastructure",
+      "Turnkey PEB Projects",
+    ],
   };
 
   /* =======================================================
