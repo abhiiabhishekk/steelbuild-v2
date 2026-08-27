@@ -4,16 +4,24 @@ import {
   useMemo,
   useState,
 } from "react";
-import { motion } from "framer-motion";
+
+import {
+  AnimatePresence,
+  motion,
+} from "framer-motion";
+
 import {
   ArrowUpRight,
   BriefcaseBusiness,
   Building2,
   CalendarDays,
   CheckCircle2,
+  ChevronDown,
   Clock3,
   Factory,
   Filter,
+  GraduationCap,
+  ListChecks,
   MapPin,
   Search,
   UsersRound,
@@ -25,6 +33,10 @@ import type {
   SanityJobOpening,
 } from "@/types/sanityJobOpening";
 
+/* =========================================================
+   TYPES
+========================================================= */
+
 type CurrentOpeningsProps = {
   jobs: SanityJobOpening[];
 
@@ -34,6 +46,79 @@ type CurrentOpeningsProps = {
 
   onGeneralApply: () => void;
 };
+
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const INITIAL_SKILLS_LIMIT = 8;
+
+/* =========================================================
+   SANITY FIELD HELPERS
+========================================================= */
+
+/**
+ * These helpers deliberately support a few possible field names.
+ *
+ * This keeps CurrentOpenings.tsx safe even if the Sanity/type
+ * field is named slightly differently, for example:
+ *
+ * keyResponsibilities
+ * responsibilities
+ *
+ * preferredQualification
+ * qualification
+ */
+
+function getJobResponsibilities(
+  job: SanityJobOpening,
+): string[] {
+  const record =
+    job as unknown as Record<
+      string,
+      unknown
+    >;
+
+  const value =
+    record.keyResponsibilities ??
+    record.responsibilities;
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(
+      (
+        item,
+      ): item is string =>
+        typeof item === "string",
+    )
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function getPreferredQualification(
+  job: SanityJobOpening,
+): string {
+  const record =
+    job as unknown as Record<
+      string,
+      unknown
+    >;
+
+  const value =
+    record.preferredQualification ??
+    record.qualification;
+
+  return typeof value === "string"
+    ? value.trim()
+    : "";
+}
+
+/* =========================================================
+   COMPONENT
+========================================================= */
 
 export default function CurrentOpenings({
   jobs,
@@ -45,22 +130,57 @@ export default function CurrentOpenings({
     setActiveDepartment,
   ] = useState("All");
 
-  const [search, setSearch] =
-    useState("");
+  const [
+    search,
+    setSearch,
+  ] = useState("");
+
+  /*
+   * Stores which job cards currently have
+   * all skills expanded.
+   */
+  const [
+    expandedSkills,
+    setExpandedSkills,
+  ] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  /*
+   * Stores which job cards currently have
+   * responsibilities / qualification expanded.
+   */
+  const [
+    expandedDetails,
+    setExpandedDetails,
+  ] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  /* =======================================================
+     DEPARTMENT FILTERS
+  ======================================================= */
 
   const departmentFilters =
     useMemo(() => {
-      const departments = Array.from(
-        new Set(
-          jobs
-            .map((job) =>
-              job.department.trim(),
-            )
-            .filter(Boolean),
-        ),
-      ).sort((first, second) =>
-        first.localeCompare(second),
-      );
+      const departments =
+        Array.from(
+          new Set(
+            jobs
+              .map((job) =>
+                job.department.trim(),
+              )
+              .filter(Boolean),
+          ),
+        ).sort(
+          (
+            first,
+            second,
+          ) =>
+            first.localeCompare(
+              second,
+            ),
+        );
 
       return [
         "All",
@@ -68,52 +188,154 @@ export default function CurrentOpenings({
       ];
     }, [jobs]);
 
-  const filteredJobs = useMemo(() => {
-    const query =
-      search.trim().toLowerCase();
+  /* =======================================================
+     FILTERED JOBS
+  ======================================================= */
 
-    return jobs.filter((job) => {
-      const departmentMatch =
-        activeDepartment === "All" ||
-        job.department ===
-          activeDepartment;
+  const filteredJobs =
+    useMemo(() => {
+      const query =
+        search
+          .trim()
+          .toLowerCase();
 
-      const searchMatch =
-        !query ||
-        job.title
-          .toLowerCase()
-          .includes(query) ||
-        job.department
-          .toLowerCase()
-          .includes(query) ||
-        job.location
-          .toLowerCase()
-          .includes(query) ||
-        job.experience
-          .toLowerCase()
-          .includes(query) ||
-        job.skills.some((skill) =>
-          skill
-            .toLowerCase()
-            .includes(query),
-        );
+      return jobs.filter(
+        (job) => {
+          const
+            departmentMatch =
+              activeDepartment ===
+                "All" ||
+              job.department ===
+                activeDepartment;
 
-      return (
-        departmentMatch &&
-        searchMatch
+          const
+            searchMatch =
+              !query ||
+              job.title
+                .toLowerCase()
+                .includes(
+                  query,
+                ) ||
+              job.department
+                .toLowerCase()
+                .includes(
+                  query,
+                ) ||
+              job.location
+                .toLowerCase()
+                .includes(
+                  query,
+                ) ||
+              job.experience
+                .toLowerCase()
+                .includes(
+                  query,
+                ) ||
+              job.skills.some(
+                (skill) =>
+                  skill
+                    .toLowerCase()
+                    .includes(
+                      query,
+                    ),
+              ) ||
+              getJobResponsibilities(
+                job,
+              ).some(
+                (
+                  responsibility,
+                ) =>
+                  responsibility
+                    .toLowerCase()
+                    .includes(
+                      query,
+                    ),
+              ) ||
+              getPreferredQualification(
+                job,
+              )
+                .toLowerCase()
+                .includes(query);
+
+          return (
+            departmentMatch &&
+            searchMatch
+          );
+        },
       );
-    });
-  }, [
-    activeDepartment,
-    jobs,
-    search,
-  ]);
+    }, [
+      activeDepartment,
+      jobs,
+      search,
+    ]);
+
+  /* =======================================================
+     TOGGLE SKILLS
+  ======================================================= */
+
+  function toggleSkills(
+    jobId: string,
+  ) {
+    setExpandedSkills(
+      (current) => {
+        const next =
+          new Set(current);
+
+        if (
+          next.has(jobId)
+        ) {
+          next.delete(
+            jobId,
+          );
+        } else {
+          next.add(
+            jobId,
+          );
+        }
+
+        return next;
+      },
+    );
+  }
+
+  /* =======================================================
+     TOGGLE DETAILS
+  ======================================================= */
+
+  function toggleDetails(
+    jobId: string,
+  ) {
+    setExpandedDetails(
+      (current) => {
+        const next =
+          new Set(current);
+
+        if (
+          next.has(jobId)
+        ) {
+          next.delete(
+            jobId,
+          );
+        } else {
+          next.add(
+            jobId,
+          );
+        }
+
+        return next;
+      },
+    );
+  }
 
   return (
     <section
       id="open-positions"
       className="relative scroll-mt-28 overflow-hidden bg-white py-24 lg:py-32"
     >
+      {/* ===================================================
+          BACKGROUND
+      =================================================== */}
+
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(27,63,104,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(27,63,104,0.018)_1px,transparent_1px)] bg-[size:74px_74px]" />
 
       <div className="pointer-events-none absolute -left-40 top-16 h-96 w-96 rounded-full bg-primary-red/5 blur-3xl" />
@@ -121,6 +343,10 @@ export default function CurrentOpenings({
       <div className="pointer-events-none absolute -right-40 bottom-16 h-[420px] w-[420px] rounded-full bg-primary-blue/10 blur-3xl" />
 
       <Container>
+        {/* =================================================
+            SECTION HEADING
+        ================================================= */}
+
         <motion.div
           initial={{
             opacity: 0,
@@ -132,7 +358,8 @@ export default function CurrentOpenings({
           }}
           viewport={{
             once: true,
-            margin: "-100px",
+            margin:
+              "-100px",
           }}
           transition={{
             duration: 0.65,
@@ -148,18 +375,27 @@ export default function CurrentOpenings({
           </span>
 
           <h2 className="mt-7 text-4xl font-black leading-tight tracking-[-0.045em] text-primary-blue md:text-5xl lg:text-[58px]">
-            Explore Opportunities at Steelbuild
+            Explore Opportunities
+            at Steelbuild
           </h2>
 
           <p className="mx-auto mt-6 max-w-3xl text-lg font-medium leading-8 text-gray-600">
-            Discover opportunities across
-            engineering, detailing,
-            manufacturing, projects, quality,
-            sales and corporate functions.
+            Discover opportunities
+            across engineering,
+            detailing,
+            manufacturing,
+            projects, quality,
+            sales and corporate
+            functions.
           </p>
         </motion.div>
 
-        {jobs.length > 0 && (
+        {/* =================================================
+            SEARCH + FILTER
+        ================================================= */}
+
+        {jobs.length >
+          0 && (
           <motion.div
             initial={{
               opacity: 0,
@@ -187,9 +423,13 @@ export default function CurrentOpenings({
                 <input
                   type="search"
                   value={search}
-                  onChange={(event) =>
+                  onChange={(
+                    event,
+                  ) =>
                     setSearch(
-                      event.target.value,
+                      event
+                        .target
+                        .value,
                     )
                   }
                   placeholder="Search by role, department, location or skill..."
@@ -203,8 +443,12 @@ export default function CurrentOpenings({
                   className="text-primary-red"
                 />
 
-                {filteredJobs.length} Open Role
-                {filteredJobs.length === 1
+                {
+                  filteredJobs.length
+                }{" "}
+                Open Role
+                {filteredJobs.length ===
+                1
                   ? ""
                   : "s"}
               </div>
@@ -212,14 +456,18 @@ export default function CurrentOpenings({
 
             <div className="mt-5 flex flex-wrap gap-3">
               {departmentFilters.map(
-                (department) => {
+                (
+                  department,
+                ) => {
                   const active =
                     department ===
                     activeDepartment;
 
                   return (
                     <button
-                      key={department}
+                      key={
+                        department
+                      }
                       type="button"
                       onClick={() =>
                         setActiveDepartment(
@@ -232,7 +480,9 @@ export default function CurrentOpenings({
                           : "border-gray-200 bg-white text-primary-blue hover:border-primary-red/30 hover:text-primary-red"
                       }`}
                     >
-                      {department}
+                      {
+                        department
+                      }
                     </button>
                   );
                 },
@@ -241,158 +491,496 @@ export default function CurrentOpenings({
           </motion.div>
         )}
 
-        {filteredJobs.length > 0 ? (
-          <div className="relative z-10 mt-10 grid gap-6 lg:grid-cols-2">
+        {/* =================================================
+            JOB CARDS
+        ================================================= */}
+
+        {filteredJobs.length >
+        0 ? (
+          <div className="relative z-10 mt-10 grid items-start gap-6 lg:grid-cols-2">
             {filteredJobs.map(
-              (job, index) => (
-                <motion.article
-                  key={job._id}
-                  initial={{
-                    opacity: 0,
-                    y: 28,
-                  }}
-                  whileInView={{
-                    opacity: 1,
-                    y: 0,
-                  }}
-                  viewport={{
-                    once: true,
-                    margin: "-60px",
-                  }}
-                  transition={{
-                    duration: 0.5,
-                    delay:
-                      index * 0.05,
-                  }}
-                  className="group flex h-full flex-col overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-[0_18px_55px_rgba(27,63,104,0.07)] transition-all duration-500 hover:-translate-y-2 hover:border-primary-red/25 hover:shadow-[0_30px_80px_rgba(27,63,104,0.13)]"
-                >
-                  <div className="border-b border-gray-100 p-7 md:p-8">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
-                        {job.department ===
-                        "Manufacturing" ? (
-                          <Factory
-                            size={26}
-                          />
-                        ) : job.department ===
+              (
+                job,
+                index,
+              ) => {
+                const
+                  responsibilities =
+                    getJobResponsibilities(
+                      job,
+                    );
+
+                const
+                  preferredQualification =
+                    getPreferredQualification(
+                      job,
+                    );
+
+                const
+                  skillsAreExpanded =
+                    expandedSkills.has(
+                      job._id,
+                    );
+
+                const
+                  detailsAreExpanded =
+                    expandedDetails.has(
+                      job._id,
+                    );
+
+                const
+                  hasMoreSkills =
+                    job.skills
+                      .length >
+                    INITIAL_SKILLS_LIMIT;
+
+                const
+                  visibleSkills =
+                    skillsAreExpanded
+                      ? job.skills
+                      : job.skills.slice(
+                          0,
+                          INITIAL_SKILLS_LIMIT,
+                        );
+
+                const
+                  remainingSkills =
+                    Math.max(
+                      job.skills
+                        .length -
+                        INITIAL_SKILLS_LIMIT,
+                      0,
+                    );
+
+                const
+                  hasJobDetails =
+                    responsibilities.length >
+                      0 ||
+                    preferredQualification.length >
+                      0;
+
+                return (
+                  <motion.article
+                    key={
+                      job._id
+                    }
+                    initial={{
+                      opacity: 0,
+                      y: 28,
+                    }}
+                    whileInView={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    viewport={{
+                      once: true,
+                      margin:
+                        "-60px",
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay:
+                        index *
+                        0.05,
+                    }}
+                    className="group flex w-full flex-col overflow-hidden rounded-[30px] border border-gray-200 bg-white shadow-[0_18px_55px_rgba(27,63,104,0.07)] transition-[border-color,box-shadow] duration-500 ease-out hover:border-primary-red/25 hover:shadow-[0_26px_70px_rgba(27,63,104,0.12)]"
+                  >
+                    {/* =====================================
+                        JOB HEADER
+                    ===================================== */}
+
+                    <div className="border-b border-gray-100 p-7 md:p-8">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
+                          {job.department ===
+                          "Manufacturing" ? (
+                            <Factory
+                              size={
+                                26
+                              }
+                            />
+                          ) : job.department ===
                             "Project Execution" ? (
-                          <Building2
-                            size={26}
-                          />
-                        ) : (
-                          <BriefcaseBusiness
-                            size={26}
-                          />
-                        )}
-                      </div>
-
-                      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
-                        <CheckCircle2
-                          size={14}
-                        />
-
-                        Open Position
-                      </span>
-                    </div>
-
-                    <p className="mt-6 text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
-                      {job.department}
-                    </p>
-
-                    <h3 className="mt-3 text-2xl font-black leading-tight tracking-[-0.03em] text-primary-blue md:text-3xl">
-                      {job.title}
-                    </h3>
-
-                    <p className="mt-4 text-sm font-medium leading-7 text-gray-600">
-                      {job.description}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-1 flex-col p-7 md:p-8">
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <JobMeta
-                        icon={MapPin}
-                        label="Location"
-                        value={
-                          job.location
-                        }
-                      />
-
-                      <JobMeta
-                        icon={Clock3}
-                        label="Employment"
-                        value={
-                          job.employmentType
-                        }
-                      />
-
-                      <JobMeta
-                        icon={
-                          CalendarDays
-                        }
-                        label="Experience"
-                        value={
-                          job.experience
-                        }
-                      />
-
-                      <JobMeta
-                        icon={
-                          UsersRound
-                        }
-                        label="Department"
-                        value={
-                          job.department
-                        }
-                      />
-                    </div>
-
-                    {job.skills.length >
-                      0 && (
-                      <div className="mt-6 border-t border-gray-200 pt-6">
-                        <p className="text-xs font-black uppercase tracking-[0.2em] text-primary-red">
-                          Preferred Skills
-                        </p>
-
-                        <div className="mt-4 flex flex-wrap gap-2">
-                          {job.skills.map(
-                            (skill) => (
-                              <span
-                                key={
-                                  skill
-                                }
-                                className="rounded-full border border-primary-blue/10 bg-primary-blue/[0.035] px-3 py-2 text-xs font-bold text-primary-blue"
-                              >
-                                {skill}
-                              </span>
-                            ),
+                            <Building2
+                              size={
+                                26
+                              }
+                            />
+                          ) : (
+                            <BriefcaseBusiness
+                              size={
+                                26
+                              }
+                            />
                           )}
                         </div>
+
+                        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                          <CheckCircle2
+                            size={
+                              14
+                            }
+                          />
+
+                          Open
+                          Position
+                        </span>
                       </div>
-                    )}
 
-                    <div className="mt-auto pt-7">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          onApply(job)
+                      <p className="mt-6 text-[10px] font-black uppercase tracking-[0.22em] text-primary-red">
+                        {
+                          job.department
                         }
-                        className="group/button inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-2xl bg-primary-red px-7 py-4 font-black !text-white shadow-[0_18px_40px_rgba(194,17,25,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-blue"
-                      >
-                        Apply for This Position
+                      </p>
 
-                        <ArrowUpRight
-                          size={20}
-                          className="transition-transform duration-300 group-hover/button:translate-x-1 group-hover/button:-translate-y-1"
-                        />
-                      </button>
+                      <h3 className="mt-3 text-2xl font-black leading-tight tracking-[-0.03em] text-primary-blue md:text-3xl">
+                        {
+                          job.title
+                        }
+                      </h3>
+
+                      <p className="mt-4 text-sm font-medium leading-7 text-gray-600">
+                        {
+                          job.description
+                        }
+                      </p>
                     </div>
-                  </div>
-                </motion.article>
-              ),
+
+                    {/* =====================================
+                        JOB BODY
+                    ===================================== */}
+
+                    <div className="flex flex-1 flex-col p-7 md:p-8">
+                      {/* ===================================
+                          META
+                      =================================== */}
+
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <JobMeta
+                          icon={
+                            MapPin
+                          }
+                          label="Location"
+                          value={
+                            job.location
+                          }
+                        />
+
+                        <JobMeta
+                          icon={
+                            Clock3
+                          }
+                          label="Employment"
+                          value={
+                            job.employmentType
+                          }
+                        />
+
+                        <JobMeta
+                          icon={
+                            CalendarDays
+                          }
+                          label="Experience"
+                          value={
+                            job.experience
+                          }
+                        />
+
+                        <JobMeta
+                          icon={
+                            UsersRound
+                          }
+                          label="Department"
+                          value={
+                            job.department
+                          }
+                        />
+                      </div>
+
+                      {/* ===================================
+                          PREFERRED SKILLS
+                      =================================== */}
+
+                      {job.skills
+                        .length >
+                        0 && (
+                        <div className="mt-6 border-t border-gray-200 pt-6">
+                          <p className="text-xs font-black uppercase tracking-[0.2em] text-primary-red">
+                            Preferred
+                            Skills
+                          </p>
+
+                          <motion.div
+                            layout
+                            className="mt-4 flex flex-wrap gap-2"
+                          >
+                            {visibleSkills.map(
+                              (
+                                skill,
+                              ) => (
+                                <motion.span
+                                  layout
+                                  key={
+                                    skill
+                                  }
+                                  className="rounded-full border border-primary-blue/10 bg-primary-blue/[0.035] px-3 py-2 text-xs font-bold text-primary-blue"
+                                >
+                                  {
+                                    skill
+                                  }
+                                </motion.span>
+                              ),
+                            )}
+                          </motion.div>
+
+                          {hasMoreSkills && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                toggleSkills(
+                                  job._id,
+                                )
+                              }
+                              className="mt-4 inline-flex items-center gap-2 rounded-xl border border-primary-red/15 bg-primary-red/[0.045] px-4 py-2.5 text-xs font-black text-primary-red transition-all duration-300 hover:border-primary-red hover:bg-primary-red hover:text-white"
+                              aria-expanded={
+                                skillsAreExpanded
+                              }
+                            >
+                              {skillsAreExpanded
+                                ? "Show Fewer Skills"
+                                : `+ ${remainingSkills} More Skills`}
+
+                              <ChevronDown
+                                size={
+                                  15
+                                }
+                                className={`transition-transform duration-300 ${
+                                  skillsAreExpanded
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
+                              />
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {/* ===================================
+                          RESPONSIBILITIES + QUALIFICATION
+                      =================================== */}
+
+                      {hasJobDetails && (
+                        <div className="mt-6 border-t border-gray-200 pt-6">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              toggleDetails(
+                                job._id,
+                              )
+                            }
+                            aria-expanded={
+                              detailsAreExpanded
+                            }
+                            className={`group/details flex w-full items-center justify-between gap-4 rounded-2xl border px-5 py-4 text-left transition-all duration-300 ${
+                              detailsAreExpanded
+                                ? "border-primary-red/25 bg-primary-red/[0.045]"
+                                : "border-primary-blue/10 bg-[#f8fafc] hover:border-primary-red/25 hover:bg-primary-red/[0.035]"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover/details:bg-primary-red group-hover/details:text-white">
+                                <ListChecks
+                                  size={
+                                    19
+                                  }
+                                />
+                              </div>
+
+                              <div>
+                                <p className="text-sm font-black text-primary-blue">
+                                  {detailsAreExpanded
+                                    ? "Hide Job Details"
+                                    : "View Responsibilities & Qualification"}
+                                </p>
+
+                                <p className="mt-1 text-[11px] font-semibold text-gray-500">
+                                  Review
+                                  detailed
+                                  role
+                                  requirements
+                                </p>
+                              </div>
+                            </div>
+
+                            <ChevronDown
+                              size={
+                                20
+                              }
+                              className={`shrink-0 text-primary-red transition-transform duration-300 ${
+                                detailsAreExpanded
+                                  ? "rotate-180"
+                                  : ""
+                              }`}
+                            />
+                          </button>
+
+                          <AnimatePresence
+                            initial={
+                              false
+                            }
+                          >
+                            {detailsAreExpanded && (
+                              <motion.div
+                                key="job-details"
+                                initial={{
+                                  height: 0,
+                                  opacity: 0,
+                                }}
+                                animate={{
+                                  height:
+                                    "auto",
+                                  opacity: 1,
+                                }}
+                                exit={{
+                                  height: 0,
+                                  opacity: 0,
+                                }}
+                                transition={{
+                                  duration:
+                                    0.35,
+                                  ease: [
+                                    0.4,
+                                    0,
+                                    0.2,
+                                    1,
+                                  ],
+                                }}
+                                className="overflow-hidden"
+                              >
+                                <div className="mt-4 space-y-4">
+                                  {/* =====================
+                                      RESPONSIBILITIES
+                                  ===================== */}
+
+                                  {responsibilities.length >
+                                    0 && (
+                                    <div className="rounded-[22px] border border-gray-200 bg-[#f8fafc] p-5">
+                                      <div className="flex items-center gap-3">
+                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-red/10 text-primary-red">
+                                          <ListChecks
+                                            size={
+                                              17
+                                            }
+                                          />
+                                        </div>
+
+                                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary-red">
+                                          Key
+                                          Responsibilities
+                                        </p>
+                                      </div>
+
+                                      <ul className="mt-4 space-y-3">
+                                        {responsibilities.map(
+                                          (
+                                            responsibility,
+                                            responsibilityIndex,
+                                          ) => (
+                                            <li
+                                              key={`${job._id}-responsibility-${responsibilityIndex}`}
+                                              className="flex items-start gap-3"
+                                            >
+                                              <CheckCircle2
+                                                size={
+                                                  16
+                                                }
+                                                className="mt-1 shrink-0 text-primary-red"
+                                              />
+
+                                              <span className="text-sm font-medium leading-7 text-gray-600">
+                                                {
+                                                  responsibility
+                                                }
+                                              </span>
+                                            </li>
+                                          ),
+                                        )}
+                                      </ul>
+                                    </div>
+                                  )}
+
+                                  {/* =====================
+                                      QUALIFICATION
+                                  ===================== */}
+
+                                  {preferredQualification && (
+                                    <div className="rounded-[22px] border border-gray-200 bg-[#f8fafc] p-5">
+                                      <div className="flex items-center gap-3">
+                                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary-red/10 text-primary-red">
+                                          <GraduationCap
+                                            size={
+                                              18
+                                            }
+                                          />
+                                        </div>
+
+                                        <p className="text-[11px] font-black uppercase tracking-[0.18em] text-primary-red">
+                                          Preferred
+                                          Qualification
+                                        </p>
+                                      </div>
+
+                                      <p className="mt-4 text-sm font-medium leading-7 text-gray-600">
+                                        {
+                                          preferredQualification
+                                        }
+                                      </p>
+                                    </div>
+                                  )}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+
+                      {/* ===================================
+                          APPLY BUTTON
+                      =================================== */}
+
+                      <div className="mt-auto pt-7">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onApply(
+                              job,
+                            )
+                          }
+                          className="group/button inline-flex min-h-[56px] w-full items-center justify-center gap-3 rounded-2xl bg-primary-red px-7 py-4 font-black !text-white shadow-[0_18px_40px_rgba(194,17,25,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-blue"
+                        >
+                          Apply
+                          for
+                          This
+                          Position
+
+                          <ArrowUpRight
+                            size={
+                              20
+                            }
+                            className="transition-transform duration-300 group-hover/button:translate-x-1 group-hover/button:-translate-y-1"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              },
             )}
           </div>
         ) : (
+          /* =================================================
+             EMPTY STATE
+          ================================================= */
+
           <motion.div
             initial={{
               opacity: 0,
@@ -410,13 +998,15 @@ export default function CurrentOpenings({
             />
 
             <h3 className="mt-5 text-2xl font-black text-primary-blue">
-              {jobs.length === 0
+              {jobs.length ===
+              0
                 ? "No Current Openings"
                 : "No Matching Openings Found"}
             </h3>
 
             <p className="mx-auto mt-3 max-w-xl text-sm font-medium leading-7 text-gray-500">
-              {jobs.length === 0
+              {jobs.length ===
+              0
                 ? "There are no active openings at the moment. You can still submit your resume for future opportunities."
                 : "Try another department or search term. You can also submit your resume for future opportunities."}
             </p>
@@ -428,7 +1018,8 @@ export default function CurrentOpenings({
               }
               className="mt-7 inline-flex items-center gap-3 rounded-2xl bg-primary-red px-7 py-4 font-black !text-white transition hover:bg-primary-blue"
             >
-              Submit Your Resume
+              Submit Your
+              Resume
 
               <ArrowUpRight
                 size={19}
@@ -441,9 +1032,15 @@ export default function CurrentOpenings({
   );
 }
 
+/* =========================================================
+   JOB META
+========================================================= */
+
 type JobMetaProps = {
   icon: typeof MapPin;
+
   label: string;
+
   value: string;
 };
 
