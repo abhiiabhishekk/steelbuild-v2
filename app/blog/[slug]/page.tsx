@@ -15,7 +15,6 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import {
   BLOG_BY_SLUG_QUERY,
   BLOG_NAVIGATION_QUERY,
-  BLOG_SLUGS_QUERY,
   FALLBACK_RELATED_BLOGS_QUERY,
   RELATED_BLOGS_QUERY,
 } from "@/sanity/lib/queries";
@@ -35,9 +34,7 @@ type Props = {
   }>;
 };
 
-type BlogSlugItem = {
-  slug: string;
-};
+
 
 type BlogNavigationData = {
   previous: SanityBlogListItem | null;
@@ -53,6 +50,7 @@ const siteUrl =
   "https://steelbuildinfra.com";
 
 export const dynamicParams = true;
+export const revalidate = 3600;
 
 /* =========================================================
    ABSOLUTE IMAGE URL HELPER
@@ -89,24 +87,11 @@ const getBlogBySlug = async (
       slug,
     },
 
-    revalidate: 0,
+    revalidate: 3600,
   }) as Promise<SanityBlogDetail | null>;
 };
 
-/* =========================================================
-   STATIC BLOG PARAMS
-========================================================= */
 
-export async function generateStaticParams() {
-  const blogSlugs = (await sanityFetch({
-    query: BLOG_SLUGS_QUERY,
-    revalidate: 0,
-  })) as BlogSlugItem[];
-
-  return blogSlugs.map((blog) => ({
-    slug: blog.slug,
-  }));
-}
 
 /* =========================================================
    DYNAMIC BLOG SEO METADATA
@@ -292,18 +277,18 @@ export default async function BlogDetailPage({
   ======================================================= */
 
   const navigationPromise =
-    blog.publishedAt
-      ? sanityFetch({
-          query:
-            BLOG_NAVIGATION_QUERY,
+  blog.publishedAt
+    ? sanityFetch({
+        query:
+          BLOG_NAVIGATION_QUERY,
 
-          params: {
-            publishedAt:
-              blog.publishedAt,
-          },
+        params: {
+          publishedAt:
+            blog.publishedAt,
+        },
 
-          revalidate: 0,
-        })
+        revalidate: 3600,
+      })
       : Promise.resolve({
           previous: null,
           next: null,
@@ -323,7 +308,7 @@ export default async function BlogDetailPage({
               blog.categoryId,
           },
 
-          revalidate: 0,
+          revalidate: 3600,
         })
       : Promise.resolve([]);
 
@@ -341,7 +326,7 @@ export default async function BlogDetailPage({
               blog.categoryId,
           },
 
-          revalidate: 0,
+          revalidate: 3600,
         })
       : Promise.resolve([]);
 
@@ -393,9 +378,7 @@ export default async function BlogDetailPage({
       blog.thumbnail?.asset?.url,
     );
 
-  const authorName =
-    blog.author?.name ||
-    "Steelbuild Editorial Team";
+  
 
   const description =
     blog.seoDescription ||

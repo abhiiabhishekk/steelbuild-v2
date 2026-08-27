@@ -1,15 +1,21 @@
-import {createClient} from 'next-sanity'
+import { createClient } from "next-sanity";
 
 import {
   apiVersion,
   dataset,
   projectId,
-} from '../env'
+} from "../env";
 
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false,
-  perspective: 'published',
-})
+
+  /*
+   * Public published website requests can use Sanity CDN.
+   * This reduces direct API load and improves reliability.
+   */
+  useCdn: true,
+
+  perspective: "published",
+});

@@ -23,7 +23,6 @@ import {
   FALLBACK_PROJECTS_QUERY,
   PROJECT_BY_SLUG_QUERY,
   PROJECT_NAVIGATION_QUERY,
-  PROJECT_SLUGS_QUERY,
   RELATED_PROJECTS_QUERY,
 } from "@/sanity/lib/projectQueries";
 
@@ -33,23 +32,11 @@ import type {
   SanityProjectNavigation,
 } from "@/types/sanityProject";
 
-/* =========================================================
-   TYPES
-========================================================= */
-
 type Props = {
   params: Promise<{
     slug: string;
   }>;
 };
-
-type ProjectSlugItem = {
-  slug: string;
-};
-
-/* =========================================================
-   SITE CONFIG
-========================================================= */
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
@@ -57,9 +44,13 @@ const siteUrl =
 
 export const dynamicParams = true;
 
-/* =========================================================
-   PROJECT FETCHER
-========================================================= */
+/*
+ * Important:
+ * Dynamic project pages will be generated on demand and cached.
+ * This prevents Hostinger from prerendering every Sanity project
+ * during deployment.
+ */
+export const revalidate = 3600;
 
 const getProjectBySlug = async (
   slug: string,
@@ -71,13 +62,9 @@ const getProjectBySlug = async (
       slug,
     },
 
-    revalidate: 0,
+    revalidate: 3600,
   }) as Promise<SanityProjectDetail | null>;
 };
-
-/* =========================================================
-   ABSOLUTE IMAGE URL HELPER
-========================================================= */
 
 const getAbsoluteImageUrl = (
   imageUrl?: string,
@@ -95,25 +82,6 @@ const getAbsoluteImageUrl = (
 
   return `${siteUrl}${imageUrl}`;
 };
-
-/* =========================================================
-   STATIC PROJECT PARAMS
-========================================================= */
-
-export async function generateStaticParams() {
-  const projectSlugs = (await sanityFetch({
-    query: PROJECT_SLUGS_QUERY,
-    revalidate: 0,
-  })) as ProjectSlugItem[];
-
-  return projectSlugs.map((project) => ({
-    slug: project.slug,
-  }));
-}
-
-/* =========================================================
-   DYNAMIC PROJECT SEO METADATA
-========================================================= */
 
 export async function generateMetadata({
   params,
@@ -194,17 +162,11 @@ export async function generateMetadata({
 
     openGraph: {
       type: "article",
-
       locale: "en_IN",
-
-      url:
-        canonicalUrl,
-
+      url: canonicalUrl,
       siteName:
         "Steelbuild Infra Projects Limited",
-
       title,
-
       description,
 
       publishedTime:
@@ -222,13 +184,10 @@ export async function generateMetadata({
               {
                 url:
                   imageUrl,
-
                 width:
                   imageWidth,
-
                 height:
                   imageHeight,
-
                 alt:
                   imageAlt,
               },
@@ -239,11 +198,8 @@ export async function generateMetadata({
     twitter: {
       card:
         "summary_large_image",
-
       title,
-
       description,
-
       images:
         imageUrl
           ? [imageUrl]
@@ -257,23 +213,16 @@ export async function generateMetadata({
       googleBot: {
         index: true,
         follow: true,
-
         "max-image-preview":
           "large",
-
         "max-snippet":
           -1,
-
         "max-video-preview":
           -1,
       },
     },
   };
 }
-
-/* =========================================================
-   PROJECT DETAIL PAGE
-========================================================= */
 
 export default async function ProjectDetailPage({
   params,
@@ -287,20 +236,12 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
-  /* =======================================================
-     PROJECT DISPLAY ORDER
-  ======================================================= */
-
   const displayOrder =
     typeof project.displayOrder ===
     "number"
       ? project.displayOrder
       : Number(project.projectId) ||
         9999;
-
-  /* =======================================================
-     PARALLEL SANITY REQUESTS
-  ======================================================= */
 
   const navigationPromise =
     sanityFetch({
@@ -311,7 +252,7 @@ export default async function ProjectDetailPage({
         displayOrder,
       },
 
-      revalidate: 0,
+      revalidate: 3600,
     });
 
   const relatedPromise =
@@ -327,7 +268,7 @@ export default async function ProjectDetailPage({
           project.category,
       },
 
-      revalidate: 0,
+      revalidate: 3600,
     });
 
   const fallbackPromise =
@@ -343,7 +284,7 @@ export default async function ProjectDetailPage({
           project.category,
       },
 
-      revalidate: 0,
+      revalidate: 3600,
     });
 
   const [
@@ -365,10 +306,6 @@ export default async function ProjectDetailPage({
   const fallbackRelated =
     fallbackResult as SanityProjectListItem[];
 
-  /* =======================================================
-     RELATED PROJECTS
-  ======================================================= */
-
   const relatedProjects = [
     ...categoryRelated,
 
@@ -381,10 +318,6 @@ export default async function ProjectDetailPage({
         ),
     ),
   ].slice(0, 3);
-
-  /* =======================================================
-     PROJECT GALLERY
-  ======================================================= */
 
   const gallery =
     project.gallery?.length
@@ -410,17 +343,9 @@ export default async function ProjectDetailPage({
           Boolean(imageUrl),
       );
 
-  /* =======================================================
-     PROJECT DESCRIPTION
-  ======================================================= */
-
   const description =
     project.shortDescription ||
     `${project.name} is a ${project.status.toLowerCase()} ${project.category} Pre-Engineered Building project delivered by Steelbuild Infra Projects Limited in ${project.location}.`;
-
-  /* =======================================================
-     PROJECT SCHEMA
-  ======================================================= */
 
   const projectSchema = {
     "@type":
@@ -499,10 +424,6 @@ export default async function ProjectDetailPage({
       "en-IN",
   };
 
-  /* =======================================================
-     WEB PAGE SCHEMA
-  ======================================================= */
-
   const webPageSchema = {
     "@type":
       "WebPage",
@@ -556,10 +477,6 @@ export default async function ProjectDetailPage({
       "en-IN",
   };
 
-  /* =======================================================
-     BREADCRUMB SCHEMA
-  ======================================================= */
-
   const breadcrumbSchema = {
     "@type":
       "BreadcrumbList",
@@ -609,10 +526,6 @@ export default async function ProjectDetailPage({
     ],
   };
 
-  /* =======================================================
-     COMBINED STRUCTURED DATA
-  ======================================================= */
-
   const structuredData = {
     "@context":
       "https://schema.org",
@@ -626,17 +539,9 @@ export default async function ProjectDetailPage({
 
   return (
     <>
-      {/* ===================================================
-          SEO / GEO STRUCTURED DATA
-      =================================================== */}
-
       <JsonLd
         data={structuredData}
       />
-
-      {/* ===================================================
-          PROJECT HERO
-      =================================================== */}
 
       <section className="relative overflow-hidden bg-[#f7f9fc] pb-20 pt-36 lg:pb-28 lg:pt-44">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(194,17,25,0.06),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(27,63,104,0.08),transparent_38%)]" />
@@ -651,10 +556,6 @@ export default async function ProjectDetailPage({
                 project.name
               }
             />
-
-            {/* =============================================
-                TOP INFORMATION
-            ============================================= */}
 
             <div className="mb-12 flex flex-wrap items-center gap-5 md:gap-8">
               <Link
@@ -692,10 +593,6 @@ export default async function ProjectDetailPage({
               </span>
             </div>
 
-            {/* =============================================
-                PROJECT TITLE
-            ============================================= */}
-
             <h1 className="max-w-5xl text-5xl font-black leading-tight tracking-[-0.05em] text-primary-blue md:text-6xl lg:text-[76px]">
               {
                 project.name
@@ -708,13 +605,7 @@ export default async function ProjectDetailPage({
               }
             </p>
 
-            {/* =============================================
-                PROJECT STATS
-            ============================================= */}
-
             <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {/* Location */}
-
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <MapPin
                   className="text-primary-red"
@@ -731,8 +622,6 @@ export default async function ProjectDetailPage({
                   }
                 </p>
               </div>
-
-              {/* Category */}
 
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <Building2
@@ -751,8 +640,6 @@ export default async function ProjectDetailPage({
                 </p>
               </div>
 
-              {/* Area */}
-
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <Ruler
                   className="text-primary-red"
@@ -769,8 +656,6 @@ export default async function ProjectDetailPage({
                   }
                 </p>
               </div>
-
-              {/* Tonnage */}
 
               <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                 <Weight
@@ -793,10 +678,6 @@ export default async function ProjectDetailPage({
         </Container>
       </section>
 
-      {/* ===================================================
-          PROJECT GALLERY / RELATED PROJECTS
-      =================================================== */}
-
       <section className="bg-white py-20 lg:py-24">
         <Container>
           {gallery.length > 0 ? (
@@ -811,16 +692,11 @@ export default async function ProjectDetailPage({
           ) : (
             <div className="rounded-[32px] border border-dashed border-gray-300 bg-[#f7f9fc] p-10 text-center">
               <h2 className="text-2xl font-black text-primary-blue">
-                Project Gallery
-                Coming Soon
+                Project Gallery Coming Soon
               </h2>
 
               <p className="mt-3 text-sm font-medium leading-7 text-gray-600">
-                Images for this
-                project have not
-                yet been added to
-                the content
-                management system.
+                Images for this project have not yet been added to the content management system.
               </p>
             </div>
           )}
