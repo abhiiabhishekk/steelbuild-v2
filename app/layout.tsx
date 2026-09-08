@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+
 import Script from "next/script";
 
 import AppLayoutShell from "@/components/layout/AppLayoutShell";
+
 import CookieConsent from "@/components/common/CookieConsent";
+
 import NewsletterPopup from "@/components/newsletter/NewsletterPopup";
+
 import JsonLd from "@/components/seo/JsonLd";
 
 import { SanityLive } from "@/sanity/lib/live";
@@ -143,6 +147,11 @@ export const metadata: Metadata = {
     },
   },
 
+  verification: {
+    google:
+      "XxaBP1WxUwgEKUgQpJr8ZkX99kh-8dSz_pBK39qmw4Q",
+  },
+
   other: {
     "content-language":
       "en-IN",
@@ -238,7 +247,7 @@ export default function RootLayout({
       "Manufacturing Facilities",
       "Steel Infrastructure",
       "Sustainable Steel Construction",
-      "Modular Steel Construction"
+      "Modular Steel Construction",
     ],
 
     contactPoint: {

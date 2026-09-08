@@ -47,7 +47,7 @@ const socials = [
   },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/steelbuildinfra/",
+    href: "https://www.instagram.com/steelbuildinfraprojects/",
     icon: FaInstagram,
   },
   {
