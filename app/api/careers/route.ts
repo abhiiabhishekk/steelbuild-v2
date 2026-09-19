@@ -14,8 +14,14 @@ import {
 } from "@/lib/validation/career";
 
 export const runtime = "nodejs";
-export const dynamic =
-  "force-dynamic";
+export const dynamic = "force-dynamic";
+
+// ========================================
+// GOOGLE APPS SCRIPT WEB APP
+// ========================================
+
+const GOOGLE_SHEET_WEBAPP =
+  "https://script.google.com/macros/s/AKfycbwCrR5xCdPaaGEy2zuIMhkj-sc57j01W2LdfGl2d3SBhCuGCXmoyH_WYWqz60BK7CXY/exec";
 
 const MAX_RESUME_SIZE =
   10 * 1024 * 1024;
@@ -142,6 +148,10 @@ function sanitizeFileName(
   );
 }
 
+// ========================================
+// BUILD CAREER FORM DATA
+// ========================================
+
 function buildCareerData(
   formData: FormData,
 ): CareerFormData {
@@ -208,6 +218,31 @@ function buildCareerData(
         "currentCompany",
       ),
 
+    // NEW / REQUIRED CAREER DETAILS
+    currentSalary:
+      getFormText(
+        formData,
+        "currentSalary",
+      ),
+
+    expectedSalary:
+      getFormText(
+        formData,
+        "expectedSalary",
+      ),
+
+    noticePeriod:
+      getFormText(
+        formData,
+        "noticePeriod",
+      ),
+
+    portfolioUrl:
+      getFormText(
+        formData,
+        "portfolioUrl",
+      ),
+
     message:
       getFormText(
         formData,
@@ -247,6 +282,10 @@ function buildCareerData(
       ),
   };
 }
+
+// ========================================
+// RESUME VALIDATION
+// ========================================
 
 function validateResume(
   file: File,
@@ -313,6 +352,171 @@ async function prepareResume(
       "application/octet-stream",
   };
 }
+
+// ========================================
+// SAVE TO GOOGLE SHEET + GOOGLE DRIVE
+// ========================================
+
+async function saveCareerApplicationToGoogle(
+  data: CareerFormData,
+  resume: CareerResumeAttachment,
+) {
+  try {
+    const resumeBase64 =
+      resume.content.toString(
+        "base64",
+      );
+
+    const response =
+      await fetch(
+        GOOGLE_SHEET_WEBAPP,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8",
+          },
+
+          body: JSON.stringify({
+            applicationType:
+              data.applicationType,
+
+            jobDocumentId:
+              data.jobDocumentId,
+
+            jobId:
+              data.jobId,
+
+            jobSlug:
+              data.jobSlug,
+
+            jobTitle:
+              data.jobTitle,
+
+            jobDepartment:
+              data.jobDepartment,
+
+            fullName:
+              data.fullName,
+
+            email:
+              data.email,
+
+            phone:
+              data.phone,
+
+            currentLocation:
+              data.currentLocation,
+
+            department:
+              data.department,
+
+            preferredRole:
+              data.preferredRole,
+
+            experience:
+              data.experience,
+
+            qualification:
+              data.qualification,
+
+            currentCompany:
+              data.currentCompany,
+
+            // ========================================
+            // SALARY / NOTICE / PORTFOLIO
+            // ========================================
+
+            currentSalary:
+              data.currentSalary,
+
+            expectedSalary:
+              data.expectedSalary,
+
+            noticePeriod:
+              data.noticePeriod,
+
+            portfolioUrl:
+              data.portfolioUrl,
+
+            message:
+              data.message,
+
+            // ========================================
+            // RESUME
+            // ========================================
+
+            resumeFileName:
+              resume.filename,
+
+            resumeMimeType:
+              resume.contentType,
+
+            resumeBase64,
+          }),
+        },
+      );
+
+    const responseText =
+      await response.text();
+
+    if (!response.ok) {
+      throw new Error(
+        `Google Apps Script request failed with status ${response.status}: ${responseText}`,
+      );
+    }
+
+    let result:
+      | {
+          success?: boolean;
+          message?: string;
+          cvLink?: string;
+        }
+      | null = null;
+
+    try {
+      result =
+        JSON.parse(
+          responseText,
+        );
+    } catch {
+      throw new Error(
+        `Google Apps Script returned invalid JSON: ${responseText}`,
+      );
+    }
+
+    if (!result?.success) {
+      throw new Error(
+        result?.message ||
+          "Google Apps Script could not save the career application.",
+      );
+    }
+
+    console.log(
+      "CAREER FORM: Google Sheet + Drive sync completed",
+      {
+        cvLink:
+          result.cvLink,
+      },
+    );
+
+    return result;
+  } catch (error) {
+    console.error(
+      "CAREER FORM: Google Sheet + Drive sync failed:",
+      error,
+    );
+
+    // Google Sheet/Drive failure should not
+    // stop the HR email submission.
+    return null;
+  }
+}
+
+// ========================================
+// POST
+// ========================================
 
 export async function POST(
   request: Request,
@@ -383,6 +587,10 @@ export async function POST(
       );
     }
 
+    // ========================================
+    // BUILD + VALIDATE FORM DATA
+    // ========================================
+
     const careerData =
       buildCareerData(
         submittedFormData,
@@ -407,6 +615,10 @@ export async function POST(
         400,
       );
     }
+
+    // ========================================
+    // RESUME
+    // ========================================
 
     const resumeEntry =
       submittedFormData.get(
@@ -481,6 +693,22 @@ export async function POST(
           validationResult.data
             .email,
 
+        currentSalary:
+          validationResult.data
+            .currentSalary,
+
+        expectedSalary:
+          validationResult.data
+            .expectedSalary,
+
+        noticePeriod:
+          validationResult.data
+            .noticePeriod,
+
+        portfolioUrl:
+          validationResult.data
+            .portfolioUrl,
+
         receiver:
           process.env
             .CAREER_RECEIVER_EMAIL,
@@ -497,6 +725,10 @@ export async function POST(
           resume.filename,
       },
     );
+
+    // ========================================
+    // 1. SEND HR EMAIL
+    // ========================================
 
     const mailResult =
       await sendCareerMail({
@@ -521,6 +753,19 @@ export async function POST(
           mailResult.response,
       },
     );
+
+    // ========================================
+    // 2. GOOGLE SHEET + GOOGLE DRIVE
+    // ========================================
+
+    await saveCareerApplicationToGoogle(
+      validationResult.data,
+      resume,
+    );
+
+    // ========================================
+    // SUCCESS
+    // ========================================
 
     const successMessage =
       validationResult.data
@@ -553,6 +798,10 @@ export async function POST(
     );
   }
 }
+
+// ========================================
+// GET NOT ALLOWED
+// ========================================
 
 export function GET() {
   return createResponse(

@@ -24,32 +24,45 @@ const EMAIL_PATTERN =
 const PHONE_PATTERN =
   /^[0-9+\-\s()]{7,20}$/;
 
-const ALLOWED_DEPARTMENTS =
-  new Set([
-    "Design & Engineering",
-    "Design & Detailing",
-    "Manufacturing",
-    "Quality Assurance",
-    "Project Execution",
-    "Sales & Marketing",
-    "Commercial",
-    "Finance & Accounts",
-    "Human Resources",
-    "Information Technology",
-    "Corporate Functions",
-    "Other",
-  ]);
+const URL_PATTERN =
+  /^https?:\/\/[^\s]+$/i;
 
-const ALLOWED_EXPERIENCE_VALUES =
-  new Set([
-    "Fresher",
-    "Less than 1 Year",
-    "1–3 Years",
-    "3–5 Years",
-    "5–8 Years",
-    "8–12 Years",
-    "12+ Years",
-  ]);
+const ALLOWED_DEPARTMENTS = new Set([
+  "Design & Engineering",
+  "Design & Detailing",
+  "Manufacturing",
+  "Quality Assurance",
+  "Project Execution",
+  "Sales & Marketing",
+  "Commercial",
+  "Finance & Accounts",
+  "Human Resources",
+  "Information Technology",
+  "Corporate Functions",
+  "Other",
+]);
+
+const ALLOWED_EXPERIENCE_VALUES = new Set([
+  "Fresher",
+  "Less than 1 Year",
+  "1–3 Years",
+  "3–5 Years",
+  "5–8 Years",
+  "8–12 Years",
+  "12+ Years",
+]);
+
+const ALLOWED_NOTICE_PERIOD_VALUES = new Set([
+  "",
+  "Immediate",
+  "15 Days",
+  "30 Days",
+  "45 Days",
+  "60 Days",
+  "90 Days",
+  "More than 90 Days",
+  "Negotiable",
+]);
 
 const ALLOWED_APPLICATION_TYPES =
   new Set<CareerApplicationType>([
@@ -57,9 +70,7 @@ const ALLOWED_APPLICATION_TYPES =
     "General Application",
   ]);
 
-function cleanText(
-  value: unknown,
-): string {
+function cleanText(value: unknown): string {
   return typeof value === "string"
     ? value.trim()
     : "";
@@ -116,17 +127,12 @@ export function validateCareerForm(
   }
 
   const input =
-    inputData as Record<
-      string,
-      unknown
-    >;
+    inputData as Record<string, unknown>;
 
   const rawApplicationType =
-    cleanText(
-      input.applicationType,
-    );
+    cleanText(input.applicationType);
 
-  const applicationType =
+  const applicationType: CareerApplicationType =
     rawApplicationType ===
     "Specific Opening"
       ? "Specific Opening"
@@ -137,42 +143,40 @@ export function validateCareerForm(
       cleanText(input.fullName),
 
     email:
-      cleanText(
-        input.email,
-      ).toLowerCase(),
+      cleanText(input.email).toLowerCase(),
 
     phone:
       cleanText(input.phone),
 
     currentLocation:
-      cleanText(
-        input.currentLocation,
-      ),
+      cleanText(input.currentLocation),
 
     department:
-      cleanText(
-        input.department,
-      ),
+      cleanText(input.department),
 
     preferredRole:
-      cleanText(
-        input.preferredRole,
-      ),
+      cleanText(input.preferredRole),
 
     experience:
-      cleanText(
-        input.experience,
-      ),
+      cleanText(input.experience),
 
     qualification:
-      cleanText(
-        input.qualification,
-      ),
+      cleanText(input.qualification),
 
     currentCompany:
-      cleanText(
-        input.currentCompany,
-      ),
+      cleanText(input.currentCompany),
+
+    currentSalary:
+      cleanText(input.currentSalary),
+
+    expectedSalary:
+      cleanText(input.expectedSalary),
+
+    noticePeriod:
+      cleanText(input.noticePeriod),
+
+    portfolioUrl:
+      cleanText(input.portfolioUrl),
 
     message:
       cleanText(input.message),
@@ -180,9 +184,7 @@ export function validateCareerForm(
     applicationType,
 
     jobDocumentId:
-      cleanText(
-        input.jobDocumentId,
-      ),
+      cleanText(input.jobDocumentId),
 
     jobId:
       cleanText(input.jobId),
@@ -194,13 +196,10 @@ export function validateCareerForm(
       cleanText(input.jobTitle),
 
     jobDepartment:
-      cleanText(
-        input.jobDepartment,
-      ),
+      cleanText(input.jobDepartment),
   };
 
-  const errors:
-    CareerFormErrors = {};
+  const errors: CareerFormErrors = {};
 
   validateRequiredText({
     value: data.fullName,
@@ -215,9 +214,7 @@ export function validateCareerForm(
     errors.email =
       "Please enter your email address.";
   } else if (
-    !EMAIL_PATTERN.test(
-      data.email,
-    )
+    !EMAIL_PATTERN.test(data.email)
   ) {
     errors.email =
       "Please enter a valid email address.";
@@ -232,29 +229,21 @@ export function validateCareerForm(
     errors.phone =
       "Please enter your phone number.";
   } else if (
-    !PHONE_PATTERN.test(
-      data.phone,
-    )
+    !PHONE_PATTERN.test(data.phone)
   ) {
     errors.phone =
       "Please enter a valid phone number.";
   } else if (
-    data.phone.replace(
-      /\D/g,
-      "",
-    ).length < 10
+    data.phone.replace(/\D/g, "").length < 10
   ) {
     errors.phone =
       "Please enter a valid phone number.";
   }
 
   validateRequiredText({
-    value:
-      data.currentLocation,
-    field:
-      "currentLocation",
-    label:
-      "your current location",
+    value: data.currentLocation,
+    field: "currentLocation",
+    label: "your current location",
     errors,
     minimumLength: 2,
     maximumLength: 150,
@@ -273,12 +262,9 @@ export function validateCareerForm(
   }
 
   validateRequiredText({
-    value:
-      data.preferredRole,
-    field:
-      "preferredRole",
-    label:
-      "your preferred role",
+    value: data.preferredRole,
+    field: "preferredRole",
+    label: "your preferred role",
     errors,
     minimumLength: 2,
     maximumLength: 160,
@@ -297,24 +283,56 @@ export function validateCareerForm(
   }
 
   if (
-    data.qualification.length >
-    180
+    data.qualification.length > 180
   ) {
     errors.qualification =
       "Qualification cannot exceed 180 characters.";
   }
 
   if (
-    data.currentCompany.length >
-    180
+    data.currentCompany.length > 180
   ) {
     errors.currentCompany =
       "Company name cannot exceed 180 characters.";
   }
 
   if (
-    data.message.length > 3000
+    data.currentSalary.length > 100
   ) {
+    errors.currentSalary =
+      "Current salary cannot exceed 100 characters.";
+  }
+
+  if (
+    data.expectedSalary.length > 100
+  ) {
+    errors.expectedSalary =
+      "Expected salary cannot exceed 100 characters.";
+  }
+
+  if (
+    !ALLOWED_NOTICE_PERIOD_VALUES.has(
+      data.noticePeriod,
+    )
+  ) {
+    errors.noticePeriod =
+      "Please select a valid notice period.";
+  }
+
+  if (
+    data.portfolioUrl &&
+    !URL_PATTERN.test(data.portfolioUrl)
+  ) {
+    errors.portfolioUrl =
+      "Please enter a complete URL beginning with http:// or https://.";
+  } else if (
+    data.portfolioUrl.length > 500
+  ) {
+    errors.portfolioUrl =
+      "Portfolio or LinkedIn URL cannot exceed 500 characters.";
+  }
+
+  if (data.message.length > 3000) {
     errors.message =
       "Professional summary cannot exceed 3000 characters.";
   }
@@ -354,8 +372,7 @@ export function validateCareerForm(
   }
 
   if (
-    Object.keys(errors).length >
-    0
+    Object.keys(errors).length > 0
   ) {
     return {
       success: false,

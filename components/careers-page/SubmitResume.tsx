@@ -7,14 +7,19 @@ import {
   useRef,
   useState,
 } from "react";
+
 import { motion } from "framer-motion";
+
 import {
   AlertCircle,
   BadgeCheck,
   BriefcaseBusiness,
   CheckCircle2,
+  Clock3,
   FileText,
   GraduationCap,
+  IndianRupee,
+  Link2,
   Loader2,
   Mail,
   MapPin,
@@ -42,11 +47,18 @@ type ResumeFormState = {
   experience: string;
   qualification: string;
   currentCompany: string;
+  currentSalary: string;
+  expectedSalary: string;
+  noticePeriod: string;
+  portfolioUrl: string;
   message: string;
 };
 
 type ResumeFormErrors = Partial<
-  Record<keyof ResumeFormState | "resume", string>
+  Record<
+    keyof ResumeFormState | "resume",
+    string
+  >
 >;
 
 type CareerApiResponse = {
@@ -56,22 +68,29 @@ type CareerApiResponse = {
 };
 
 type SubmitResumeProps = {
-  selectedOpening: SanityJobOpening | null;
-  onClearSelectedOpening: () => void;
+  selectedOpening:
+    SanityJobOpening | null;
+  onClearSelectedOpening:
+    () => void;
 };
 
-const initialFormState: ResumeFormState = {
-  fullName: "",
-  email: "",
-  phone: "",
-  currentLocation: "",
-  department: "",
-  preferredRole: "",
-  experience: "",
-  qualification: "",
-  currentCompany: "",
-  message: "",
-};
+const initialFormState:
+  ResumeFormState = {
+    fullName: "",
+    email: "",
+    phone: "",
+    currentLocation: "",
+    department: "",
+    preferredRole: "",
+    experience: "",
+    qualification: "",
+    currentCompany: "",
+    currentSalary: "",
+    expectedSalary: "",
+    noticePeriod: "",
+    portfolioUrl: "",
+    message: "",
+  };
 
 const departments = [
   "Design & Engineering",
@@ -98,6 +117,17 @@ const experienceOptions = [
   "12+ Years",
 ];
 
+const noticePeriodOptions = [
+  "Immediate",
+  "15 Days",
+  "30 Days",
+  "45 Days",
+  "60 Days",
+  "90 Days",
+  "More than 90 Days",
+  "Negotiable",
+];
+
 const inputClassName =
   "mt-2 min-h-[58px] w-full rounded-2xl border border-gray-200 bg-white px-5 py-4 text-base font-semibold text-primary-blue outline-none transition-all duration-300 placeholder:font-medium placeholder:text-gray-400 focus:border-primary-red focus:ring-4 focus:ring-primary-red/10";
 
@@ -109,7 +139,9 @@ export default function SubmitResume({
   onClearSelectedOpening,
 }: SubmitResumeProps) {
   const [formData, setFormData] =
-    useState<ResumeFormState>(initialFormState);
+    useState<ResumeFormState>(
+      initialFormState,
+    );
 
   const [errors, setErrors] =
     useState<ResumeFormErrors>({});
@@ -126,11 +158,15 @@ export default function SubmitResume({
   const [submitted, setSubmitted] =
     useState(false);
 
-  const [submissionError, setSubmissionError] =
-    useState("");
+  const [
+    submissionError,
+    setSubmissionError,
+  ] = useState("");
 
   const fileInputRef =
-    useRef<HTMLInputElement | null>(null);
+    useRef<HTMLInputElement | null>(
+      null,
+    );
 
   const isSpecificOpening =
     Boolean(selectedOpening);
@@ -180,7 +216,8 @@ export default function SubmitResume({
   };
 
   const validateForm = () => {
-    const nextErrors: ResumeFormErrors = {};
+    const nextErrors:
+      ResumeFormErrors = {};
 
     if (!formData.fullName.trim()) {
       nextErrors.fullName =
@@ -203,14 +240,18 @@ export default function SubmitResume({
       nextErrors.phone =
         "Please enter your phone number.";
     } else if (
-      formData.phone.replace(/\D/g, "").length <
-      10
+      formData.phone.replace(
+        /\D/g,
+        "",
+      ).length < 10
     ) {
       nextErrors.phone =
         "Please enter a valid phone number.";
     }
 
-    if (!formData.currentLocation.trim()) {
+    if (
+      !formData.currentLocation.trim()
+    ) {
       nextErrors.currentLocation =
         "Please enter your current location.";
     }
@@ -220,7 +261,9 @@ export default function SubmitResume({
         "Please select your preferred department.";
     }
 
-    if (!formData.preferredRole.trim()) {
+    if (
+      !formData.preferredRole.trim()
+    ) {
       nextErrors.preferredRole =
         "Please enter your preferred role.";
     }
@@ -230,21 +273,39 @@ export default function SubmitResume({
         "Please select your experience.";
     }
 
+    if (
+      formData.portfolioUrl.trim() &&
+      !/^https?:\/\/[^\s]+$/i.test(
+        formData.portfolioUrl.trim(),
+      )
+    ) {
+      nextErrors.portfolioUrl =
+        "Please enter a complete URL beginning with http:// or https://.";
+    }
+
     if (!selectedFile) {
       nextErrors.resume =
         "Please upload your resume.";
     }
 
     setErrors(nextErrors);
-    setFileError(nextErrors.resume || "");
 
-    return Object.keys(nextErrors).length === 0;
+    setFileError(
+      nextErrors.resume || "",
+    );
+
+    return (
+      Object.keys(nextErrors).length ===
+      0
+    );
   };
 
   const handleFileChange = (
-    event: ChangeEvent<HTMLInputElement>,
+    event:
+      ChangeEvent<HTMLInputElement>,
   ) => {
-    const file = event.target.files?.[0];
+    const file =
+      event.target.files?.[0];
 
     setFileError("");
     setSubmissionError("");
@@ -272,7 +333,9 @@ export default function SubmitResume({
         ?.toLowerCase() ?? "";
 
     if (
-      !allowedExtensions.includes(extension)
+      !allowedExtensions.includes(
+        extension,
+      )
     ) {
       const errorMessage =
         "Please upload a PDF, DOC or DOCX resume.";
@@ -321,31 +384,34 @@ export default function SubmitResume({
     }));
 
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value =
+        "";
     }
   };
 
-  const handleGeneralApplication = () => {
-    onClearSelectedOpening();
+  const handleGeneralApplication =
+    () => {
+      onClearSelectedOpening();
 
-    setSubmitted(false);
-    setSubmissionError("");
+      setSubmitted(false);
+      setSubmissionError("");
 
-    setErrors((current) => ({
-      ...current,
-      department: undefined,
-      preferredRole: undefined,
-    }));
+      setErrors((current) => ({
+        ...current,
+        department: undefined,
+        preferredRole: undefined,
+      }));
 
-    setFormData((current) => ({
-      ...current,
-      department: "",
-      preferredRole: "",
-    }));
-  };
+      setFormData((current) => ({
+        ...current,
+        department: "",
+        preferredRole: "",
+      }));
+    };
 
   const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>,
+    event:
+      FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
 
@@ -356,7 +422,8 @@ export default function SubmitResume({
     setSubmissionError("");
     setSubmitted(false);
 
-    const valid = validateForm();
+    const valid =
+      validateForm();
 
     if (!valid) {
       window.setTimeout(() => {
@@ -384,7 +451,9 @@ export default function SubmitResume({
       const requestData =
         new FormData();
 
-      Object.entries(formData).forEach(
+      Object.entries(
+        formData,
+      ).forEach(
         ([field, value]) => {
           requestData.append(
             field,
@@ -422,7 +491,8 @@ export default function SubmitResume({
 
       requestData.append(
         "jobDepartment",
-        selectedOpening?.department ?? "",
+        selectedOpening?.department ??
+          "",
       );
 
       requestData.append(
@@ -430,15 +500,17 @@ export default function SubmitResume({
         selectedFile,
       );
 
-      const response = await fetch(
-        "/api/careers",
-        {
-          method: "POST",
-          body: requestData,
-        },
-      );
+      const response =
+        await fetch(
+          "/api/careers",
+          {
+            method: "POST",
+            body: requestData,
+          },
+        );
 
-      let result: CareerApiResponse;
+      let result:
+        CareerApiResponse;
 
       try {
         result =
@@ -456,25 +528,36 @@ export default function SubmitResume({
         !result.success
       ) {
         if (result.errors) {
-          setErrors(result.errors);
+          setErrors(
+            result.errors,
+          );
 
-          if (result.errors.resume) {
+          if (
+            result.errors.resume
+          ) {
             setFileError(
               result.errors.resume,
             );
           }
 
-          window.setTimeout(() => {
-            const firstError =
-              document.querySelector(
-                "[data-career-error='true']",
-              );
+          window.setTimeout(
+            () => {
+              const firstError =
+                document.querySelector(
+                  "[data-career-error='true']",
+                );
 
-            firstError?.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-            });
-          }, 0);
+              firstError?.scrollIntoView(
+                {
+                  behavior:
+                    "smooth",
+                  block:
+                    "center",
+                },
+              );
+            },
+            0,
+          );
         }
 
         setSubmissionError(
@@ -490,9 +573,11 @@ export default function SubmitResume({
       setFormData({
         ...initialFormState,
         department:
-          selectedOpening?.department ?? "",
+          selectedOpening
+            ?.department ?? "",
         preferredRole:
-          selectedOpening?.title ?? "",
+          selectedOpening?.title ??
+          "",
       });
 
       setErrors({});
@@ -581,19 +666,28 @@ export default function SubmitResume({
             <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.25em] text-primary-red">
-                  Applying for Current Opening
+                  Applying for Current
+                  Opening
                 </p>
 
                 <h3 className="mt-2 text-2xl font-black text-primary-blue">
-                  {selectedOpening.title}
+                  {
+                    selectedOpening.title
+                  }
                 </h3>
 
                 <p className="mt-2 text-sm font-semibold leading-7 text-gray-500">
-                  {selectedOpening.jobId}
+                  {
+                    selectedOpening.jobId
+                  }
                   {" • "}
-                  {selectedOpening.department}
+                  {
+                    selectedOpening.department
+                  }
                   {" • "}
-                  {selectedOpening.location}
+                  {
+                    selectedOpening.location
+                  }
                 </p>
               </div>
 
@@ -604,7 +698,8 @@ export default function SubmitResume({
                 }
                 className="inline-flex min-h-[48px] items-center justify-center rounded-xl border border-gray-200 bg-white px-5 py-3 text-sm font-black text-primary-blue transition hover:border-primary-red hover:text-primary-red"
               >
-                Change to General Application
+                Change to General
+                Application
               </button>
             </div>
           </motion.div>
@@ -659,7 +754,9 @@ export default function SubmitResume({
                   <button
                     type="button"
                     onClick={() =>
-                      setSubmitted(false)
+                      setSubmitted(
+                        false,
+                      )
                     }
                     className="mt-8 inline-flex min-h-[56px] items-center justify-center gap-3 rounded-2xl bg-primary-red px-7 py-4 font-black !text-white shadow-[0_18px_40px_rgba(194,17,25,0.24)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-blue"
                   >
@@ -671,7 +768,9 @@ export default function SubmitResume({
               </div>
             ) : (
               <form
-                onSubmit={handleSubmit}
+                onSubmit={
+                  handleSubmit
+                }
                 noValidate
               >
                 <div className="border-b border-gray-200 bg-primary-blue px-7 py-8 md:px-10">
@@ -697,7 +796,9 @@ export default function SubmitResume({
                     <CareerField
                       label="Full Name"
                       required
-                      error={errors.fullName}
+                      error={
+                        errors.fullName
+                      }
                     >
                       <div className="relative">
                         <UserRound
@@ -707,18 +808,23 @@ export default function SubmitResume({
 
                         <input
                           type="text"
-                          value={formData.fullName}
-                          onChange={(event) =>
+                          value={
+                            formData.fullName
+                          }
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "fullName",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="Enter your full name"
-                          maxLength={80}
-                          aria-invalid={Boolean(
-                            errors.fullName,
-                          )}
+                          maxLength={
+                            80
+                          }
                           className={`${inputClassName} pr-12`}
                         />
                       </div>
@@ -727,7 +833,9 @@ export default function SubmitResume({
                     <CareerField
                       label="Email Address"
                       required
-                      error={errors.email}
+                      error={
+                        errors.email
+                      }
                     >
                       <div className="relative">
                         <Mail
@@ -737,18 +845,23 @@ export default function SubmitResume({
 
                         <input
                           type="email"
-                          value={formData.email}
-                          onChange={(event) =>
+                          value={
+                            formData.email
+                          }
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "email",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="name@email.com"
-                          maxLength={160}
-                          aria-invalid={Boolean(
-                            errors.email,
-                          )}
+                          maxLength={
+                            160
+                          }
                           className={`${inputClassName} pr-12`}
                         />
                       </div>
@@ -757,7 +870,9 @@ export default function SubmitResume({
                     <CareerField
                       label="Phone Number"
                       required
-                      error={errors.phone}
+                      error={
+                        errors.phone
+                      }
                     >
                       <div className="relative">
                         <Phone
@@ -767,18 +882,23 @@ export default function SubmitResume({
 
                         <input
                           type="tel"
-                          value={formData.phone}
-                          onChange={(event) =>
+                          value={
+                            formData.phone
+                          }
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "phone",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="+91 00000 00000"
-                          maxLength={20}
-                          aria-invalid={Boolean(
-                            errors.phone,
-                          )}
+                          maxLength={
+                            20
+                          }
                           className={`${inputClassName} pr-12`}
                         />
                       </div>
@@ -802,17 +922,20 @@ export default function SubmitResume({
                           value={
                             formData.currentLocation
                           }
-                          onChange={(event) =>
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "currentLocation",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="City, State"
-                          maxLength={150}
-                          aria-invalid={Boolean(
-                            errors.currentLocation,
-                          )}
+                          maxLength={
+                            150
+                          }
                           className={`${inputClassName} pr-12`}
                         />
                       </div>
@@ -829,31 +952,40 @@ export default function SubmitResume({
                         value={
                           formData.department
                         }
-                        onChange={(event) =>
+                        onChange={(
+                          event,
+                        ) =>
                           updateField(
                             "department",
-                            event.target.value,
+                            event.target
+                              .value,
                           )
                         }
                         disabled={
                           isSpecificOpening
                         }
-                        aria-invalid={Boolean(
-                          errors.department,
-                        )}
                         className={`${selectClassName} disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500`}
                       >
                         <option value="">
-                          Select department
+                          Select
+                          department
                         </option>
 
                         {departments.map(
-                          (department) => (
+                          (
+                            department,
+                          ) => (
                             <option
-                              key={department}
-                              value={department}
+                              key={
+                                department
+                              }
+                              value={
+                                department
+                              }
                             >
-                              {department}
+                              {
+                                department
+                              }
                             </option>
                           ),
                         )}
@@ -876,20 +1008,22 @@ export default function SubmitResume({
                         value={
                           formData.preferredRole
                         }
-                        onChange={(event) =>
+                        onChange={(
+                          event,
+                        ) =>
                           updateField(
                             "preferredRole",
-                            event.target.value,
+                            event.target
+                              .value,
                           )
                         }
                         readOnly={
                           isSpecificOpening
                         }
                         placeholder="Example: PEB Design Engineer"
-                        maxLength={160}
-                        aria-invalid={Boolean(
-                          errors.preferredRole,
-                        )}
+                        maxLength={
+                          160
+                        }
                         className={`${inputClassName} read-only:cursor-not-allowed read-only:bg-gray-100 read-only:text-gray-600`}
                       />
                     </CareerField>
@@ -905,30 +1039,37 @@ export default function SubmitResume({
                         value={
                           formData.experience
                         }
-                        onChange={(event) =>
+                        onChange={(
+                          event,
+                        ) =>
                           updateField(
                             "experience",
-                            event.target.value,
+                            event.target
+                              .value,
                           )
                         }
-                        aria-invalid={Boolean(
-                          errors.experience,
-                        )}
                         className={
                           selectClassName
                         }
                       >
                         <option value="">
-                          Select experience
+                          Select
+                          experience
                         </option>
 
                         {experienceOptions.map(
                           (option) => (
                             <option
-                              key={option}
-                              value={option}
+                              key={
+                                option
+                              }
+                              value={
+                                option
+                              }
                             >
-                              {option}
+                              {
+                                option
+                              }
                             </option>
                           ),
                         )}
@@ -952,17 +1093,20 @@ export default function SubmitResume({
                           value={
                             formData.qualification
                           }
-                          onChange={(event) =>
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "qualification",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="Example: B.Tech Civil Engineering"
-                          maxLength={180}
-                          aria-invalid={Boolean(
-                            errors.qualification,
-                          )}
+                          maxLength={
+                            180
+                          }
                           className={`${inputClassName} pr-12`}
                         />
                       </div>
@@ -980,51 +1124,226 @@ export default function SubmitResume({
                           value={
                             formData.currentCompany
                           }
-                          onChange={(event) =>
+                          onChange={(
+                            event,
+                          ) =>
                             updateField(
                               "currentCompany",
-                              event.target.value,
+                              event
+                                .target
+                                .value,
                             )
                           }
                           placeholder="Enter organization name"
-                          maxLength={180}
-                          aria-invalid={Boolean(
-                            errors.currentCompany,
-                          )}
+                          maxLength={
+                            180
+                          }
                           className={
                             inputClassName
                           }
                         />
                       </CareerField>
                     </div>
+
+                    <CareerField
+                      label="Notice Period"
+                      error={
+                        errors.noticePeriod
+                      }
+                    >
+                      <div className="relative">
+                        <Clock3
+                          size={18}
+                          className="pointer-events-none absolute right-5 top-1/2 translate-y-[2px] text-primary-red"
+                        />
+
+                        <select
+                          value={
+                            formData.noticePeriod
+                          }
+                          onChange={(
+                            event,
+                          ) =>
+                            updateField(
+                              "noticePeriod",
+                              event
+                                .target
+                                .value,
+                            )
+                          }
+                          className={`${selectClassName} pr-12`}
+                        >
+                          <option value="">
+                            Select notice
+                            period
+                          </option>
+
+                          {noticePeriodOptions.map(
+                            (
+                              option,
+                            ) => (
+                              <option
+                                key={
+                                  option
+                                }
+                                value={
+                                  option
+                                }
+                              >
+                                {
+                                  option
+                                }
+                              </option>
+                            ),
+                          )}
+                        </select>
+                      </div>
+                    </CareerField>
+
+                    <CareerField
+                      label="Current Salary"
+                      error={
+                        errors.currentSalary
+                      }
+                    >
+                      <div className="relative">
+                        <IndianRupee
+                          size={18}
+                          className="pointer-events-none absolute right-5 top-1/2 translate-y-[2px] text-primary-red"
+                        />
+
+                        <input
+                          type="text"
+                          value={
+                            formData.currentSalary
+                          }
+                          onChange={(
+                            event,
+                          ) =>
+                            updateField(
+                              "currentSalary",
+                              event
+                                .target
+                                .value,
+                            )
+                          }
+                          placeholder="Example: ₹8 LPA"
+                          maxLength={
+                            100
+                          }
+                          className={`${inputClassName} pr-12`}
+                        />
+                      </div>
+                    </CareerField>
+
+                    <CareerField
+                      label="Expected Salary"
+                      error={
+                        errors.expectedSalary
+                      }
+                    >
+                      <div className="relative">
+                        <IndianRupee
+                          size={18}
+                          className="pointer-events-none absolute right-5 top-1/2 translate-y-[2px] text-primary-red"
+                        />
+
+                        <input
+                          type="text"
+                          value={
+                            formData.expectedSalary
+                          }
+                          onChange={(
+                            event,
+                          ) =>
+                            updateField(
+                              "expectedSalary",
+                              event
+                                .target
+                                .value,
+                            )
+                          }
+                          placeholder="Example: ₹10 LPA"
+                          maxLength={
+                            100
+                          }
+                          className={`${inputClassName} pr-12`}
+                        />
+                      </div>
+                    </CareerField>
+
+                    <div className="md:col-span-2">
+                      <CareerField
+                        label="Portfolio or LinkedIn URL"
+                        error={
+                          errors.portfolioUrl
+                        }
+                      >
+                        <div className="relative">
+                          <Link2
+                            size={
+                              18
+                            }
+                            className="pointer-events-none absolute right-5 top-1/2 translate-y-[2px] text-primary-red"
+                          />
+
+                          <input
+                            type="url"
+                            value={
+                              formData.portfolioUrl
+                            }
+                            onChange={(
+                              event,
+                            ) =>
+                              updateField(
+                                "portfolioUrl",
+                                event
+                                  .target
+                                  .value,
+                              )
+                            }
+                            placeholder="https://linkedin.com/in/your-profile"
+                            maxLength={
+                              500
+                            }
+                            className={`${inputClassName} pr-12`}
+                          />
+                        </div>
+                      </CareerField>
+                    </div>
                   </div>
 
                   <CareerField
                     label="Professional Summary"
-                    error={errors.message}
+                    error={
+                      errors.message
+                    }
                   >
                     <textarea
                       value={
                         formData.message
                       }
-                      onChange={(event) =>
+                      onChange={(
+                        event,
+                      ) =>
                         updateField(
                           "message",
-                          event.target.value,
+                          event.target
+                            .value,
                         )
                       }
                       rows={6}
-                      maxLength={3000}
-                      aria-invalid={Boolean(
-                        errors.message,
-                      )}
+                      maxLength={
+                        3000
+                      }
                       placeholder="Briefly describe your experience, skills, current responsibilities and career interests..."
                       className="mt-2 w-full resize-y rounded-2xl border border-gray-200 bg-white px-5 py-4 text-base font-semibold leading-7 text-primary-blue outline-none transition-all duration-300 placeholder:font-medium placeholder:text-gray-400 focus:border-primary-red focus:ring-4 focus:ring-primary-red/10"
                     />
 
                     <div className="mt-2 text-right text-xs font-semibold text-gray-400">
                       {
-                        formData.message
+                        formData
+                          .message
                           .length
                       }
                       /3000
@@ -1041,14 +1360,15 @@ export default function SubmitResume({
                   >
                     <p className="text-sm font-black text-primary-blue">
                       Upload Resume
-
                       <span className="ml-1 text-primary-red">
                         *
                       </span>
                     </p>
 
                     <input
-                      ref={fileInputRef}
+                      ref={
+                        fileInputRef
+                      }
                       id="resume-file"
                       type="file"
                       accept=".pdf,.doc,.docx"
@@ -1065,18 +1385,22 @@ export default function SubmitResume({
                       >
                         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-red/10 text-primary-red transition-all duration-300 group-hover:bg-primary-red group-hover:text-white">
                           <UploadCloud
-                            size={27}
+                            size={
+                              27
+                            }
                           />
                         </div>
 
                         <p className="mt-5 font-black text-primary-blue">
-                          Choose your latest resume
+                          Choose your
+                          latest resume
                         </p>
 
                         <p className="mt-2 text-sm font-medium leading-6 text-gray-500">
-                          PDF, DOC or DOCX.
-                          Maximum file size:
-                          10 MB.
+                          PDF, DOC or
+                          DOCX. Maximum
+                          file size: 10
+                          MB.
                         </p>
                       </label>
                     ) : (
@@ -1084,7 +1408,9 @@ export default function SubmitResume({
                         <div className="flex min-w-0 items-center gap-4">
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary-red text-white">
                             <Paperclip
-                              size={22}
+                              size={
+                                22
+                              }
                             />
                           </div>
 
@@ -1105,11 +1431,17 @@ export default function SubmitResume({
 
                         <button
                           type="button"
-                          onClick={removeFile}
+                          onClick={
+                            removeFile
+                          }
                           aria-label="Remove resume"
                           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition hover:border-primary-red hover:bg-primary-red hover:text-white"
                         >
-                          <X size={18} />
+                          <X
+                            size={
+                              18
+                            }
+                          />
                         </button>
                       </div>
                     )}
@@ -1147,7 +1479,9 @@ export default function SubmitResume({
 
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={
+                      submitting
+                    }
                     className="group inline-flex min-h-[62px] w-full items-center justify-center gap-3 rounded-2xl bg-primary-red px-8 py-4 text-lg font-black !text-white shadow-[0_20px_48px_rgba(194,17,25,0.28)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-blue disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                   >
                     {submitting ? (
@@ -1167,7 +1501,9 @@ export default function SubmitResume({
                           ? "Submit Job Application"
                           : "Submit My Resume"}
 
-                        <Send size={20} />
+                        <Send
+                          size={20}
+                        />
                       </>
                     )}
                   </button>
@@ -1237,21 +1573,29 @@ export default function SubmitResume({
                         "Projects & Site Execution",
                         "Sales & Corporate Functions",
                       ]
-                  ).map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-4 py-4"
-                    >
-                      <BadgeCheck
-                        size={18}
-                        className="shrink-0 text-primary-red"
-                      />
+                  ).map(
+                    (item) => (
+                      <div
+                        key={
+                          item
+                        }
+                        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-4 py-4"
+                      >
+                        <BadgeCheck
+                          size={
+                            18
+                          }
+                          className="shrink-0 text-primary-red"
+                        />
 
-                      <span className="text-sm font-black text-white/80">
-                        {item}
-                      </span>
-                    </div>
-                  ))}
+                        <span className="text-sm font-black text-white/80">
+                          {
+                            item
+                          }
+                        </span>
+                      </div>
+                    ),
+                  )}
                 </div>
               </div>
             </div>
@@ -1267,21 +1611,27 @@ export default function SubmitResume({
                   "Mention your experience accurately.",
                   "Include relevant project or industry experience.",
                   "Ensure your phone and email details are correct.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3"
-                  >
-                    <CheckCircle2
-                      size={18}
-                      className="mt-1 shrink-0 text-primary-red"
-                    />
+                ].map(
+                  (item) => (
+                    <div
+                      key={
+                        item
+                      }
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2
+                        size={18}
+                        className="mt-1 shrink-0 text-primary-red"
+                      />
 
-                    <p className="text-sm font-semibold leading-7 text-gray-600">
-                      {item}
-                    </p>
-                  </div>
-                ))}
+                      <p className="text-sm font-semibold leading-7 text-gray-600">
+                        {
+                          item
+                        }
+                      </p>
+                    </div>
+                  ),
+                )}
               </div>
             </div>
           </motion.aside>
@@ -1308,7 +1658,9 @@ function CareerField({
     <label
       className="block"
       data-career-error={
-        error ? "true" : undefined
+        error
+          ? "true"
+          : undefined
       }
     >
       <span className="text-sm font-black text-primary-blue">

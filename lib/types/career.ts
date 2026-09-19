@@ -16,10 +16,14 @@ export type CareerFormData = {
   qualification: string;
   currentCompany: string;
 
+  currentSalary: string;
+  expectedSalary: string;
+  noticePeriod: string;
+  portfolioUrl: string;
+
   message: string;
 
-  applicationType:
-    CareerApplicationType;
+  applicationType: CareerApplicationType;
 
   jobDocumentId: string;
   jobId: string;

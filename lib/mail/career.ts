@@ -21,7 +21,7 @@ function escapeHtml(
 ): string {
   return value
     .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
+    .replace(/\</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
@@ -352,6 +352,26 @@ function createCareerEmailHtml(
                         )}
 
                         ${createDetailRow(
+                          "Current Salary",
+                          data.currentSalary,
+                        )}
+
+                        ${createDetailRow(
+                          "Expected Salary",
+                          data.expectedSalary,
+                        )}
+
+                        ${createDetailRow(
+                          "Notice Period",
+                          data.noticePeriod,
+                        )}
+
+                        ${createDetailRow(
+                          "Portfolio / LinkedIn",
+                          data.portfolioUrl,
+                        )}
+
+                        ${createDetailRow(
                           "Resume Attachment",
                           resumeFileName,
                         )}
@@ -376,7 +396,7 @@ function createCareerEmailHtml(
                           text-transform:uppercase;
                         "
                       >
-                        Professional Summary
+                        Professional Summary / Cover Note
                       </p>
 
                       <p
@@ -502,10 +522,22 @@ ${formatPlainValue(data.qualification)}
 Current / Previous Company:
 ${formatPlainValue(data.currentCompany)}
 
+Current Salary:
+${formatPlainValue(data.currentSalary)}
+
+Expected Salary:
+${formatPlainValue(data.expectedSalary)}
+
+Notice Period:
+${formatPlainValue(data.noticePeriod)}
+
+Portfolio / LinkedIn:
+${formatPlainValue(data.portfolioUrl)}
+
 Resume:
 ${resumeFileName}
 
-PROFESSIONAL SUMMARY
+PROFESSIONAL SUMMARY / COVER NOTE
 
 ${formatPlainValue(data.message)}
 
