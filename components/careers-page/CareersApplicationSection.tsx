@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import CurrentOpenings from "@/components/careers-page/CurrentOpenings";
 import LifeAtSteelbuild from "@/components/careers-page/LifeAtSteelbuild";
@@ -25,10 +28,74 @@ export default function CareersApplicationSection({
     null,
   );
 
+  /* =========================================================
+     HASH NAVIGATION
+  ========================================================= */
+
+  useEffect(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash;
+
+      if (!hash) {
+        return;
+      }
+
+      /*
+       * Protect against malformed URLs such as:
+       * #open-positions#open-positions
+       *
+       * Only use the first hash value.
+       */
+      const targetId = hash
+        .replace(/^#/, "")
+        .split("#")[0];
+
+      if (!targetId) {
+        return;
+      }
+
+      const target =
+        document.getElementById(
+          targetId,
+        );
+
+      if (!target) {
+        return;
+      }
+
+      window.setTimeout(() => {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+    };
+
+    scrollToHash();
+
+    window.addEventListener(
+      "hashchange",
+      scrollToHash,
+    );
+
+    return () => {
+      window.removeEventListener(
+        "hashchange",
+        scrollToHash,
+      );
+    };
+  }, []);
+
+  /* =========================================================
+     RESUME FORM SCROLL
+  ========================================================= */
+
   function scrollToResumeForm() {
     window.setTimeout(() => {
       document
-        .getElementById("submit-resume")
+        .getElementById(
+          "submit-resume",
+        )
         ?.scrollIntoView({
           behavior: "smooth",
           block: "start",
@@ -67,7 +134,9 @@ export default function CareersApplicationSection({
       <HiringProcess />
 
       <SubmitResume
-        selectedOpening={selectedOpening}
+        selectedOpening={
+          selectedOpening
+        }
         onClearSelectedOpening={
           handleClearSelection
         }
