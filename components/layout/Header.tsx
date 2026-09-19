@@ -228,7 +228,7 @@ function AboutMegaMenu({
         <div className="grid max-h-[calc(100vh-165px)] grid-cols-2 gap-5 overflow-y-auto p-6">
           {item.groups?.map((group) => (
             <div key={group.label}>
-              <p className="mb-2 px-2 text-[9px] font-black uppercase tracking-[0.2em] text-primary-red">
+              <p className="mb-2 px-2 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 {group.label}
               </p>
 
@@ -355,7 +355,7 @@ function ProductsMegaMenu({
           .slice(0, 2)
           .map((group) => (
             <div key={group.label}>
-              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
+              <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 {group.label}
               </p>
 
@@ -374,7 +374,7 @@ function ProductsMegaMenu({
           ))}
 
         <div>
-          <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
+          <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
             Product Systems
           </p>
 
@@ -391,7 +391,7 @@ function ProductsMegaMenu({
 
           {standardGroups[2] && (
             <>
-              <p className="mb-3 mt-5 text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
+              <p className="mb-3 mt-5 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 Components
               </p>
 
@@ -427,7 +427,7 @@ function CareersDropdown({
 }) {
   return (
     <div className="w-[370px] rounded-[24px] border border-gray-200 bg-white p-4 shadow-[0_24px_75px_rgba(27,63,104,0.18)]">
-      <p className="px-4 pb-3 pt-2 text-[10px] font-black uppercase tracking-[0.2em] text-primary-red">
+      <p className="px-4 pb-3 pt-2 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
         Careers at Steelbuild
       </p>
 
