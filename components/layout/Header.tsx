@@ -228,7 +228,7 @@ function AboutMegaMenu({
         <div className="grid max-h-[calc(100vh-165px)] grid-cols-2 gap-5 overflow-y-auto p-6">
           {item.groups?.map((group) => (
             <div key={group.label}>
-              <p className="mb-2 px-2 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
+              <p className="mb-2 px-4 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 {group.label}
               </p>
 
@@ -355,7 +355,7 @@ function ProductsMegaMenu({
           .slice(0, 2)
           .map((group) => (
             <div key={group.label}>
-              <p className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
+              <p className="mb-3 px-4 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 {group.label}
               </p>
 
@@ -391,7 +391,7 @@ function ProductsMegaMenu({
 
           {standardGroups[2] && (
             <>
-              <p className="mb-3 mt-5 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
+              <p className="mb-3 mt-5 px-4 text-sm font-black uppercase tracking-[0.12em] text-primary-red">
                 Components
               </p>
 
