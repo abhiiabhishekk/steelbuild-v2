@@ -19,6 +19,12 @@ import { leadershipMemberType } from "./leadershipMember";
 import { heroSlide } from "./heroSlide";
 import { newsletterSubscriber } from "./newsletterSubscriber";
 
+
+import { investorDocument } from "./investorDocument";
+
+// Add investorDocument to your EXISTING schemaTypes array.
+// Do not replace the existing schemas.
+
 import {
   newsletterDeliveryType,
 } from "./newsletterDelivery";
@@ -44,5 +50,8 @@ export const schema: {
     heroSlide,
     newsletterSubscriber,
     newsletterDeliveryType,
+
+    // Investor Relations
+    investorDocument,
   ],
 };

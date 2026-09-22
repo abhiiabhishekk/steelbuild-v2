@@ -1,5 +1,7 @@
+
 import FooterTopCTA from "./FooterTopCTA";
 import FooterLinks from "./FooterLinks";
+import FooterInvestors from "./FooterInvestors";
 import FooterBottom from "./FooterBottom";
 
 export default function Footer() {
@@ -8,8 +10,6 @@ export default function Footer() {
       className="relative overflow-hidden bg-[#071b34] text-white"
       aria-label="Steelbuild Infra Projects website footer"
     >
-      {/* Background effects */}
-
       <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-primary-red/20 blur-3xl" />
 
       <div className="pointer-events-none absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
@@ -18,9 +18,8 @@ export default function Footer() {
 
       <div className="relative z-10">
         <FooterTopCTA />
-
         <FooterLinks />
-
+        <FooterInvestors />
         <FooterBottom />
       </div>
     </footer>
