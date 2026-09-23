@@ -1,3 +1,4 @@
+
 export type PageStatus = "completed" | "pending";
 
 export type NavigationLink = {
@@ -131,7 +132,7 @@ export const navigationItems: NavigationItem[] = [
             label: "Corporate Profile",
             href: "/steelbuild-corporate-profile",
             description:
-              "View and download the Steelbuild corporate brochure and watch coporate video.",
+              "View and download the Steelbuild corporate brochure and watch corporate video.",
             status: "completed",
           },
         ],
@@ -306,41 +307,50 @@ export const navigationItems: NavigationItem[] = [
           },
         ],
       },
-      // {
-      //   label: "Components & Accessories",
-      //   items: [
-      //     {
-      //       label: "Primary Structural Members",
-      //       href: "/products/primary-structural-members",
-      //       status: "pending",
-      //     },
-      //     {
-      //       label: "Secondary Structural Members",
-      //       href: "/products/secondary-structural-members",
-      //       status: "pending",
-      //     },
-      //     {
-      //       label: "Building Accessories",
-      //       href: "/products/building-accessories",
-      //       status: "pending",
-      //     },
-      //   ],
-      // },
     ],
   },
 
+  /*
+   * =========================================================
+   * SOLUTIONS
+   * Industries and Manufacturing moved here.
+   * Their original page URLs remain unchanged.
+   * =========================================================
+   */
+
   {
-    label: "Industries",
+    label: "Solutions",
     href: "/industries",
+    menuType: "dropdown",
+    items: [
+      {
+        label: "Industries",
+        href: "/industries",
+        description:
+          "Explore the industries served by Steelbuild.",
+        status: "completed",
+      },
+      {
+        label: "Manufacturing",
+        href: "/manufacturing",
+        description:
+          "Discover our manufacturing facilities and capabilities.",
+        status: "completed",
+      },
+    ],
   },
+
+  /*
+   * =========================================================
+   * PROJECTS & BLOG
+   * =========================================================
+   */
+
   {
     label: "Projects",
     href: "/projects",
   },
-  {
-    label: "Manufacturing",
-    href: "/manufacturing",
-  },
+
   {
     label: "Blog",
     href: "/blog",
@@ -394,6 +404,99 @@ export const navigationItems: NavigationItem[] = [
       },
     ],
   },
+
+  /*
+   * =========================================================
+   * INVESTORS
+   * =========================================================
+   */
+
+  {
+    label: "Investors",
+    href: "/investors",
+    menuType: "dropdown",
+    items: [
+      {
+        label: "Investor Relations Overview",
+        href: "/investors",
+        status: "completed",
+      },
+      {
+        label: "Announcements",
+        href: "/investors#announcements",
+        status: "completed",
+      },
+      {
+        label: "Annual Return and Reports",
+        href: "/investors#annual-return-and-reports",
+        status: "completed",
+      },
+      {
+        label: "Board and Committees",
+        href: "/investors#board-and-committees",
+        status: "completed",
+      },
+      {
+        label: "Corporate Social Responsibility",
+        href: "/investors#corporate-social-responsibility",
+        status: "completed",
+      },
+      {
+        label: "Policies and Code of Conduct",
+        href: "/investors#policies-and-code-of-conduct",
+        status: "completed",
+      },
+      {
+        label: "Material Documents",
+        href: "/investors#material-documents",
+        status: "completed",
+      },
+      {
+        label: "Material Contracts",
+        href: "/investors#material-contracts",
+        status: "completed",
+      },
+      {
+        label: "Advertisements",
+        href: "/investors#advertisements",
+        status: "completed",
+      },
+      {
+        label: "Offer Documents",
+        href: "/investors#offer-documents",
+        status: "completed",
+      },
+      {
+        label: "Shareholding Pattern",
+        href: "/investors#shareholding-pattern",
+        status: "completed",
+      },
+      {
+        label:
+          "Group Companies, Subsidiaries and Associates",
+        href: "/investors#group-companies",
+        status: "completed",
+      },
+      {
+        label:
+          "Investors Grievance Redressal Details",
+        href: "/investors#investors-grievance",
+        status: "completed",
+      },
+      {
+        label: "Notice and Meetings",
+        href: "/investors#notice-and-meetings",
+        status: "completed",
+      },
+    ],
+  },
+
+  /*
+   * =========================================================
+   * CONTACT
+   * =========================================================
+   */
+
   {
     label: "Contact",
     href: "/contact",
