@@ -12,6 +12,7 @@ import {structureTool} from 'sanity/structure'
 import {apiVersion, dataset, projectId} from './sanity/env'
 import {schema} from './sanity/schemaTypes'
 import {structure} from './sanity/structure'
+import InvestorBulkUpload from "./components/sanity/InvestorBulkUpload";
 
 export default defineConfig({
   basePath: '/studio',
@@ -25,4 +26,14 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({defaultApiVersion: apiVersion}),
   ],
+
+  tools: (previousTools) => [
+  ...previousTools,
+  {
+    name: "investor-bulk-upload",
+    title: "Investor Bulk Upload",
+    component: InvestorBulkUpload,
+  },
+],
+
 })

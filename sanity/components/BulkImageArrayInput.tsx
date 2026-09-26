@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -6,18 +7,6 @@ import {
   useRef,
   useState,
 } from "react";
-
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Spinner,
-  Stack,
-  Text,
-} from "@sanity/ui";
-
-import { UploadIcon } from "@sanity/icons";
 
 import {
   type ArrayOfObjectsInputProps,
@@ -31,7 +20,6 @@ import { apiVersion } from "@/sanity/env";
 type UploadedGalleryImage = {
   _key: string;
   _type: "image";
-
   asset: {
     _type: "reference";
     _ref: string;
@@ -52,10 +40,7 @@ function createArrayItemKey(): string {
     typeof crypto !== "undefined" &&
     typeof crypto.randomUUID === "function"
   ) {
-    return crypto
-      .randomUUID()
-      .replace(/-/g, "")
-      .slice(0, 16);
+    return crypto.randomUUID().replace(/-/g, "").slice(0, 16);
   }
 
   return `${Date.now()}${Math.random()
@@ -66,169 +51,108 @@ function createArrayItemKey(): string {
 export default function BulkImageArrayInput(
   props: ArrayOfObjectsInputProps,
 ) {
-  const {
-    onChange,
-    readOnly,
-    renderDefault,
-  } = props;
+  const { onChange, readOnly, renderDefault } = props;
 
   const client = useClient({
     apiVersion,
   });
 
-  const fileInputRef =
-    useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(
+    null,
+  );
 
-  const [uploading, setUploading] =
-    useState(false);
-
-  const [uploadedCount, setUploadedCount] =
-    useState(0);
-
-  const [totalFiles, setTotalFiles] =
-    useState(0);
-
-  const [errorMessage, setErrorMessage] =
-    useState("");
-
+  const [uploading, setUploading] = useState(false);
+  const [uploadedCount, setUploadedCount] = useState(0);
+  const [totalFiles, setTotalFiles] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] =
     useState("");
 
-  const handleChooseFiles =
-    useCallback(() => {
-      if (
-        uploading ||
-        readOnly
-      ) {
-        return;
-      }
+  const handleChooseFiles = useCallback(() => {
+    if (uploading || readOnly) {
+      return;
+    }
 
-      fileInputRef.current?.click();
-    }, [readOnly, uploading]);
+    fileInputRef.current?.click();
+  }, [readOnly, uploading]);
 
   const handleUpload = useCallback(
-    async (
-      event: ChangeEvent<HTMLInputElement>,
-    ) => {
+    async (event: ChangeEvent<HTMLInputElement>) => {
       const selectedFiles = Array.from(
         event.target.files ?? [],
       );
 
-      /*
-       * Reset the input so the same files can be
-       * selected again after removal or failure.
-       */
+      // Allow the same files to be selected again.
       event.target.value = "";
 
-      if (selectedFiles.length === 0) {
+      if (selectedFiles.length === 0 || uploading) {
         return;
       }
 
       setErrorMessage("");
       setSuccessMessage("");
 
-      if (
-        selectedFiles.length >
-        MAX_FILES_PER_UPLOAD
-      ) {
+      if (selectedFiles.length > MAX_FILES_PER_UPLOAD) {
         setErrorMessage(
           `You can upload a maximum of ${MAX_FILES_PER_UPLOAD} images at one time.`,
         );
-
         return;
       }
 
-      const unsupportedFiles =
-        selectedFiles.filter(
-          (file) =>
-            !ALLOWED_IMAGE_TYPES.has(
-              file.type,
-            ),
-        );
+      const unsupportedFiles = selectedFiles.filter(
+        (file) => !ALLOWED_IMAGE_TYPES.has(file.type),
+      );
 
-      if (
-        unsupportedFiles.length > 0
-      ) {
+      if (unsupportedFiles.length > 0) {
         setErrorMessage(
           "Only JPG, JPEG, PNG, WebP and GIF images are supported.",
         );
-
         return;
       }
 
       setUploading(true);
       setUploadedCount(0);
-      setTotalFiles(
-        selectedFiles.length,
-      );
+      setTotalFiles(selectedFiles.length);
 
-      const uploadedImages:
-        UploadedGalleryImage[] = [];
+      const uploadedImages: UploadedGalleryImage[] = [];
 
       try {
-        /*
-         * Images are uploaded sequentially.
-         * This is more stable for large galleries
-         * than starting every upload simultaneously.
-         */
-        for (
-          const file of selectedFiles
-        ) {
-          const uploadedAsset =
-            await client.assets.upload(
-              "image",
-              file,
-              {
-                filename: file.name,
-                contentType:
-                  file.type ||
-                  undefined,
-              },
-            );
+        // Upload images sequentially for stability.
+        for (const file of selectedFiles) {
+          const uploadedAsset = await client.assets.upload(
+            "image",
+            file,
+            {
+              filename: file.name,
+              contentType: file.type || undefined,
+            },
+          );
 
           uploadedImages.push({
-            _key:
-              createArrayItemKey(),
-
+            _key: createArrayItemKey(),
             _type: "image",
-
             asset: {
               _type: "reference",
-              _ref:
-                uploadedAsset._id,
+              _ref: uploadedAsset._id,
             },
           });
 
-          setUploadedCount(
-            (currentCount) =>
-              currentCount + 1,
-          );
+          setUploadedCount(uploadedImages.length);
         }
 
-        if (
-          uploadedImages.length === 0
-        ) {
-          throw new Error(
-            "No images were uploaded.",
-          );
+        if (uploadedImages.length === 0) {
+          throw new Error("No images were uploaded.");
         }
 
-        /*
-         * Preserve existing gallery items and append
-         * all uploaded images to the end in one patch.
-         */
+        // Preserve existing gallery items.
+        // Append all uploaded images in one patch.
         onChange([
           setIfMissing([]),
-
-          insert(
-            uploadedImages,
-            "after",
-            [-1],
-          ),
+          insert(uploadedImages, "after", [-1]),
         ]);
 
         setSuccessMessage(
-          `${uploadedImages.length} images uploaded and added to the gallery successfully. Publish the exhibition to make them live.`,
+          `${uploadedImages.length} images uploaded and added to the gallery. Publish the exhibition to make them live.`,
         );
       } catch (error) {
         console.error(
@@ -245,179 +169,229 @@ export default function BulkImageArrayInput(
         setUploading(false);
       }
     },
-    [client, onChange],
+    [client, onChange, uploading],
   );
 
   const progressPercentage =
     totalFiles > 0
-      ? Math.round(
-          (uploadedCount /
-            totalFiles) *
-            100,
-        )
+      ? Math.round((uploadedCount / totalFiles) * 100)
       : 0;
 
   return (
-    <Stack space={4}>
-      {/* Default Sanity array input */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "20px",
+      }}
+    >
+      {/* Original Sanity gallery input */}
       {renderDefault(props)}
 
-      {/* Custom multiple-image uploader */}
-      <Card
-        padding={4}
-        radius={3}
-        border
-        tone={
-          errorMessage
-            ? "critical"
-            : successMessage
-              ? "positive"
-              : "primary"
-        }
+      {/* Custom bulk uploader */}
+      <div
+        style={{
+          padding: "20px",
+          border: "1px solid #dce3eb",
+          borderRadius: "10px",
+          backgroundColor: "#ffffff",
+        }}
       >
-        <Stack space={4}>
-          <Flex
-            align="center"
-            justify="space-between"
-            gap={4}
-            wrap="wrap"
-          >
-            <Box>
-              <Text
-                size={1}
-                weight="semibold"
-              >
-                Bulk Gallery Upload
-              </Text>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "16px",
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <h3
+              style={{
+                margin: 0,
+                fontSize: "15px",
+                fontWeight: 700,
+                color: "#102b49",
+              }}
+            >
+              Bulk Gallery Upload
+            </h3>
 
-              <Box marginTop={2}>
-                <Text
-                  size={1}
-                  muted
-                >
-                  Select multiple exhibition
-                  images and upload them
-                  together.
-                </Text>
-              </Box>
-            </Box>
+            <p
+              style={{
+                margin: "8px 0 0",
+                fontSize: "13px",
+                lineHeight: 1.6,
+                color: "#64748b",
+              }}
+            >
+              Select multiple exhibition images and upload
+              them together.
+            </p>
+          </div>
 
-            <Button
-              type="button"
-              icon={UploadIcon}
-              text={
-                uploading
-                  ? "Uploading Images..."
-                  : "Upload Multiple Images"
-              }
-              tone="primary"
-              disabled={
-                uploading ||
-                Boolean(readOnly)
-              }
-              onClick={
-                handleChooseFiles
-              }
-            />
-          </Flex>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
-            multiple
-            disabled={
-              uploading ||
-              Boolean(readOnly)
-            }
-            onChange={handleUpload}
+          <button
+            type="button"
+            onClick={handleChooseFiles}
+            disabled={uploading || Boolean(readOnly)}
             style={{
-              display: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              padding: "11px 16px",
+              border: "none",
+              borderRadius: "7px",
+              backgroundColor:
+                uploading || readOnly
+                  ? "#94a3b8"
+                  : "#102b49",
+              color: "#ffffff",
+              fontSize: "13px",
+              fontWeight: 700,
+              cursor:
+                uploading || readOnly
+                  ? "not-allowed"
+                  : "pointer",
             }}
-          />
-
-          {uploading && (
-            <Card
-              padding={3}
-              radius={2}
-              tone="primary"
-            >
-              <Flex
-                align="center"
-                gap={3}
-              >
-                <Spinner />
-
-                <Box>
-                  <Text
-                    size={1}
-                    weight="semibold"
-                  >
-                    Uploading{" "}
-                    {uploadedCount} of{" "}
-                    {totalFiles} images
-                  </Text>
-
-                  <Box marginTop={2}>
-                    <Text
-                      size={1}
-                      muted
-                    >
-                      {
-                        progressPercentage
-                      }
-                      % completed. Please do
-                      not close this document.
-                    </Text>
-                  </Box>
-                </Box>
-              </Flex>
-            </Card>
-          )}
-
-          {errorMessage && (
-            <Card
-              padding={3}
-              radius={2}
-              tone="critical"
-            >
-              <Text
-                size={1}
-                weight="semibold"
-              >
-                {errorMessage}
-              </Text>
-            </Card>
-          )}
-
-          {successMessage &&
-            !uploading &&
-            !errorMessage && (
-              <Card
-                padding={3}
-                radius={2}
-                tone="positive"
-              >
-                <Text
-                  size={1}
-                  weight="semibold"
-                >
-                  {successMessage}
-                </Text>
-              </Card>
-            )}
-
-          <Text
-            size={1}
-            muted
           >
-            Supported formats: JPG, JPEG,
-            PNG, WebP and GIF. Maximum{" "}
-            {MAX_FILES_PER_UPLOAD} images per
-            upload.
-          </Text>
-        </Stack>
-      </Card>
-    </Stack>
+            <span aria-hidden="true">↑</span>
+
+            {uploading
+              ? "Uploading Images..."
+              : "Upload Multiple Images"}
+          </button>
+        </div>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+          multiple
+          disabled={uploading || Boolean(readOnly)}
+          onChange={handleUpload}
+          aria-label="Select exhibition images"
+          style={{
+            display: "none",
+          }}
+        />
+
+        {/* Upload progress */}
+        {uploading && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              marginTop: "20px",
+              padding: "16px",
+              borderRadius: "8px",
+              backgroundColor: "#eff6ff",
+              border: "1px solid #bfdbfe",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: "13px",
+                fontWeight: 700,
+                color: "#1e3a8a",
+              }}
+            >
+              Uploading {uploadedCount} of {totalFiles}{" "}
+              images
+            </p>
+
+            <div
+              role="progressbar"
+              aria-label="Image upload progress"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={progressPercentage}
+              style={{
+                height: "8px",
+                marginTop: "12px",
+                borderRadius: "999px",
+                backgroundColor: "#dbeafe",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  height: "100%",
+                  width: `${progressPercentage}%`,
+                  backgroundColor: "#2563eb",
+                  borderRadius: "999px",
+                  transition: "width 200ms ease",
+                }}
+              />
+            </div>
+
+            <p
+              style={{
+                margin: "10px 0 0",
+                fontSize: "12px",
+                color: "#475569",
+              }}
+            >
+              {progressPercentage}% completed. Please do
+              not close this document.
+            </p>
+          </div>
+        )}
+
+        {/* Error message */}
+        {errorMessage && (
+          <div
+            role="alert"
+            style={{
+              marginTop: "16px",
+              padding: "14px",
+              borderRadius: "8px",
+              border: "1px solid #fecaca",
+              backgroundColor: "#fef2f2",
+              color: "#991b1b",
+              fontSize: "13px",
+              fontWeight: 600,
+              lineHeight: 1.6,
+            }}
+          >
+            {errorMessage}
+          </div>
+        )}
+
+        {/* Success message */}
+        {successMessage && !uploading && !errorMessage && (
+          <div
+            role="status"
+            style={{
+              marginTop: "16px",
+              padding: "14px",
+              borderRadius: "8px",
+              border: "1px solid #bbf7d0",
+              backgroundColor: "#f0fdf4",
+              color: "#166534",
+              fontSize: "13px",
+              fontWeight: 600,
+              lineHeight: 1.6,
+            }}
+          >
+            {successMessage}
+          </div>
+        )}
+
+        <p
+          style={{
+            margin: "18px 0 0",
+            fontSize: "12px",
+            lineHeight: 1.6,
+            color: "#64748b",
+          }}
+        >
+          Supported formats: JPG, JPEG, PNG, WebP and GIF.
+          Maximum {MAX_FILES_PER_UPLOAD} images per upload.
+        </p>
+      </div>
+    </div>
   );
 }

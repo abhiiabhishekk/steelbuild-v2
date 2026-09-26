@@ -22,7 +22,10 @@ export const investorDocument = defineType({
       type: "string",
       options: {
         list: [
-          { title: "Announcements", value: "announcements" },
+          {
+            title: "Announcements",
+            value: "announcements",
+          },
           {
             title: "Annual Return and Reports",
             value: "annual-return-and-reports",
@@ -60,11 +63,13 @@ export const investorDocument = defineType({
             value: "shareholding-pattern",
           },
           {
-            title: "Group Companies, Subsidiaries and Associates",
+            title:
+              "Group Companies, Subsidiaries and Associates",
             value: "group-companies",
           },
           {
-            title: "Investors Grievance Redressal Details",
+            title:
+              "Investors Grievance Redressal Details",
             value: "investors-grievance",
           },
           {
@@ -72,7 +77,7 @@ export const investorDocument = defineType({
             value: "notice-and-meetings",
           },
 
-          // Existing categories retained for compatibility.
+          // Legacy categories retained for existing documents.
           {
             title: "Legacy — IPO & Offer Documents",
             value: "ipo-offer-documents",
@@ -137,7 +142,9 @@ export const investorDocument = defineType({
         ![
           "announcements",
           "annual-return-and-reports",
-        ].includes(String(document?.category ?? "")),
+        ].includes(
+          String(document?.category ?? ""),
+        ),
     }),
 
     defineField({
@@ -196,10 +203,20 @@ export const investorDocument = defineType({
       subcategory: "subcategory",
       year: "financialYear",
     },
-    prepare({ title, category, subcategory, year }) {
+
+    prepare({
+      title,
+      category,
+      subcategory,
+      year,
+    }) {
       return {
         title,
-        subtitle: [category, subcategory, year]
+        subtitle: [
+          category,
+          subcategory,
+          year,
+        ]
           .filter(Boolean)
           .join(" · "),
       };

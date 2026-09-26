@@ -240,14 +240,15 @@ function DocumentList({
               <ArrowUpRight size={15} />
             </a>
 
-            <a
-              href={`${document.fileUrl}?dl=`}
-              className="inline-flex items-center gap-2 rounded-lg bg-[#c21119] px-3 py-2.5 text-xs font-extrabold text-white transition-colors hover:bg-[#102b49]"
-              aria-label={`Download ${document.title}`}
-            >
-              <ArrowDownToLine size={16} />
-              Download
-            </a>
+            
+<a
+  href={`${document.fileUrl}?dl=`}
+  className="inline-flex items-center gap-2 rounded-lg bg-[#c21119] px-3 py-2.5 text-xs font-extrabold !text-white transition-colors duration-200 hover:bg-[#102b49] hover:!text-white [&_svg]:!text-white"
+  aria-label={`Download ${document.title}`}
+>
+  <ArrowDownToLine size={16} className="!text-white" />
+  Download
+</a>
           </div>
         </div>
       ))}

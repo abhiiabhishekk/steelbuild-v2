@@ -1,7 +1,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createClient } from "next-sanity";
+
 import {
   ArrowDown,
   ArrowUpRight,
@@ -11,9 +11,8 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import InvestorAccordion, {
-  type InvestorDocument,
-} from "@/components/investors/InvestorAccordion";
+import InvestorAccordion from "@/components/investors/InvestorAccordion";
+import { getInvestorDocuments } from "@/sanity/lib/investorQueries";
 
 export const metadata: Metadata = {
   title: "Investor Relations",
@@ -21,70 +20,10 @@ export const metadata: Metadata = {
     "Investor information, corporate governance, financial reports and official disclosures of Steelbuild Infra Projects Limited.",
 };
 
-export const revalidate = 60;
-
-const projectId =
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-
-const dataset =
-  process.env.NEXT_PUBLIC_SANITY_DATASET;
-
-const sanityClient =
-  projectId && dataset
-    ? createClient({
-        projectId,
-        dataset,
-        apiVersion: "2025-01-01",
-        useCdn: false,
-        perspective: "published",
-      })
-    : null;
-
-async function getInvestorDocuments(): Promise<
-  InvestorDocument[]
-> {
-  if (!sanityClient) {
-    console.error(
-      "Sanity project ID or dataset is missing.",
-    );
-
-    return [];
-  }
-
-  try {
-    return await sanityClient.fetch<
-      InvestorDocument[]
-    >(
-      `*[
-        _type == "investorDocument" &&
-        isPublished == true &&
-        defined(file.asset)
-      ] | order(displayOrder asc, documentDate desc) {
-        _id,
-        title,
-        category,
-        subcategory,
-        documentType,
-        financialYear,
-        documentDate,
-        "fileUrl": file.asset->url
-      }`,
-      {},
-      {
-        next: {
-          revalidate: 60,
-        },
-      },
-    );
-  } catch (error) {
-    console.error(
-      "Failed to load investor documents:",
-      error,
-    );
-
-    return [];
-  }
-}
+// Disable caching temporarily while investigating
+// why published Sanity documents are not appearing.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const highlights = [
   {
@@ -122,7 +61,7 @@ export default async function InvestorsPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f9fc]">
-      {/* PREMIUM HERO */}
+      {/* HERO */}
 
       <section className="relative isolate overflow-hidden bg-[#102b49] text-white">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(255,255,255,0.08),transparent_35%)]" />
@@ -172,7 +111,7 @@ export default async function InvestorsPage() {
             </p>
 
             <h2 className="mt-5 text-2xl font-black leading-snug">
-              Corporate Information & Disclosures
+              Corporate Information &amp; Disclosures
             </h2>
 
             <p className="mt-5 text-sm leading-7 text-white/65">
@@ -182,9 +121,7 @@ export default async function InvestorsPage() {
 
             <div className="mt-7 grid grid-cols-2 gap-3">
               <div className="rounded-xl border border-white/10 bg-white/[0.07] p-4">
-                <p className="text-3xl font-black">
-                  13
-                </p>
+                <p className="text-3xl font-black">13</p>
 
                 <p className="mt-2 text-xs font-medium text-white/65">
                   Investor Sections
@@ -260,7 +197,7 @@ export default async function InvestorsPage() {
         </div>
       </section>
 
-      {/* INVESTOR ACCORDION */}
+      {/* INVESTOR DOCUMENTS */}
 
       <section
         id="investor-resources"
@@ -273,7 +210,7 @@ export default async function InvestorsPage() {
             </p>
 
             <h2 className="mt-3 text-3xl font-black tracking-tight text-[#102b49] sm:text-4xl">
-              Investor Information & Disclosures
+              Investor Information &amp; Disclosures
             </h2>
 
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
@@ -291,7 +228,7 @@ export default async function InvestorsPage() {
         <InvestorAccordion documents={documents} />
       </section>
 
-      {/* INVESTOR CONTACT CTA */}
+      {/* INVESTOR CONTACT */}
 
       <section className="bg-[#102b49] text-white">
         <div className="mx-auto flex max-w-[1180px] flex-col gap-7 px-6 py-14 md:flex-row md:items-center md:justify-between">
