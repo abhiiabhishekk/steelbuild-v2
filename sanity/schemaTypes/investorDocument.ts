@@ -77,6 +77,11 @@ export const investorDocument = defineType({
             value: "notice-and-meetings",
           },
 
+          {
+            title: "Industry Reports",
+            value: "industry-reports",
+          },
+
           // Legacy categories retained for existing documents.
           {
             title: "Legacy — IPO & Offer Documents",

@@ -127,6 +127,12 @@ const sections = [
     description:
       "Published notices and information about corporate meetings.",
   },
+  {
+    id: "industry-reports",
+    title: "Industry Reports",
+    description:
+      "Published industry research reports, market insights, sector analyses and related industry publications.",
+  },
 ] as const;
 
 const legacyCategories: Record<string, string[]> = {

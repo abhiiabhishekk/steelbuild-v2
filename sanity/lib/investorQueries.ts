@@ -16,6 +16,7 @@ export type InvestorCategory =
   | "group-companies"
   | "investors-grievance"
   | "notice-and-meetings"
+  | "industry-reports"
   | "ipo-offer-documents"
   | "financial-information"
   | "corporate-governance"

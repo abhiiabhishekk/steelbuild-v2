@@ -488,6 +488,13 @@ export const navigationItems: NavigationItem[] = [
         href: "/investors#notice-and-meetings",
         status: "completed",
       },
+      {
+        label: "Industry Reports",
+        href: "/investors#industry-reports",
+        description:
+          "Explore industry research, market insights and sector analysis reports.",
+        status: "completed",
+      },
     ],
   },
 

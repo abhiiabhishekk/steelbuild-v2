@@ -124,6 +124,12 @@ const categories: Record<
       "Published notices and information about corporate meetings.",
   },
 
+  "industry-reports": {
+    title: "Industry Reports",
+    description:
+      "Explore published industry research reports, market insights, sector analyses and related industry publications.",
+  },
+
   // Existing URLs retained for backward compatibility.
 
   "ipo-offer-documents": {

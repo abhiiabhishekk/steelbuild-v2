@@ -62,6 +62,10 @@ const categories = [
     title: "Notice and Meetings",
     value: "notice-and-meetings",
   },
+  {
+    title: "Industry Reports",
+    value: "industry-reports",
+  },
 ];
 
 const subcategories: Record<
