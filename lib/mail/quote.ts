@@ -1,6 +1,7 @@
 import type { Attachment } from "nodemailer/lib/mailer";
 
 import { sendWebsiteMail } from "@/lib/mail";
+import { sendGmailAcknowledgement } from "@/lib/mail/gmail";
 import type { QuoteFormData } from "@/lib/types/quote";
 
 type SendQuoteMailInput = {
@@ -148,69 +149,55 @@ const createQuoteEmailHtml = (
                       background: #1b3f68;
                     "
                   >
-                    <table
-                      role="presentation"
-                      width="100%"
-                      cellspacing="0"
-                      cellpadding="0"
-                      border="0"
-                    >
-                      <tr>
-                        <td
-                          style="
-                            color: #ffffff;
-                            vertical-align: middle;
-                          "
-                        >
-                          <p
-                            style="
-                              margin: 0;
-                              color: #c21119;
-                              font-size: 11px;
-                              font-weight: 700;
-                              letter-spacing: 2.5px;
-                              text-transform: uppercase;
-                            "
-                          >
-                            Steelbuild Infra Projects
-                          </p>
 
-                          <h1
-                            style="
-                              margin: 8px 0 0;
-                              color: #ffffff;
-                              font-size: 28px;
-                              line-height: 1.25;
-                            "
-                          >
-                            New Request for Quotation
-                          </h1>
-                        </td>
+    <table role="presentation"
+      width="100%" cellspacing="0" cellpadding="0"
+      border="0">
+      <tr>
+        <td style="vertical-align:top;">
 
-                        <td
-                          align="right"
-                          style="
-                            vertical-align: middle;
-                          "
-                        >
-                          <div
-                            style="
-                              display: inline-block;
-                              padding: 10px 14px;
-                              border-radius: 999px;
-                              background: #c21119;
-                              color: #ffffff;
-                              font-size: 11px;
-                              font-weight: 700;
-                              letter-spacing: 1.5px;
-                              text-transform: uppercase;
-                            "
-                          >
-                            Website Lead
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
+  <p style="
+    margin:0 0 12px;
+    color:#C21119;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.4px;
+    line-height:1.5;
+  ">STEELBUILD INFRA PROJECTS</p>
+
+  <table role="presentation"
+    cellspacing="0" cellpadding="0" border="0"
+    style="margin:0 0 13px;border-collapse:separate;">
+    <tr>
+      <td style="
+        padding:7px 12px;
+        background:#c21119;
+        border-radius:16px;
+        color:#ffffff;
+        font-family:Arial,Helvetica,sans-serif;
+        font-size:10px;
+        font-weight:700;
+        letter-spacing:0.8px;
+        line-height:1.4;
+      ">NEW RFQ</td>
+    </tr>
+  </table>
+
+  <h1 style="
+    margin:0;
+    color:#ffffff;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:25px;
+    font-weight:700;
+    line-height:1.3;
+    overflow-wrap:break-word;
+  ">New Request for Quotation</h1>
+
+        </td>
+      </tr>
+    </table>
+
                   </td>
                 </tr>
 
@@ -982,32 +969,21 @@ export async function sendQuoteMail({
    * quotation request already delivered successfully.
    */
   try {
-    const acknowledgementResult =
-      await sendWebsiteMail({
-        to: {
-          name: data.fullName,
-          address: data.email,
-        },
-
-        replyTo:
-          process.env.QUOTE_RECEIVER_EMAIL?.split(
-            ",",
-          )[0]?.trim() ||
-          "info@steelbuildinfra.com",
-
+    const acknowledgementMessageId =
+      await sendGmailAcknowledgement({
+        to: data.email,
         subject:
           "We Have Received Your Quotation Request | Steelbuild Infra Projects",
-
-        html:
-          createQuoteAcknowledgementHtml(
-            data,
-          ),
-
-        text:
-          createQuoteAcknowledgementText(
-            data,
-          ),
+        html: createQuoteAcknowledgementHtml(data),
+        text: createQuoteAcknowledgementText(data),
       });
+
+    const acknowledgementResult = {
+      messageId: acknowledgementMessageId,
+      accepted: [data.email],
+      rejected: [],
+      response: "Gmail API accepted",
+    };
 
     console.log(
       "QUOTE ACKNOWLEDGEMENT RESULT:",

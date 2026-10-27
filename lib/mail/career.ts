@@ -212,8 +212,7 @@ function createCareerEmailHtml(
                         text-transform:uppercase;
                       "
                     >
-                      Steelbuild Careers
-                    </p>
+                      STEELBUILD INFRA PROJECTS</p><table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:12px 0;"><tr><td style="padding:7px 12px;background:#C21119;border-radius:16px;color:#ffffff;font-size:10px;font-weight:700;letter-spacing:0.8px;">NEW CANDIDATE</td></tr></table>
 
                     <h1
                       style="
@@ -607,8 +606,7 @@ function createAcknowledgementHtml(
                         text-transform:uppercase;
                       "
                     >
-                      Steelbuild Careers
-                    </p>
+                      STEELBUILD INFRA PROJECTS</p><table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:12px 0;"><tr><td style="padding:7px 12px;background:#C21119;border-radius:16px;color:#ffffff;font-size:10px;font-weight:700;letter-spacing:0.8px;">NEW CANDIDATE</td></tr></table>
 
                     <h1
                       style="

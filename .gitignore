@@ -51,3 +51,4 @@ node_modules/
 
 # Temporary ZIP file
 components/blogs.zip
+.google-oauth-token.json

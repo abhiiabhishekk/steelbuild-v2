@@ -136,10 +136,8 @@ export function createDetailRow(
     renderedValue = `
       <a
         href="mailto:${safeValue}"
-        style="color:#c21119;text-decoration:none;"
-      >
-        ${safeValue}
-      </a>
+        style="color:#c21119;text-decoration:none;overflow-wrap:anywhere;word-break:break-word;"
+      >${safeValue}</a>
     `;
   }
 
@@ -147,40 +145,26 @@ export function createDetailRow(
     renderedValue = `
       <a
         href="tel:${safeValue}"
-        style="color:#1b3f68;text-decoration:none;"
-      >
-        ${safeValue}
-      </a>
+        style="color:#1b3f68;text-decoration:none;overflow-wrap:anywhere;word-break:break-word;"
+      >${safeValue}</a>
     `;
   }
 
   return `
     <tr>
-      <td
-        style="
-          width:155px;
-          padding:13px 0;
-          color:#6b7280;
-          font-size:14px;
-          font-weight:700;
-          vertical-align:top;
-          border-bottom:1px solid #eeeeee;
-        "
+      <td colspan="2"
+        style="padding:14px 0;border-bottom:1px solid #eeeeee;"
       >
-        ${safeLabel}
-      </td>
-
-      <td
-        style="
-          padding:13px 0;
-          color:#111827;
-          font-size:14px;
-          line-height:1.6;
-          vertical-align:top;
-          border-bottom:1px solid #eeeeee;
-        "
-      >
-        ${renderedValue}
+        <div
+          style="color:#6b7280;font-size:12px;font-weight:700;line-height:1.5;margin-bottom:5px;"
+        >
+          ${safeLabel}
+        </div>
+        <div
+          style="color:#111827;font-size:14px;line-height:1.7;overflow-wrap:anywhere;word-break:break-word;"
+        >
+          ${renderedValue}
+        </div>
       </td>
     </tr>
   `;
