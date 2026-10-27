@@ -5,6 +5,7 @@ import type {
 
 import type { ContactFormData } from "@/lib/types/forms";
 import { sendGmailAcknowledgement } from "@/lib/mail/gmail";
+import { createAutoReplyShell } from "@/lib/mail/autoReplyShell";
 
 import {
   createMailTransporter,
@@ -13,7 +14,6 @@ import {
 
 import {
   createDetailRow,
-  createEmailShell,
   createMessageBox,
   escapeHtml,
 } from "@/lib/mail/templates";
@@ -270,8 +270,8 @@ function createAcknowledgementEmailHtml(
     </p>
   `;
 
-  return createEmailShell({
-    eyebrow: "Thank You",
+  return createAutoReplyShell({
+    badge: "ENQUIRY RECEIVED",
     title: "We Have Received Your Enquiry",
     content,
   });

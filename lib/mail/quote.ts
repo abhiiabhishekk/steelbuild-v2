@@ -661,6 +661,7 @@ const createQuoteAcknowledgementHtml = (
                     >
                       Steelbuild Infra Projects
                     </p>
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:12px 0;border-collapse:separate;"><tr><td style="padding:7px 12px;background:#C21119;border-radius:16px;color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.8px;line-height:1.4;">RFQ RECEIVED</td></tr></table>
 
                     <h1
                       style="
