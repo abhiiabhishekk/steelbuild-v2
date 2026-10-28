@@ -95,7 +95,7 @@ export async function sendGmailAcknowledgement({
   const headers = [
     `From: Steelbuild Infra Projects Limited <${SENDER}>`,
     `To: ${recipient}`,
-    `Bcc: info@steelbuildinfra.com, va@steelbuildinfra.com`,
+    `Bcc: info@steelbuildinfra.com, va@steelbuildinfra.com, digital@steelbuildinfra.com`,
     `Reply-To: ${SENDER}`,
     `Subject: ${encodeHeader(subject)}`,
     "MIME-Version: 1.0",
