@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -21,14 +22,14 @@ export default function StoryImage() {
       {/* Image Frame */}
 
       <div className="overflow-hidden rounded-[34px] border border-gray-100 bg-white p-2 shadow-[0_35px_80px_rgba(27,63,104,0.14)]">
-        <div className="group relative h-[420px] overflow-hidden rounded-[28px] sm:h-[450px] lg:h-[470px]">
+        <div className="group relative aspect-[4/5] overflow-hidden rounded-[28px]">
           <Image
-            src="/images/about/company-story.jpg"
+            src="/images/about/company-story-v2.jpg"
             alt="Steelbuild Infra Projects Limited team at manufacturing facility"
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 48vw"
-            className="object-cover object-[center_58%] transition-transform duration-700 ease-out group-hover:scale-[1.015]"
+            className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.015]"
           />
         </div>
       </div>
