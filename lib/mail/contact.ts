@@ -300,7 +300,7 @@ async function sendInternalNotification(
       name: data.name,
       address: data.email,
     },
-    subject: `New Website Enquiry â€“ ${data.name}`,
+    subject: `New Website Enquiry – ${data.name}`,
     text: [
       "New enquiry received from steelbuildinfra.com.",
       "",
