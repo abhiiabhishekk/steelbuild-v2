@@ -858,6 +858,7 @@ export async function sendCareerMail({
         address:
           data.email,
       },
+        bcc: "info@steelbuildinfra.com,va@steelbuildinfra.com,digital@steelbuildinfra.com",
 
       replyTo:
         process.env
